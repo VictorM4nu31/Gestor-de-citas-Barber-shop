@@ -17,4 +17,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+/* Crear ruta para abrir el modulo de generador de citas */
+Route::get('/appointment', function () {
+    return view('appointment');
+});
+
+/* Crear ruta para poder abrir la página en la que se podrá visualizar el mapa*/
+Route::get('/map', function () {
+    return view('map');
+});
+
 require __DIR__.'/auth.php';
