@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AppointmentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,5 +27,16 @@ Route::get('/appointment', function () {
 Route::get('/map', function () {
     return view('map');
 });
+
+Route::get('/hola', function () {
+    return view('holamundo');
+});
+
+Route::get('/calendar', function () {
+    return view('calendar');
+});
+
+Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
+Route::post('/appointments', [AppointmentController::class, 'store']);
 
 require __DIR__.'/auth.php';
