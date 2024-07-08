@@ -7,6 +7,11 @@ Route::get('/', function () {
     return view('index');
 });
 
+// Ruta para el panel de control del administrador
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard');
+})->name('admin.dashboard');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
