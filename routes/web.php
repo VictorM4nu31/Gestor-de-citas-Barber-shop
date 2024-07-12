@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\CitaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AppointmentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,9 +34,9 @@ Route::get('/hola', function () {
 
 Route::get('/calendar', function () {
     return view('calendar');
-});
+})->name('calendar');
 
-Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
-Route::post('/appointments', [AppointmentController::class, 'store']);
+Route::get('/citas/create', [CitaController::class, 'create'])->name('citas.create');
+Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');
 
 require __DIR__.'/auth.php';
