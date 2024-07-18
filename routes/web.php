@@ -12,6 +12,11 @@ Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 })->name('admin.dashboard');
 
+//Ruta para el panel de control del trabajador
+Route::get('/worker/dashboard', function () {
+    return view('worker.dashboard');
+})->name('admin.dashboard');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

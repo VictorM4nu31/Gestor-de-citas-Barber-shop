@@ -37,27 +37,15 @@
                     />
                     <div>
                         <h2 class="font-medium text-xs md:text-sm text-center text-red-400">Eduard Pantazi</h2>
-                        <p class="text-xs text-gray-300 text-center">Administrator</p>
+                        <p class="text-xs text-gray-300 text-center">Trabajador</p>
                     </div>
                 </div>
                 <div id="menu" class="flex flex-col space-y-2">
-                    <a href="#table-user" class="text-sm font-medium text-white py-2 px-2 hover:bg-red-700 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
-                        <svg class="w-6 h-6 fill-current inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 3a1 1 0 000 2h12a1 1 0 100-2H4zM3 7a1 1 0 011-1h4a1 1 0 110 2H4a1 1 0 01-1-1zM3 11a1 1 0 011-1h10a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h8a1 1 0 110 2H4a1 1 0 01-1-1z"></path>
-                        </svg>
-                        <span>Gestionar Empleados</span>
-                    </a>
                     <a href="#" class="text-sm font-medium text-white py-2 px-2 hover:bg-red-700 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
                         <svg class="w-6 h-6 fill-current inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 3a1 1 0 000 2h12a1 1 0 100-2H4zM3 7a1 1 0 011-1h4a1 1 0 110 2H4a1 1 0 01-1-1zM3 11a1 1 0 011-1h10a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h8a1 1 0 110 2H4a1 1 0 01-1-1z"></path>
+                            <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z"></path>
                         </svg>
-                        <span>Gestionar Servicios</span>
-                    </a>
-                    <a href="#" class="text-sm font-medium text-white py-2 px-2 hover:bg-red-700 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
-                        <svg class="w-6 h-6 fill-current inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 2a6 6 0 00-6 6c0 4.2 4 7.33 5.65 8.45a1.3 1.3 0 001.42 0C12 15.33 16 12.2 16 8a6 6 0 00-6-6z"></path>
-                        </svg>
-                        <span>Gestionar Productos</span>
+                        <span>Gestionar Citas</span>
                     </a>
                 </div>
             </div>
@@ -65,9 +53,7 @@
         <div class="bg-white flex-grow text-black p-6">
             <h1 class="text-4xl font-semibold mb-6">Dashboard</h1>
             <!-- Contenido del dashboard -->
-            @include('admin.table-users')
-            <br>
-            @include('admin.manage-services')
+            @include('worker.appointment-manager')
         </div>
     </div>
 
