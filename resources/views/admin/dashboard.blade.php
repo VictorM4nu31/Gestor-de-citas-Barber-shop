@@ -1,4 +1,3 @@
-<!-- resources/views/admin/dashboard.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,71 +40,46 @@
                     </div>
                 </div>
                 <div id="menu" class="flex flex-col space-y-2">
-                    <a href="#table-user" class="text-sm font-medium text-white py-2 px-2 hover:bg-red-700 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
+                    <button id="link-employees" class="text-sm font-medium text-white py-2 px-2 hover:bg-red-700 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
                         <svg class="w-6 h-6 fill-current inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path d="M4 3a1 1 0 000 2h12a1 1 0 100-2H4zM3 7a1 1 0 011-1h4a1 1 0 110 2H4a1 1 0 01-1-1zM3 11a1 1 0 011-1h10a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h8a1 1 0 110 2H4a1 1 0 01-1-1z"></path>
                         </svg>
                         <span>Gestionar Empleados</span>
-                    </a>
-                    <a href="#" class="text-sm font-medium text-white py-2 px-2 hover:bg-red-700 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
+                    </button>
+                    <button id="link-services" class="text-sm font-medium text-white py-2 px-2 hover:bg-red-700 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
                         <svg class="w-6 h-6 fill-current inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path d="M4 3a1 1 0 000 2h12a1 1 0 100-2H4zM3 7a1 1 0 011-1h4a1 1 0 110 2H4a1 1 0 01-1-1zM3 11a1 1 0 011-1h10a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h8a1 1 0 110 2H4a1 1 0 01-1-1z"></path>
                         </svg>
                         <span>Gestionar Servicios</span>
-                    </a>
-                    <a href="#" class="text-sm font-medium text-white py-2 px-2 hover:bg-red-700 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
-                        <svg class="w-6 h-6 fill-current inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 2a6 6 0 00-6 6c0 4.2 4 7.33 5.65 8.45a1.3 1.3 0 001.42 0C12 15.33 16 12.2 16 8a6 6 0 00-6-6z"></path>
-                        </svg>
-                        <span>Gestionar Productos</span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
         <div class="bg-white flex-grow text-black p-6">
             <h1 class="text-4xl font-semibold mb-6">Dashboard</h1>
             <!-- Contenido del dashboard -->
-            @include('admin.table-users')
-            <br>
-            @include('admin.manage-services')
+            <div id="employees-section" class="hidden">
+                @include('admin.table-users')
+            </div>
+            <div id="services-section" class="hidden">
+                @include('admin.manage-services')
+            </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const serviceForm = document.getElementById('service-form');
-            const servicesTableBody = document.getElementById('services-table-body');
-
-            serviceForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-
-                const serviceName = document.getElementById('service-name').value;
-                const serviceDescription = document.getElementById('service-description').value;
-                const serviceCost = document.getElementById('service-cost').value;
-
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td class="py-2 px-4">${serviceName}</td>
-                    <td class="py-2 px-4">${serviceDescription}</td>
-                    <td class="py-2 px-4">${serviceCost}</td>
-                    <td class="py-2 px-4">
-                        <button class="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-600">Eliminar</button>
-                    </td>
-                `;
-
-                servicesTableBody.appendChild(newRow);
-
-                // Limpiar el formulario
-                serviceForm.reset();
-            });
-
-            servicesTableBody.addEventListener('click', function (event) {
-                if (event.target.tagName === 'BUTTON') {
-                    event.target.closest('tr').remove();
-                }
-            });
+        document.getElementById('link-employees').addEventListener('click', function() {
+            document.getElementById('employees-section').classList.remove('hidden');
+            document.getElementById('services-section').classList.add('hidden');
         });
-        </script>
 
+        document.getElementById('link-services').addEventListener('click', function() {
+            document.getElementById('services-section').classList.remove('hidden');
+            document.getElementById('employees-section').classList.add('hidden');
+        });
+
+        // Mostrar la sección de empleados por defecto
+        document.getElementById('employees-section').classList.remove('hidden');
+    </script>
 </body>
 </html>
