@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\BarberoController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServicioController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -36,7 +38,12 @@ Route::get('/calendar', function () {
     return view('calendar');
 })->name('calendar');
 
-Route::get('/citas/create', [CitaController::class, 'create'])->name('citas.create');
-Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');
+/* Route::get('/citas/create', [CitaController::class, 'create'])->name('citas.create');
+Route::post('/citas', [CitaController::class, 'store'])->name('citas.store'); */
 
 require __DIR__.'/auth.php';
+
+
+/*Rutas para acceder a las vistas de barberos y servicios*/
+Route::resource('barberos', BarberoController::class);
+Route::resource('servicios', ServicioController::class);

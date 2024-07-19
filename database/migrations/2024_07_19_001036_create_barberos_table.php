@@ -6,23 +6,32 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateBarberosTable extends Migration
 {
-    public function up(): void
+    /**
+     * Ejecuta las migraciones.
+     *
+     * @return void
+     */
+    public function up()
     {
         Schema::create('barberos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre_completo');
             $table->string('email')->unique();
-            $table->string('telefono');
+            $table->string('telefono')->nullable();
             $table->string('especialidad');
-            $table->integer('experiencia'); // en años
-            $table->string('foto')->nullable();
+            $table->text('experiencia');
+            $table->string('foto')->nullable(); // Puedes almacenar la ruta de la foto aquí
             $table->timestamps();
         });
     }
 
-    public function down(): void
+    /**
+     * Revierte las migraciones.
+     *
+     * @return void
+     */
+    public function down()
     {
         Schema::dropIfExists('barberos');
     }
 }
-
