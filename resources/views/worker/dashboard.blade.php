@@ -1,10 +1,9 @@
-<!-- resources/views/admin/dashboard.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Panel de Control</title>
     <!-- Incluye los estilos de Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.4.1/flowbite.min.css" rel="stylesheet" />
@@ -51,8 +50,8 @@
             </div>
         </div>
         <div class="bg-white flex-grow text-black p-6">
-            <h1 class="text-4xl font-semibold mb-6">Dashboard</h1>
-            <!-- Contenido del dashboard -->
+            <h1 class="text-4xl font-semibold mb-6">Panel de Control</h1>
+            <!-- Contenido del panel de control -->
             @include('worker.appointment-manager')
         </div>
     </div>
@@ -91,7 +90,7 @@
                 }
             });
         });
-        </script>
+    </script>
 
 </body>
 </html>

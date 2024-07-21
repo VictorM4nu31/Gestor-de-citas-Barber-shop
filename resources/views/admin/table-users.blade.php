@@ -1,8 +1,12 @@
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg" id="table-user">
-    <table class="w-full text-sm text-left text-gray-300">
-        <thead class="text-xs uppercase bg-gray-700 text-gray-300">
+    <div class="flex justify-end mb-4">
+        <button class="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors duration-300">
+            Agregar Empleado
+        </button>
+    </div>
+    <table class="w-full text-base text-left text-white">
+        <thead class="text-sm uppercase bg-red-700 text-white">
             <tr>
-                <th scope="col" class="px-6 py-3">ID</th>
                 <th scope="col" class="px-6 py-3">Nombre Completo</th>
                 <th scope="col" class="px-6 py-3">Email</th>
                 <th scope="col" class="px-6 py-3">Teléfono</th>
@@ -13,8 +17,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="bg-gray-800 border-b border-gray-700">
-                <td class="px-6 py-4">1</td>
+            <tr class="bg-black border-b border-gray-700">
                 <td class="px-6 py-4">juan perez</td>
                 <td class="px-6 py-4">juan.perez@empresa.com</td>
                 <td class="px-6 py-4">555-1234</td>
