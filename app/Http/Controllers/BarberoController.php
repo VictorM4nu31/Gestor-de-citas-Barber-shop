@@ -6,17 +6,18 @@ use App\Models\Barbero;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+
 class BarberoController extends Controller
 {
     public function index()
     {
         $barberos = Barbero::all();
-        return view('barberos.index', compact('barberos'));
+        return view('admin.dashboard', compact('barberos'));
     }
 
     public function create()
     {
-        return view('barberos.create');
+        return view('admin.table-users-create');
     }
 
     public function store(Request $request)
@@ -36,7 +37,7 @@ class BarberoController extends Controller
 
         Barbero::create($validated);
 
-        return redirect()->route('barberos.index')->with('success', 'Barbero creado exitosamente.');
+        return redirect()->route('admin.dashboard')->with('success', 'Barbero creado exitosamente.');
     }
 
     public function show(Barbero $barbero)
@@ -46,7 +47,7 @@ class BarberoController extends Controller
 
     public function edit(Barbero $barbero)
     {
-        return view('barberos.edit', compact('barbero'));
+        return view('admin.table-users-edit', compact('barbero'));
     }
 
     public function update(Request $request, Barbero $barbero)
@@ -69,7 +70,7 @@ class BarberoController extends Controller
 
         $barbero->update($validated);
 
-        return redirect()->route('barberos.index')->with('success', 'Barbero actualizado exitosamente.');
+        return redirect()->route('admin.table-users')->with('success', 'Barbero actualizado exitosamente.');
     }
 
     public function destroy(Barbero $barbero)
@@ -79,6 +80,6 @@ class BarberoController extends Controller
         }
         $barbero->delete();
 
-        return redirect()->route('barberos.index')->with('success', 'Barbero eliminado exitosamente.');
+        return redirect()->route('admin.table-users')->with('success', 'Barbero eliminado exitosamente.');
     }
 }

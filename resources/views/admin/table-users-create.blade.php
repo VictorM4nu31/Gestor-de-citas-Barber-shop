@@ -3,7 +3,7 @@
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/" class="text-xl font-bold text-white">Barbería</a>
             <nav class="space-x-4">
-                <a href="{{-- {{ route('barberos.index') }} --}}" class="bg-red-700 hover:bg-gray-700 text-white py-2 px-4 rounded-md">Volver a la Lista</a>
+                <a href="{{ route('admin.table-users') }}" class="bg-red-700 hover:bg-gray-700 text-white py-2 px-4 rounded-md">Volver a la Lista</a>
             </nav>
         </div>
     </header>
@@ -12,8 +12,8 @@
     <h1 class="text-3xl font-semibold mb-6">Crear Barbero</h1>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg bg-black text-white">
         <!-- Comienza el formulario aquí -->
-        <form action="{{-- {{ route('barberos.store') }} --}}" method="POST" enctype="multipart/form-data" class="p-6">
-            {{-- @csrf --}}
+        <form action="{{ route('barberos.store') }}" method="POST" enctype="multipart/form-data" class="p-6">
+            @csrf
             <!-- Esta línea es necesaria para la protección CSRF en Laravel; coméntala solo si no estás probando el backend -->
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div class="mb-4">
