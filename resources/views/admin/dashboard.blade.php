@@ -58,8 +58,6 @@
             <!-- Contenido del panel de control -->
             <div id="employees-section" class="hidden">
                 @include('admin.table-users')
-
-                @include('admin.table-users-create')
             </div>
             <div id="services-section" class="hidden">
                 @include('admin.manage-services')
