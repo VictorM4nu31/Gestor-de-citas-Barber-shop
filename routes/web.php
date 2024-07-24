@@ -2,15 +2,20 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\BarberoController;
 Route::get('/', function () {
     return view('index');
 });
 
 // Ruta para el panel de control del administrador
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
+
+Route::get('/admin/dashboard', [BarberoController::class, 'index'])->name('admin.dashboard');
+// Rutas para la gestión de barberos
+Route::resource('barberos', BarberoController::class);
+// Ruta para crear barberos
+Route::get('barberos/create', [BarberoController::class, 'create'])->name('admin.table-users-create');
+// Ruta para volver a la lista de barberos
+Route::get('/admin/table-users', [BarberoController::class, 'index'])->name('admin.table-users');
 
 //Ruta para el panel de control del trabajador
 Route::get('/worker/dashboard', function () {
