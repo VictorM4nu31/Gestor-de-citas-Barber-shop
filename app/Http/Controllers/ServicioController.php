@@ -27,6 +27,8 @@ class ServicioController extends Controller
             'duracion' => 'required|integer|min:1',
             'precio' => 'required|numeric|min:0',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ],[
+            'foto.max' => 'El tamaño máximo permitido de la imagen es de 2MB.',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -56,6 +58,8 @@ class ServicioController extends Controller
             'duracion' => 'required|integer|min:1',
             'precio' => 'required|numeric|min:0',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ],[
+            'foto.max' => 'El tamaño máximo permitido de la imagen es de 2MB.',
         ]);
 
         if ($request->hasFile('foto')) {

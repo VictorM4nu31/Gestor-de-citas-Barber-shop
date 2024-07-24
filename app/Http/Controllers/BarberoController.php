@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barbero;
+use App\Models\Cita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+
 
 class BarberoController extends Controller
 {
@@ -24,10 +26,13 @@ class BarberoController extends Controller
         $validated = $request->validate([
             'nombre_completo' => 'required|string|max:255',
             'email' => 'required|email|unique:barberos,email',
+            'password' => 'required|string|min:8|confirmed',
             'telefono' => 'nullable|string|max:20',
             'especialidad' => 'required|string|max:100',
             'experiencia' => 'required|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ],[
+            'foto.max' => 'El tamaño máximo permitido de la imagen es de 2MB.',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -54,11 +59,21 @@ class BarberoController extends Controller
         $validated = $request->validate([
             'nombre_completo' => 'required|string|max:255',
             'email' => 'required|email|unique:barberos,email,' . $barbero->id,
+            'password' => 'nullable|string|min:8|confirmed',
             'telefono' => 'nullable|string|max:20',
             'especialidad' => 'required|string|max:100',
             'experiencia' => 'required|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ],[
+            'foto.max' => 'El tamaño máximo permitido de la imagen es de 2MB.',
         ]);
+
+        $data = $request->all();
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password);
+        } else {
+            unset($data['password']);
+        }
 
         if ($request->hasFile('foto')) {
             if ($barbero->foto) {
@@ -72,11 +87,14 @@ class BarberoController extends Controller
         return redirect()->route('barberos.index')->with('success', 'Barbero actualizado exitosamente.');
     }
 
-    public function destroy(Barbero $barbero)
+    public function destroy($id)
     {
-        if ($barbero->foto) {
-            Storage::disk('public')->delete($barbero->foto);
-        }
+        $barbero = Barbero::findOrFail($id);
+
+        // Eliminar todas las citas asociadas al barbero
+        Cita::where('id_barbero', $id)->delete();
+
+        // Ahora eliminar al barbero
         $barbero->delete();
 
         return redirect()->route('barberos.index')->with('success', 'Barbero eliminado exitosamente.');
