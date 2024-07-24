@@ -11,6 +11,7 @@
                 <tr>
                     <th scope="col" class="px-6 py-3">Nombre Completo</th>
                     <th scope="col" class="px-6 py-3">Email</th>
+                    <th scope="col" class="px-6 py-3">Contraseña</th>
                     <th scope="col" class="px-6 py-3">Teléfono</th>
                     <th scope="col" class="px-6 py-3">Especialidad</th>
                     <th scope="col" class="px-6 py-3">Experiencia</th>
@@ -23,6 +24,7 @@
                     <tr class="bg-black border-b border-gray-700">
                         <td class="px-6 py-4 whitespace-nowrap">{{ $barbero->nombre_completo }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $barbero->email }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $barbero->password }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $barbero->telefono }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $barbero->especialidad }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $barbero->experiencia }} años</td>
