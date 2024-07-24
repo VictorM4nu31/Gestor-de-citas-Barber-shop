@@ -1,5 +1,4 @@
 import './bootstrap';
-import './fullcalendar';
 import 'flowbite';
 
 import Alpine from 'alpinejs';

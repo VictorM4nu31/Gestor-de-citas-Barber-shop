@@ -12,16 +12,25 @@ class Barbero extends Model
     protected $fillable = [
         'nombre_completo',
         'email',
+        'password',
         'telefono',
         'especialidad',
         'experiencia',
         'foto',
     ];
 
-    // Relación con las citas
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
+    // Encriptar la contraseña
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
     public function citas()
     {
         return $this->hasMany(Cita::class, 'id_barbero');
     }
+    // Si necesitas agregar relaciones u otras funcionalidades, hazlo aquí
 }
-

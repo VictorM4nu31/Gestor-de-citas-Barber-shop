@@ -22,6 +22,13 @@
                 <span>Crear Barbero</span>
             </a>
         </div>
+        <!-- Mensaje de éxito -->
+        @if (session('success'))
+            <div id="success-message" class="bg-green-500 text-white p-4 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white border border-gray-300">
                 <thead class="bg-gray-200">
@@ -52,7 +59,7 @@
                                 Sin foto
                             @endif
                         </td>
-                        <td class="py-2 px-4 border">
+                        <td class="py-2 px-4 border flex flex-col space-y-2 md:space-y-0 md:flex-row md:space-x-2">
                             <a href="{{ route('barberos.edit', $barbero->id) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-2 rounded">Editar</a>
                             <form action="{{ route('barberos.destroy', $barbero->id) }}" method="POST" class="inline-block">
                                 @csrf
@@ -66,5 +73,21 @@
             </table>
         </div>
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener el elemento del mensaje de éxito
+            const successMessage = document.getElementById('success-message');
+            
+            if (successMessage) {
+                // Ocultar el mensaje después de 4 segundos
+                setTimeout(() => {
+                    successMessage.style.opacity = 0;
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 0); // Tiempo para desvanecerse
+                }, 6000); // Tiempo de espera en milisegundos
+            }
+        });
+    </script>
 </body>
 </html>

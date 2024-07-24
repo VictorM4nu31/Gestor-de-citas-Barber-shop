@@ -41,10 +41,10 @@
                 <div class="mb-4">
                     <label for="foto" class="block text-sm font-medium text-gray-700">Foto</label>
                     <input type="file" id="foto" name="foto" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
-                    @if ($servicio->foto)
-                        <div class="mt-2">
-                            <img src="{{ asset('storage/' . $servicio->foto) }}" alt="Foto de {{ $servicio->nombre }}" class="w-32 h-32 object-cover rounded-md">
-                        </div>
+                    <p class="mt-2 text-sm text-gray-500">Tamaño máximo: 2MB. Formatos permitidos: jpeg, png, jpg.</p>
+                    <!-- Mensaje de error para la foto -->
+                    @if ($errors->has('foto'))
+                        <p class="mt-2 text-sm text-red-500">{{ $errors->first('foto') }}</p>
                     @endif
                 </div>
             </div>

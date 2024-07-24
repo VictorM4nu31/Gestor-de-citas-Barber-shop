@@ -21,8 +21,15 @@
                 <i class="fas fa-plus-circle"></i>
                 <span>Crear Servicio</span>
             </a>
-
         </div>
+
+        <!-- Mensaje de éxito -->
+        @if (session('success'))
+            <div id="success-message" class="bg-green-500 text-white p-4 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white border border-gray-300">
                 <thead class="bg-gray-200">
@@ -65,5 +72,21 @@
             </table>
         </div>
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener el elemento del mensaje de éxito
+            const successMessage = document.getElementById('success-message');
+            
+            if (successMessage) {
+                // Ocultar el mensaje después de 4 segundos
+                setTimeout(() => {
+                    successMessage.style.opacity = 0;
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 0); // Tiempo para desvanecerse
+                }, 6000); // Tiempo de espera en milisegundos
+            }
+        });
+    </script>
 </body>
 </html>

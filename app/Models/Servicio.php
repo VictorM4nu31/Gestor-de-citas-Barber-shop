@@ -17,9 +17,10 @@ class Servicio extends Model
         'foto',
     ];
 
-    // Relación con las citas
     public function citas()
     {
         return $this->hasMany(Cita::class, 'id_servicio');
     }
+    // Si necesitas agregar relaciones u otras funcionalidades, hazlo aquí
 }
+

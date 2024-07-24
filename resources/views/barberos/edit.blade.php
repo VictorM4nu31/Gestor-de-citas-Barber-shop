@@ -30,6 +30,23 @@
                     <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                     <input type="email" id="email" name="email" value="{{ $barbero->email }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" required>
                 </div>
+                <!-- Campo de contraseña -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                <input type="password" id="password" name="password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm" required>
+                @if ($errors->has('password'))
+                    <span class="text-red-500 text-sm">{{ $errors->first('password') }}</span>
+                @endif
+            </div>
+
+            <!-- Campo de confirmación de contraseña -->
+            <div>
+                <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar Contraseña</label>
+                <input type="password" id="password_confirmation" name="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm" required>
+                @if ($errors->has('password_confirmation'))
+                    <span class="text-red-500 text-sm">{{ $errors->first('password_confirmation') }}</span>
+                @endif
+            </div>
                 <div class="mb-4">
                     <label for="telefono" class="block text-sm font-medium text-gray-700">Teléfono</label>
                     <input type="text" id="telefono" name="telefono" value="{{ $barbero->telefono }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
@@ -45,10 +62,16 @@
                 <div class="mb-4">
                     <label for="foto" class="block text-sm font-medium text-gray-700">Foto</label>
                     <input type="file" id="foto" name="foto" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+                    <p class="mt-2 text-sm text-gray-500">Tamaño máximo: 2MB. Formatos permitidos: jpeg, png, jpg.</p>
+                    <!-- Mostrar foto -->
                     @if ($barbero->foto)
                         <div class="mt-2">
                             <img src="{{ asset('storage/' . $barbero->foto) }}" alt="Foto de {{ $barbero->nombre_completo }}" class="w-32 h-32 object-cover rounded-md">
                         </div>
+                    @endif
+                    <!-- Mensaje de error para la foto -->
+                    @if ($errors->has('foto'))
+                        <p class="mt-2 text-sm text-red-500">{{ $errors->first('foto') }}</p>
                     @endif
                 </div>
             </div>
