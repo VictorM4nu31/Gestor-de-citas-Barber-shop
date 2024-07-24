@@ -35,6 +35,10 @@
                         <input type="email" id="email" name="email" value="{{ $barbero->email }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 text-black" required>
                     </div>
                     <div class="mb-4">
+                        <label for="password" class="block text-sm font-medium text-white">Contraseña</label>
+                        <input type="password" id="password" name="password" value="{{ $barbero->email }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 text-black" required>
+                    </div>
+                    <div class="mb-4">
                         <label for="telefono" class="block text-sm font-medium text-white">Teléfono</label>
                         <input type="text" id="telefono" name="telefono" value="{{ $barbero->telefono }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 text-black">
                     </div>

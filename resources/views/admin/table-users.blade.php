@@ -11,6 +11,7 @@
                 <tr>
                     <th scope="col" class="px-6 py-3">Nombre Completo</th>
                     <th scope="col" class="px-6 py-3">Email</th>
+                    <th scope="col" class="px-6 py-3">Contraseña</th>
                     <th scope="col" class="px-6 py-3">Teléfono</th>
                     <th scope="col" class="px-6 py-3">Especialidad</th>
                     <th scope="col" class="px-6 py-3">Experiencia</th>
