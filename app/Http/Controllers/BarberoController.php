@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Storage;
 
 class BarberoController extends Controller
 {
+    public function welcome()
+    {
+        $barberos = Barbero::all();
+        return view('welcome', compact('barberos'));
+    }
+
     public function index()
     {
         $barberos = Barbero::all();

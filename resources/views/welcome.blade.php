@@ -3,22 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@1.5.0/dist/flowbite.min.css" rel="stylesheet">
     <title>Barbería</title>
-    @vite('resources/css/app.css')
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.api_key') }}&callback=initMap" async defer></script>
-    <script>
-        function initMap() {
-            var barberiaUbicacion = { lat: 19.432608, lng: -99.133209 }; // Latitud y longitud de ejemplo
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 15,
-                center: barberiaUbicacion
-            });
-            var marker = new google.maps.Marker({
-                position: barberiaUbicacion,
-                map: map
-            });
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        #mi_mapa {
+            height: 400px;
+            width: 100%;
         }
-    </script>
+        .barbero-card {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .barbero-card img {
+            border-radius: 50%;
+            height: 150px;
+            width: 150px;
+            object-fit: cover;
+        }
+        .barbero-card h3 {
+            font-size: 1.25rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .barbero-card p {
+            color: #6b7280;
+        }
+    </style>
 </head>
 <body>
     <header class="bg-gray-800 text-white">
@@ -28,6 +46,7 @@
                 <a href="#home" class="hover:text-gray-400">Inicio</a>
                 <a href="#about" class="hover:text-gray-400">Sobre Nosotros</a>
                 <a href="#services" class="hover:text-gray-400">Servicios</a>
+                <a href="#barberos" class="hover:text-gray-400">Barberos</a>
                 <a href="#contact" class="hover:text-gray-400">Contacto</a>
             </nav>
             <div class="space-x-2">
@@ -56,11 +75,21 @@
         </section>
 
         <section id="about" class="text-center py-12 bg-white">
-            <div class="container mx-auto">
-                <h2 class="text-3xl font-semibold mb-4">Sobre Nosotros</h2>
-                <p class="text-lg mb-8">Conoce al equipo de profesionales que te atenderá con el mejor servicio en nuestra barbería.</p>
-                <div id="map" class="w-full h-64 bg-gray-200"></div>
-                <!-- Agrega más contenido aquí -->
+            <div class="container mx-auto flex flex-col md:flex-row items-center">
+                <div class="w-full md:w-1/2">
+                    <h2 class="text-3xl font-semibold mb-4">Sobre Nosotros</h2>
+                    <p class="text-lg mb-8">Conoce al equipo de profesionales que te atenderá con el mejor servicio en nuestra barbería.</p>
+                    <!-- Título de Ubicación -->
+                    <h3 class="text-2xl font-semibold mb-4">Ubicación</h3>
+                    <!-- Mapa -->
+                    <div id="mi_mapa"></div>
+                </div>
+                <div class="w-full md:w-1/2 md:pl-8 mt-8 md:mt-0">
+                    <h2 class="text-3xl font-semibold mb-4">Información de la Barbería</h2>
+                    <p class="text-lg mb-4">Dirección: Calle Ejemplo 123, Ciudad</p>
+                    <p class="text-lg mb-4">Teléfono: (123) 456-7890</p>
+                    <p class="text-lg">Horario: Lunes a Sábado - 9:00 AM a 7:00 PM</p>
+                </div>
             </div>
         </section>
 
@@ -69,6 +98,27 @@
                 <h2 class="text-3xl font-semibold mb-4">Nuestros Servicios</h2>
                 <p class="text-lg mb-8">Descubre los servicios que ofrecemos para ti.</p>
                 <!-- Agrega más contenido aquí -->
+            </div>
+        </section>
+
+        <!-- Nueva sección de Barberos -->
+        <section id="barberos" class="text-center py-12 bg-white">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-semibold mb-4">Nuestros Barberos</h2>
+                <p class="text-lg mb-8">Conoce a nuestros talentosos barberos que están listos para atenderte.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    @foreach($barberos as $barbero)
+                        <div class="barbero-card">
+                            @if($barbero->foto)
+                                <img src="{{ asset('storage/' . $barbero->foto) }}" alt="{{ $barbero->nombre_completo }}">
+                            @else
+                                <img src="https://via.placeholder.com/150" alt="{{ $barbero->nombre_completo }}">
+                            @endif
+                            <h3>{{ $barbero->nombre_completo }}</h3>
+                            <p>{{ $barbero->especialidad }}</p>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </section>
 
@@ -86,65 +136,17 @@
             <p>&copy; 2024 Barbería. Todos los derechos reservados.</p>
         </div>
     </footer>
-</body>
-</html>
 
-
-
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barbería</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.api_key') }}&callback=initMap&loading=async" async defer></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@1.5.0/dist/flowbite.min.js"></script>
     <script>
-        function initMap() {
-            var barberiaUbicacion = { lat: 20.486253578721648, lng: -99.2171693197334 }; // Latitud y longitud de ejemplo 
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 15,
-                center: barberiaUbicacion
-            });
-            var marker = new google.maps.Marker({
-                position: barberiaUbicacion,
-                map: map
-            });
-        }
+        let map = L.map('mi_mapa').setView([20.48621, -99.21711], 15);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.marker([20.48623, -99.21709]).addTo(map).bindPopup("Barberia MasterCut").openPopup();
     </script>
-    <style>
-        #map {
-            height: 500px;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <nav class="bg-gray-800 p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="/" class="text-white text-lg font-bold">Barbería</a>
-            <div class="flex items-center">
-                <a href="/barberos" class="text-gray-300 hover:text-white px-3 py-2">Barberos</a>
-                <a href="/servicios" class="text-gray-300 hover:text-white px-3 py-2">Servicios</a>
-                @guest
-                    <a href="{{ route('login') }}" class="text-gray-300 hover:text-white px-3 py-2">Iniciar Sesión</a>
-                    <a href="{{ route('register') }}" class="text-gray-300 hover:text-white px-3 py-2">Registrarse</a>
-                @else
-                    <a href="{{ route('logout') }}" class="text-gray-300 hover:text-white px-3 py-2">Cerrar Sesión</a>
-                @endguest
-            </div>
-        </div>
-    </nav>
-    <div class="container mx-auto mt-8">
-        <h1 class="text-4xl font-bold mb-4">Bienvenidos a nuestra Barbería</h1>
-        <p class="mb-8">Aquí puedes encontrar los mejores servicios y barberos para ti.</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Aquí se mostrarán las fotos y la información de la barbería -->
-        </div>
-        <h2 class="text-2xl font-bold mt-8 mb-4">Nosotros</h2>
-        <p class="mb-4">Nuestra barbería está ubicada en un lugar conveniente para ti.</p>
-        <div id="map" class="w-full h-64 bg-gray-200"></div>
-    </div>
 </body>
 </html>

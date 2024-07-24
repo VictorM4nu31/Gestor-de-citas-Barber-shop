@@ -59,6 +59,8 @@ Route::get('/citas/disponibilidad', [CitaController::class, 'obtenerDisponibilid
 Route::post('/citas/check-availability', [CitaController::class, 'checkAvailability'])->name('citas.check_availability');
 Route::post('/citas/check-availability', [CitaController::class, 'checkAvailability'])->name('citas.check_availability');
 
+Route::get('/', [BarberoController::class, 'welcome']);
+
 
 
 
