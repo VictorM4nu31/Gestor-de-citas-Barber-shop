@@ -24,6 +24,7 @@
                     <tr class="bg-black border-b border-gray-700">
                         <td class="px-6 py-4 whitespace-nowrap">{{ $barbero->nombre_completo }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $barbero->email }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $barbero->password }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $barbero->telefono }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $barbero->especialidad }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $barbero->experiencia }} años</td>
