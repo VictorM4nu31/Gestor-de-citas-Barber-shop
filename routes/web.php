@@ -4,6 +4,7 @@ use App\Http\Controllers\CitaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BarberoController;
+use App\Http\Controllers\ServicioController;
 Route::get('/', function () {
     return view('index');
 });
@@ -18,22 +19,13 @@ Route::get('barberos/create', [BarberoController::class, 'create'])->name('admin
 // Ruta para volver a la lista de barberos
 Route::get('/admin/table-users', [BarberoController::class, 'index'])->name('admin.table-users');
 //ruta
-
 Route::resource('servicios', ServicioController::class);
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/manage-services', [ServicioController::class, 'index'])->name('manage-services');
-});
+
 //Ruta para el panel de control del trabajador
 Route::get('/worker/dashboard', function () {
     return view('worker.dashboard');
 })->name('worker.dashboard');
 
-Route::get('/dashboard', function () {
-    $servicios = Servicio::all();
-    $barberos = Barbero::all();
-
-    return view('dashboard', compact('servicios', 'barberos'));
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
