@@ -22,7 +22,7 @@
                     </div>
                 @endif
 
-                <form action="{{route('citas.store') }}}}" method="POST">
+                <form action="{{-- {{route('citas.store') }}}} --}}" method="POST">
                     @csrf
                     <div class="space-y-4">
                         <!-- Nombre Completo -->
@@ -47,12 +47,12 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Servicios</label>
                             <div class="space-y-2">
-                                @foreach($servicios as $servicio)
+                               {{--  @foreach($servicios as $servicio)
                                     <div>
                                         <input type="checkbox" id="servicio_{{ $servicio->id }}" name="servicios[]" value="{{ $servicio->id }}" class="mr-2">
                                         <label for="servicio_{{ $servicio->id }}" class="text-sm text-gray-600">{{ $servicio->nombre }} - ${{ $servicio->precio }}</label>
                                     </div>
-                                @endforeach
+                                @endforeach --}}
                             </div>
                             <input type="hidden" id="total_servicios" name="total_servicios" value="0">
                             <p id="costo_total" class="text-lg font-semibold mt-4">Total: $0</p>
@@ -63,9 +63,9 @@
                             <label for="id_barbero" class="block text-sm font-medium text-gray-700">Seleccionar Barbero</label>
                             <select id="id_barbero" name="id_barbero" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm" required>
                                 <option value="">Seleccionar barbero</option>
-                                @foreach($barberos as $barbero)
+                                {{-- @foreach($barberos as $barbero)
                                     <option value="{{ $barbero->id }}">{{ $barbero->nombre_completo }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                         </div>
 
@@ -102,12 +102,12 @@
         </div>
 
         <!-- Incluye el script para manejar la solicitud -->
-        <script>
+{{--         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const barberoSelect = document.getElementById('id_barbero');
                 const fechaInput = document.getElementById('fecha');
                 const availabilityResult = document.getElementById('availability_result');
-                
+
                 // Establecer la fecha mínima como hoy
                 const today = new Date().toISOString().split('T')[0];
                 fechaInput.setAttribute('min', today);
@@ -189,7 +189,7 @@
                     });
                 }
             });
-        </script>
+        </script> --}}
     </main>
 </body>
 </html>
