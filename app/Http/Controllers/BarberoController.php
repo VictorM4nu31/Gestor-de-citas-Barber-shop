@@ -41,7 +41,7 @@ class BarberoController extends Controller
 
         Barbero::create($validated);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Barbero creado exitosamente.');
+        return redirect()->route('admin.table-users')->with('success', 'Barbero creado exitosamente.');
     }
 
     public function show(Barbero $barbero)

@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\CitaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BarberoController;
+use App\Http\Controllers\ServicioController;
+use App\Models\Servicio;
+use App\Models\Barbero;
+
 Route::get('/', function () {
     return view('index');
 });
@@ -23,7 +28,10 @@ Route::get('/worker/dashboard', function () {
 })->name('admin.dashboard');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $servicios = Servicio::all();
+    $barberos = Barbero::all();
+
+    return view('dashboard', compact('servicios', 'barberos'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -33,3 +41,8 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::post('/citas/check-availability', [CitaController::class, 'checkAvailability'])->name('citas.check_availability');
+
+// Rutas para las citas
+Route::resource('citas', CitaController::class);
