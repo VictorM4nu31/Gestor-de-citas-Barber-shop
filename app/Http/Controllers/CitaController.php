@@ -15,7 +15,7 @@ class CitaController extends Controller
     {
         $servicios = Servicio::all();
         $barberos = Barbero::all();
-        return view('citas.create', compact('servicios', 'barberos'));
+        return view('dashboard', compact('servicios', 'barberos'));
     }
 
     public function store(Request $request)
@@ -40,6 +40,7 @@ class CitaController extends Controller
             ->where('hora', $hora)
             ->first();
 
+
         if ($citaExistente) {
             return redirect()->back()->with('error', 'Sin disponibilidad, asegurate de haber elegido alguno de los horarios disponibles');
         }
@@ -61,7 +62,7 @@ class CitaController extends Controller
 
         $cita->save();
 
-        return redirect()->route('citas.index')->with('success', 'Cita agendada exitosamente.');
+        return redirect()->route('dashboard')->with('success', 'Cita agendada exitosamente.'); 
     }
 
     public function index()
@@ -76,7 +77,7 @@ class CitaController extends Controller
             ->where('fecha', '>=', Carbon::today())
             ->get();
 
-        return view('citas.index', compact('citas'));
+        return view('user.detalle-cita.blade.php', compact('citas'));
     }
 
     public function destroy($id)

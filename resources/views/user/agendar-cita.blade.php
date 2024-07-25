@@ -22,7 +22,7 @@
                     </div>
                 @endif
 
-                <form action="{{-- {{ route('citas.store') }} --}}" method="POST">
+                <form action="{{route('citas.store') }}}}" method="POST">
                     @csrf
                     <div class="space-y-4">
                         <!-- Nombre Completo -->
@@ -46,7 +46,14 @@
                         <!-- Servicios -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Servicios</label>
-
+                            <div class="space-y-2">
+                                @foreach($servicios as $servicio)
+                                    <div>
+                                        <input type="checkbox" id="servicio_{{ $servicio->id }}" name="servicios[]" value="{{ $servicio->id }}" class="mr-2">
+                                        <label for="servicio_{{ $servicio->id }}" class="text-sm text-gray-600">{{ $servicio->nombre }} - ${{ $servicio->precio }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
                             <input type="hidden" id="total_servicios" name="total_servicios" value="0">
                             <p id="costo_total" class="text-lg font-semibold mt-4">Total: $0</p>
                         </div>
@@ -56,7 +63,9 @@
                             <label for="id_barbero" class="block text-sm font-medium text-gray-700">Seleccionar Barbero</label>
                             <select id="id_barbero" name="id_barbero" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm" required>
                                 <option value="">Seleccionar barbero</option>
-
+                                @foreach($barberos as $barbero)
+                                    <option value="{{ $barbero->id }}">{{ $barbero->nombre_completo }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -93,12 +102,12 @@
         </div>
 
         <!-- Incluye el script para manejar la solicitud -->
-        {{-- <script>
+        <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const barberoSelect = document.getElementById('id_barbero');
                 const fechaInput = document.getElementById('fecha');
                 const availabilityResult = document.getElementById('availability_result');
-
+                
                 // Establecer la fecha mínima como hoy
                 const today = new Date().toISOString().split('T')[0];
                 fechaInput.setAttribute('min', today);
@@ -135,7 +144,7 @@
                                     resultHtml += `
                                         <li class="text-red-500">
                                             <i class="fas fa-times-circle mr-2 text-red-500"></i>
-                                            ${cita.hora}
+                                            ${cita.hora} - ${cita.nombre_completo} (${cita.servicios})
                                         </li>`;
                                 });
                                 resultHtml += '</ul>';
@@ -154,25 +163,33 @@
 
             document.addEventListener('DOMContentLoaded', function () {
                 const servicios = document.querySelectorAll('input[name="servicios[]"]');
-                const costoTotalElement = document.getElementById('costo_total');
-                const totalServiciosInput = document.getElementById('total_servicios');
+                const totalServicios = document.getElementById('total_servicios');
+                const costoTotal = document.getElementById('costo_total');
 
                 servicios.forEach(servicio => {
                     servicio.addEventListener('change', function () {
                         let total = 0;
-
-                        servicios.forEach(s => {
-                            if (s.checked) {
-                                total += parseFloat(s.value); // Asegúrate de que el valor del servicio sea un número
-                            }
+                        document.querySelectorAll('input[name="servicios[]"]:checked').forEach(checked => {
+                            const precio = parseFloat(checked.nextElementSibling.textContent.split('$')[1]);
+                            total += precio;
                         });
-
-                        totalServiciosInput.value = total;
-                        costoTotalElement.textContent = `Total: $${total.toFixed(2)}`;
+                        totalServicios.value = total;
+                        costoTotal.textContent = `Total: $${total.toFixed(2)}`;
                     });
                 });
+
+                // Manejar el mensaje de error
+                const errorMessage = document.getElementById('error-message');
+                if (errorMessage) {
+                    const inputs = document.querySelectorAll('input, select');
+                    inputs.forEach(input => {
+                        input.addEventListener('focus', () => {
+                            errorMessage.remove();
+                        });
+                    });
+                }
             });
-        </script> --}}
+        </script>
     </main>
 </body>
 </html>
