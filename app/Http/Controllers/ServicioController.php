@@ -11,12 +11,12 @@ class ServicioController extends Controller
     public function index()
     {
         $servicios = Servicio::all();
-        return view('servicios.index', compact('servicios'));
+        return view('admin.dashboard', compact('servicios'));
     }
 
     public function create()
     {
-        return view('servicios.create');
+        return view('admin.servicios.services-create');
     }
 
     public function store(Request $request)
@@ -37,7 +37,7 @@ class ServicioController extends Controller
 
         Servicio::create($validated);
 
-        return redirect()->route('servicios.index')->with('success', 'Servicio creado exitosamente.');
+        return redirect()->route('admin.dashboard')->with('success', 'Servicio creado exitosamente.');
     }
 
     public function show(Servicio $servicio)
@@ -47,7 +47,7 @@ class ServicioController extends Controller
 
     public function edit(Servicio $servicio)
     {
-        return view('servicios.edit', compact('servicio'));
+        return view('admin.servicios.services-edit', compact('servicio'));
     }
 
     public function update(Request $request, Servicio $servicio)
@@ -71,7 +71,7 @@ class ServicioController extends Controller
 
         $servicio->update($validated);
 
-        return redirect()->route('servicios.index')->with('success', 'Servicio actualizado exitosamente.');
+        return redirect()->route('admin.dashboard')->with('success', 'Servicio actualizado exitosamente.');
     }
 
     public function destroy(Servicio $servicio)
@@ -81,7 +81,7 @@ class ServicioController extends Controller
         }
         $servicio->delete();
 
-        return redirect()->route('servicios.index')->with('success', 'Servicio eliminado exitosamente.');
+        return redirect()->route('admin.dashboard')->with('success', 'Servicio eliminado exitosamente.');
     }
 }
 

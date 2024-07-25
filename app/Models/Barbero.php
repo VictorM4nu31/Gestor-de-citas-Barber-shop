@@ -12,6 +12,7 @@ class Barbero extends Model
     protected $fillable = [
         'nombre_completo',
         'email',
+        'password', 
         'telefono',
         'especialidad',
         'experiencia',

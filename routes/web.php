@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BarberoController;
+use App\Http\Controllers\ServicioController;
+use App\Models\Servicio;
+
 Route::get('/', function () {
     return view('index');
 });
@@ -16,11 +19,16 @@ Route::resource('barberos', BarberoController::class);
 Route::get('barberos/create', [BarberoController::class, 'create'])->name('admin.table-users-create');
 // Ruta para volver a la lista de barberos
 Route::get('/admin/table-users', [BarberoController::class, 'index'])->name('admin.table-users');
+//ruta
 
+Route::resource('servicios', ServicioController::class);
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/manage-services', [ServicioController::class, 'index'])->name('manage-services');
+});
 //Ruta para el panel de control del trabajador
 Route::get('/worker/dashboard', function () {
     return view('worker.dashboard');
-})->name('admin.dashboard');
+})->name('worker.dashboard');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

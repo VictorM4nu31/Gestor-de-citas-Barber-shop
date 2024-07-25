@@ -6,6 +6,7 @@ use App\Models\Barbero;
 use App\Models\Cita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Servicio;
 
 
 class BarberoController extends Controller
@@ -13,12 +14,13 @@ class BarberoController extends Controller
     public function index()
     {
         $barberos = Barbero::all();
-        return view('admin.dashboard', compact('barberos'));
+        $servicios = Servicio::all();
+        return view('admin.dashboard', compact('barberos', 'servicios'));
     }
 
     public function create()
     {
-        return view('admin.table-users-create');
+        return view('admin.barberos.table-users-create');
     }
 
     public function store(Request $request)
@@ -51,7 +53,7 @@ class BarberoController extends Controller
 
     public function edit(Barbero $barbero)
     {
-        return view('admin.table-users-edit', compact('barbero'));
+        return view('admin.barberos.table-users-edit', compact('barbero'));
     }
 
     public function update(Request $request, Barbero $barbero)
@@ -84,7 +86,7 @@ class BarberoController extends Controller
 
         $barbero->update($validated);
 
-        return redirect()->route('admin.table-users')->with('success', 'Barbero actualizado exitosamente.');
+        return redirect()->route('admin.dashboard')->with('success', 'Barbero actualizado exitosamente.');
     }
 
     public function destroy($id)
@@ -97,6 +99,6 @@ class BarberoController extends Controller
         // Ahora eliminar al barbero
         $barbero->delete();
 
-        return redirect()->route('admin.table-users')->with('success', 'Barbero eliminado exitosamente.');
+        return redirect()->route('admin.dashboard')->with('success', 'Barbero eliminado exitosamente.');
     }
 }

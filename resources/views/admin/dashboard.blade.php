@@ -57,10 +57,10 @@
             <h1 class="text-4xl font-semibold mb-6">Panel de Control</h1>
             <!-- Contenido del panel de control -->
             <div id="employees-section" class="hidden">
-                @include('admin.table-users')
+                @include('admin.barberos.table-users')
             </div>
             <div id="services-section" class="hidden">
-                @include('admin.manage-services')
+                @include('admin.servicios.manage-services')
             </div>
         </div>
     </div>
