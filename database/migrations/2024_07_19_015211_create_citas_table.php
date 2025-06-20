@@ -9,8 +9,6 @@ class CreateCitasTable extends Migration
     public function up()
     {
         Schema::create('citas', function (Blueprint $table) {
-            $table->dropForeign(['id_barbero']);
-            $table->foreign('id_barbero')->references('id')->on('barberos')->onDelete('cascade');
             $table->id();
             $table->string('nombre_completo');
             $table->string('numero_telefono');
@@ -18,7 +16,7 @@ class CreateCitasTable extends Migration
             $table->date('fecha');
             $table->time('hora');
             $table->text('servicios'); // Guardar los servicios seleccionados como texto concatenado
-            $table->foreignId('id_barbero')->constrained('barberos');
+            $table->foreignId('id_barbero')->constrained('barberos')->onDelete('cascade');
             $table->foreignId('id_usuario')->constrained('users'); // Asegúrate de tener una tabla 'users'
             $table->timestamps();
         });
