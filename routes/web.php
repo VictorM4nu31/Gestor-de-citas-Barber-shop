@@ -1,12 +1,10 @@
 <?php
 
-use App\Http\Controllers\CitaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BarberoController;
-use App\Http\Controllers\ServicioController;
+
 Route::get('/', function () {
-    return view('index');
+    return view('welcome');
 });
 
 Route::get('/dashboard', function () {
@@ -20,37 +18,3 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-
-// Ruta para el panel de control del administrador
-
-Route::get('/admin/dashboard', [BarberoController::class, 'index'])->name('admin.dashboard');
-// Rutas para la gestión de barberos
-Route::resource('barberos', BarberoController::class)
-    ->middleware('role:admin');
-// Ruta para crear barberos
-Route::get('barberos/create', [BarberoController::class, 'create'])->name('admin.table-users-create');
-// Ruta para volver a la lista de barberos
-Route::get('/admin/table-users', [BarberoController::class, 'index'])->name('admin.table-users');
-//ruta
-Route::resource('servicios', ServicioController::class);
-
-//Ruta para el panel de control del trabajador
-Route::get('/worker/dashboard', function () {
-    return view('worker.dashboard');
-})->name('worker.dashboard');
-
-
-Route::post('/citas/check-availability', [CitaController::class, 'checkAvailability'])->name('citas.check_availability');
-
-// Rutas para las citas
-Route::resource('citas', CitaController::class);
-
-// Solo usuarios pueden agendar citas
-Route::get('citas/crear', [CitaController::class, 'create'])
-    ->middleware('role:usuario');
-Route::post('citas', [CitaController::class, 'store'])
-    ->middleware('role:usuario');
-
-// Solo barberos pueden ver sus citas asignadas
-Route::get('citas/barbero', [CitaController::class, 'citasBarbero'])
-    ->middleware('role:barbero');
