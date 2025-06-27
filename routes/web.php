@@ -25,7 +25,8 @@ require __DIR__.'/auth.php';
 
 Route::get('/admin/dashboard', [BarberoController::class, 'index'])->name('admin.dashboard');
 // Rutas para la gestión de barberos
-Route::resource('barberos', BarberoController::class);
+Route::resource('barberos', BarberoController::class)
+    ->middleware('role:admin');
 // Ruta para crear barberos
 Route::get('barberos/create', [BarberoController::class, 'create'])->name('admin.table-users-create');
 // Ruta para volver a la lista de barberos
@@ -43,3 +44,13 @@ Route::post('/citas/check-availability', [CitaController::class, 'checkAvailabil
 
 // Rutas para las citas
 Route::resource('citas', CitaController::class);
+
+// Solo usuarios pueden agendar citas
+Route::get('citas/crear', [CitaController::class, 'create'])
+    ->middleware('role:usuario');
+Route::post('citas', [CitaController::class, 'store'])
+    ->middleware('role:usuario');
+
+// Solo barberos pueden ver sus citas asignadas
+Route::get('citas/barbero', [CitaController::class, 'citasBarbero'])
+    ->middleware('role:barbero');
