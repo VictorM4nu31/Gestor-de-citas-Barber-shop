@@ -77,18 +77,16 @@ class BarberoController extends Controller
             'foto.max' => 'El tamaño máximo permitido de la imagen es de 2MB.',
         ]);
 
-        $data = $request->all();
-        if ($request->filled('password')) {
-            $data['password'] = bcrypt($request->password);
-        } else {
-            unset($data['password']);
-        }
-
         if ($request->hasFile('foto')) {
             if ($barbero->foto) {
                 Storage::disk('public')->delete($barbero->foto);
             }
             $validated['foto'] = $request->file('foto')->store('barberos', 'public');
+        }
+
+        // Remover password del array si está vacío
+        if (!$request->filled('password')) {
+            unset($validated['password']);
         }
 
         $barbero->update($validated);

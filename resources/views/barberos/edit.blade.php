@@ -32,8 +32,8 @@
                 </div>
                 <!-- Campo de contraseña -->
             <div>
-                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                <input type="password" id="password" name="password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm" required>
+                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña (dejar en blanco para mantener la actual)</label>
+                <input type="password" id="password" name="password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
                 @if ($errors->has('password'))
                     <span class="text-red-500 text-sm">{{ $errors->first('password') }}</span>
                 @endif
@@ -42,7 +42,7 @@
             <!-- Campo de confirmación de contraseña -->
             <div>
                 <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar Contraseña</label>
-                <input type="password" id="password_confirmation" name="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm" required>
+                <input type="password" id="password_confirmation" name="password_confirmation" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
                 @if ($errors->has('password_confirmation'))
                     <span class="text-red-500 text-sm">{{ $errors->first('password_confirmation') }}</span>
                 @endif

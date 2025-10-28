@@ -29,9 +29,6 @@ require __DIR__.'/auth.php';
 Route::resource('barberos', BarberoController::class);
 Route::resource('servicios', ServicioController::class);
 
-// Rutas para el perfil del usuario
-Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-
 // Rutas para las citas
 Route::resource('citas', CitaController::class);
 
@@ -58,9 +55,21 @@ Route::get('/citas/disponibilidad', [CitaController::class, 'obtenerDisponibilid
 // routes/web.php
 
 Route::post('/citas/check-availability', [CitaController::class, 'checkAvailability'])->name('citas.check_availability');
-Route::post('/citas/check-availability', [CitaController::class, 'checkAvailability'])->name('citas.check_availability');
 
 Route::get('/', [BarberoController::class, 'welcome']);
+
+// -------------- RUTAS PARA ADMIN (sólo usuarios con rol admin) --------------
+use App\Http\Controllers\AdminController;
+
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/barberos', [AdminController::class, 'tableUsers'])->name('barberos.index');
+    Route::get('/barberos/create', [AdminController::class, 'tableUsersCreate'])->name('barberos.create');
+    Route::get('/barberos/{id}/edit', [AdminController::class, 'tableUsersEdit'])->name('barberos.edit');
+    Route::get('/servicios', [AdminController::class, 'manageServices'])->name('servicios.index');
+    Route::get('/servicios/create', [AdminController::class, 'servicesCreate'])->name('servicios.create');
+    Route::get('/servicios/{id}/edit', [AdminController::class, 'servicesEdit'])->name('servicios.edit');
+});
 
 
 

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Spatie\Permission\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -40,6 +41,10 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        // Asignar el rol de "usuario" automáticamente al registrarse
+        $usuarioRole = Role::firstOrCreate(['name' => 'usuario']);
+        $user->assignRole($usuarioRole);
 
         event(new Registered($user));
 
