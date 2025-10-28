@@ -21,4 +21,16 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('show-agendar-cita').addEventListener('click', function() {
+            document.getElementById('agendar-cita').classList.remove('hidden');
+            document.getElementById('detalle-cita').classList.add('hidden');
+        });
+
+        document.getElementById('show-detalle-cita').addEventListener('click', function() {
+            document.getElementById('detalle-cita').classList.remove('hidden');
+            document.getElementById('agendar-cita').classList.add('hidden');
+        });
+    </script>
 </x-app-layout>
