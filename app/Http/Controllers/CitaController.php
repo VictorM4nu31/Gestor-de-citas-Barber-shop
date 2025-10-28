@@ -15,11 +15,7 @@ class CitaController extends Controller
     {
         $servicios = Servicio::all();
         $barberos = Barbero::all();
-<<<<<<< HEAD
-        return view('dashboard', compact('servicios', 'barberos'));
-=======
         return view('citas.create', compact('servicios', 'barberos'));
->>>>>>> prog_front
     }
 
     public function store(Request $request)
@@ -44,10 +40,6 @@ class CitaController extends Controller
             ->where('hora', $hora)
             ->first();
 
-<<<<<<< HEAD
-
-=======
->>>>>>> prog_front
         if ($citaExistente) {
             return redirect()->back()->with('error', 'Sin disponibilidad, asegurate de haber elegido alguno de los horarios disponibles');
         }
@@ -69,11 +61,7 @@ class CitaController extends Controller
 
         $cita->save();
 
-<<<<<<< HEAD
-        return redirect()->route('dashboard')->with('success', 'Cita agendada exitosamente.'); 
-=======
         return redirect()->route('citas.index')->with('success', 'Cita agendada exitosamente.');
->>>>>>> prog_front
     }
 
     public function index()
@@ -88,11 +76,7 @@ class CitaController extends Controller
             ->where('fecha', '>=', Carbon::today())
             ->get();
 
-<<<<<<< HEAD
-        return view('user.detalle-cita.blade.php', compact('citas'));
-=======
         return view('citas.index', compact('citas'));
->>>>>>> prog_front
     }
 
     public function destroy($id)
@@ -115,8 +99,4 @@ class CitaController extends Controller
         return response()->json($citas);
     }
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> prog_front
