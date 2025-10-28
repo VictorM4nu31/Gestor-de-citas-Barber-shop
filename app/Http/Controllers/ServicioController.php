@@ -11,12 +11,20 @@ class ServicioController extends Controller
     public function index()
     {
         $servicios = Servicio::all();
+<<<<<<< HEAD
         return view('admin.dashboard', compact('servicios'));
+=======
+        return view('servicios.index', compact('servicios'));
+>>>>>>> prog_front
     }
 
     public function create()
     {
+<<<<<<< HEAD
         return view('admin.servicios.services-create');
+=======
+        return view('servicios.create');
+>>>>>>> prog_front
     }
 
     public function store(Request $request)
@@ -37,7 +45,11 @@ class ServicioController extends Controller
 
         Servicio::create($validated);
 
+<<<<<<< HEAD
         return redirect()->route('admin.dashboard')->with('success', 'Servicio creado exitosamente.');
+=======
+        return redirect()->route('servicios.index')->with('success', 'Servicio creado exitosamente.');
+>>>>>>> prog_front
     }
 
     public function show(Servicio $servicio)
@@ -47,7 +59,11 @@ class ServicioController extends Controller
 
     public function edit(Servicio $servicio)
     {
+<<<<<<< HEAD
         return view('admin.servicios.services-edit', compact('servicio'));
+=======
+        return view('servicios.edit', compact('servicio'));
+>>>>>>> prog_front
     }
 
     public function update(Request $request, Servicio $servicio)
@@ -71,7 +87,11 @@ class ServicioController extends Controller
 
         $servicio->update($validated);
 
+<<<<<<< HEAD
         return redirect()->route('admin.dashboard')->with('success', 'Servicio actualizado exitosamente.');
+=======
+        return redirect()->route('servicios.index')->with('success', 'Servicio actualizado exitosamente.');
+>>>>>>> prog_front
     }
 
     public function destroy(Servicio $servicio)
@@ -81,7 +101,11 @@ class ServicioController extends Controller
         }
         $servicio->delete();
 
+<<<<<<< HEAD
         return redirect()->route('admin.dashboard')->with('success', 'Servicio eliminado exitosamente.');
+=======
+        return redirect()->route('servicios.index')->with('success', 'Servicio eliminado exitosamente.');
+>>>>>>> prog_front
     }
 }
 
