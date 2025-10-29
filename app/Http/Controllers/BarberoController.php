@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Servicio;
 use App\Http\Requests\Barbero\StoreRequest;
 use App\Http\Requests\Barbero\UpdateRequest;
+use Illuminate\Support\Facades\Auth;
 
 
 class BarberoController extends Controller
@@ -17,6 +18,27 @@ class BarberoController extends Controller
     {
         $barberos = Barbero::all();
         return view('welcome', compact('barberos'));
+    }
+
+    public function dashboard()
+    {
+        // Obtener las citas asignadas al barbero autenticado
+        $user = Auth::user();
+        
+        // Buscar el barbero por email del usuario
+        $barbero = Barbero::where('email', $user->email)->first();
+        
+        if (!$barbero) {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
+
+        $citas = Cita::where('id_barbero', $barbero->id)
+            ->with('usuario')
+            ->orderBy('fecha', 'asc')
+            ->orderBy('hora', 'asc')
+            ->get();
+
+        return view('worker.dashboard', compact('citas', 'barbero'));
     }
 
     public function index()
@@ -66,9 +88,9 @@ class BarberoController extends Controller
     public function update(Request $request, Barbero $barbero)
     {
         $validated = $request->validate([
-            'nombre_completo' => 'required|string|max:255',
+            
             'email' => 'required|email|unique:barberos,email,' . $barbero->id,
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => 'nullable|string|min:8',
             'telefono' => 'nullable|string|max:20',
             'especialidad' => 'required|string|max:100',
             'experiencia' => 'required|string',

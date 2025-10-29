@@ -19,6 +19,11 @@ class Cita extends Model
         return $this->belongsTo(Barbero::class, 'id_barbero');
     }
 
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'id_usuario');
+    }
+
     public function getServiciosNamesAttribute()
     {
         $serviciosIds = explode(', ', $this->servicios);

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control de Administrador</title>
-    <!-- Incluye los estilos de Tailwind CSS -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Panel de Administración - MasterCut</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.4.1/flowbite.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body class="font-poppins antialiased bg-black text-white text-lg">
@@ -34,7 +34,8 @@
                         alt="Avatar user" class="w-10 md:w-16 rounded-full mx-auto"
                     />
                     <div>
-                        <h2 class="font-medium text-xs md:text-sm text-center text-white">Bienvenido, Usuario</h2>
+                        <h2 class="font-medium text-xs md:text-sm text-center text-white">{{ Auth::user()->name }}</h2>
+                        <p class="text-xs text-gray-300 text-center">Administrador</p>
                     </div>
                 </div>
                 <div class="flex flex-col">
@@ -50,6 +51,15 @@
                         </svg>
                         <span>Gestionar Servicios</span>
                     </button>
+                    <form method="POST" action="{{ route('logout') }}" class="mt-4">
+                        @csrf
+                        <button type="submit" class="w-full bg-red-900 text-base font-medium text-white py-2 px-2 hover:bg-red-800 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
+                            <svg class="w-6 h-6 fill-current inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V4a1 1 0 00-1-1H3zm11 4.414l-7.707 7.707a1 1 0 01-1.414-1.414L12.586 6H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V7.414z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Cerrar Sesión</span>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

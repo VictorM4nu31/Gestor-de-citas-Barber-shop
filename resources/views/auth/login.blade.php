@@ -1,6 +1,14 @@
-<x-guest-layout>
-    <div class="w-full min-h-screen flex items-center justify-center bg-[#0C0C0C] p-4">
-        <div class="bg-white rounded-lg shadow-xl overflow-hidden flex w-full max-w-4xl">
+<x-auth-layout>
+    <div class="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-red-900 to-gray-900 relative overflow-hidden">
+        <!-- Patrón de fondo animado -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(220, 38, 38, 0.1) 2px, rgba(220, 38, 38, 0.1) 4px);"></div>
+        </div>
+        <!-- Círculos decorativos -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600 rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gray-800 rounded-full filter blur-3xl opacity-20 animate-pulse" style="animation-delay: 2s;"></div>
+        <div class="relative z-10 w-full min-h-screen flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl overflow-hidden flex w-full h-screen md:h-auto max-w-6xl mx-auto">
             <!-- Lado izquierdo: Formulario de inicio de sesión -->
             <div class="w-full md:w-1/2 p-8">
                 <h2 class="text-2xl font-bold text-red-600 mb-2">BIENVENIDO A</h2>
@@ -66,6 +74,7 @@
                 </div>
             </div>
         </div>
+        </div>
     </div>
-</x-guest-layout>
+</x-auth-layout>
     

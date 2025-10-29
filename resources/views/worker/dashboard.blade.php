@@ -35,8 +35,8 @@
                         class="w-10 md:w-16 rounded-full mx-auto"
                     />
                     <div>
-                        <h2 class="font-medium text-xs md:text-sm text-center text-red-400">Eduard Pantazi</h2>
-                        <p class="text-xs text-gray-300 text-center">Trabajador</p>
+                        <h2 class="font-medium text-xs md:text-sm text-center text-red-400">{{ $barbero->nombre_completo ?? 'Barbero' }}</h2>
+                        <p class="text-xs text-gray-300 text-center">Barbero</p>
                     </div>
                 </div>
                 <div id="menu" class="flex flex-col space-y-2">
@@ -46,6 +46,15 @@
                         </svg>
                         <span>Gestionar Citas</span>
                     </a>
+                    <form method="POST" action="{{ route('logout') }}" class="mt-4">
+                        @csrf
+                        <button type="submit" class="w-full bg-red-900 text-sm font-medium text-white py-2 px-2 hover:bg-red-800 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
+                            <svg class="w-6 h-6 fill-current inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V4a1 1 0 00-1-1H3zm11 4.414l-7.707 7.707a1 1 0 01-1.414-1.414L12.586 6H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V7.414z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Cerrar Sesión</span>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -56,41 +65,7 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const serviceForm = document.getElementById('service-form');
-            const servicesTableBody = document.getElementById('services-table-body');
-
-            serviceForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-
-                const serviceName = document.getElementById('service-name').value;
-                const serviceDescription = document.getElementById('service-description').value;
-                const serviceCost = document.getElementById('service-cost').value;
-
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td class="py-2 px-4">${serviceName}</td>
-                    <td class="py-2 px-4">${serviceDescription}</td>
-                    <td class="py-2 px-4">${serviceCost}</td>
-                    <td class="py-2 px-4">
-                        <button class="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-600">Eliminar</button>
-                    </td>
-                `;
-
-                servicesTableBody.appendChild(newRow);
-
-                // Limpiar el formulario
-                serviceForm.reset();
-            });
-
-            servicesTableBody.addEventListener('click', function (event) {
-                if (event.target.tagName === 'BUTTON') {
-                    event.target.closest('tr').remove();
-                }
-            });
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
 </body>
 </html>

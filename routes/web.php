@@ -26,11 +26,13 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 /*-------------------------rutas agregadas--------------------------------*/
-Route::resource('barberos', BarberoController::class);
-Route::resource('servicios', ServicioController::class);
-
-// Rutas para las citas
-Route::resource('citas', CitaController::class);
+Route::middleware('auth')->group(function () {
+    Route::resource('barberos', BarberoController::class);
+    Route::resource('servicios', ServicioController::class);
+    
+    // Rutas para las citas
+    Route::resource('citas', CitaController::class);
+});
 
 // Ruta para cerrar sesión
 Route::post('/logout', function () {
@@ -69,6 +71,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/servicios', [AdminController::class, 'manageServices'])->name('servicios.index');
     Route::get('/servicios/create', [AdminController::class, 'servicesCreate'])->name('servicios.create');
     Route::get('/servicios/{id}/edit', [AdminController::class, 'servicesEdit'])->name('servicios.edit');
+});
+
+// -------------- RUTAS PARA BARBEROS (sólo usuarios con rol barbero) --------------
+Route::middleware(['auth', 'role:barbero'])->prefix('barbero')->name('barbero.')->group(function () {
+    Route::get('/dashboard', [BarberoController::class, 'dashboard'])->name('dashboard');
 });
 
 

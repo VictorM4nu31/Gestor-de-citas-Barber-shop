@@ -24,10 +24,12 @@ class Barbero extends Model
         'password', 'remember_token',
     ];
 
-    // Encriptar la contraseña
+    // Encriptar la contraseña solo si se proporciona un valor
     public function setPasswordAttribute($password)
     {
-        $this->attributes['password'] = bcrypt($password);
+        if (!empty($password)) {
+            $this->attributes['password'] = bcrypt($password);
+        }
     }
     public function citas()
     {
