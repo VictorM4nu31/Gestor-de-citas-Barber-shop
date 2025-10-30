@@ -15,6 +15,8 @@ class CreateBarberosTable extends Migration
     {
         Schema::create('barberos', function (Blueprint $table) {
             $table->id();
+            // Relación opcional con users: un barbero puede tener un usuario para autenticación
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->string('nombre_completo');
             $table->string('email')->unique();
             $table->string('telefono')->nullable();

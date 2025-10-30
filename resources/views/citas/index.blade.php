@@ -39,7 +39,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $cita->fecha }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $cita->hora }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $cita->barbero->nombre_completo ?? 'No disponible' }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $cita->servicios }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $cita->servicios_nombres_texto }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $cita->costo }}$</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <form action="{{ route('citas.destroy', $cita->id) }}" method="POST" class="delete-form">

@@ -10,14 +10,14 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $barberos = Barbero::all();
-        $servicios = Servicio::all();
+        $barberos = \App\Models\Barbero::all();
+        $servicios = \App\Models\Servicio::all();
         return view('admin.dashboard', compact('barberos', 'servicios'));
     }
 
     public function tableUsers()
     {
-        $barberos = Barbero::all();
+        $barberos = \App\Models\Barbero::with('user')->get(); // cargar usuario relacionado
         return view('admin.barberos.index', compact('barberos'));
     }
 

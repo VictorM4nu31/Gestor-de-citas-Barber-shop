@@ -24,10 +24,46 @@ class Cita extends Model
         return $this->belongsTo(User::class, 'id_usuario');
     }
 
+    public function serviciosMany()
+    {
+        return $this->belongsToMany(Servicio::class, 'cita_servicio', 'cita_id', 'servicio_id');
+    }
+
     public function getServiciosNamesAttribute()
     {
-        $serviciosIds = explode(', ', $this->servicios);
-        $serviciosNames = Servicio::whereIn('id', $serviciosIds)->pluck('nombre')->toArray();
-        return implode(', ', $serviciosNames);
+        if (empty($this->servicios)) {
+            return [];
+        }
+        // Split by solo coma, sin espacios.
+        $serviciosIds = explode(',', $this->servicios);
+        return Servicio::whereIn('id', $serviciosIds)->pluck('nombre')->toArray();
+    }
+
+    // Opcional: para mostrar todos los nombres como texto
+    public function getServiciosNombresTextoAttribute()
+    {
+        return implode(', ', $this->servicios_names);
+    }
+
+    public static function usuarioTieneMaximasFuturas($userId, $max = 2): bool
+    {
+        return static::where('id_usuario', $userId)
+            ->where('fecha', '>=', now()->toDateString())
+            ->count() >= $max;
+    }
+
+    public static function barberoNoDisponible($barberoId, $fecha, $hora): bool
+    {
+        return static::where('id_barbero', $barberoId)
+            ->where('fecha', $fecha)
+            ->where('hora', $hora)
+            ->exists();
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($cita) {
+            $cita->serviciosMany()->detach();
+        });
     }
 }

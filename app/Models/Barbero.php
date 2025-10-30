@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\User;
 
 class Barbero extends Model
 {
@@ -13,27 +14,31 @@ class Barbero extends Model
     protected $fillable = [
         'nombre_completo',
         'email',
-        'password',
         'telefono',
         'especialidad',
         'experiencia',
         'foto',
+        'user_id',
     ];
 
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    // Encriptar la contraseña solo si se proporciona un valor
-    public function setPasswordAttribute($password)
+    protected static function booted()
     {
-        if (!empty($password)) {
-            $this->attributes['password'] = bcrypt($password);
-        }
+        static::deleting(function ($barbero) {
+            if ($barbero->foto) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($barbero->foto);
+            }
+        });
     }
+
+    // Quitar el hidden del password y mutador setPasswordAttribute
     public function citas()
     {
         return $this->hasMany(Cita::class, 'id_barbero');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
     // Si necesitas agregar relaciones u otras funcionalidades, hazlo aquí
 }

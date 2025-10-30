@@ -7,6 +7,8 @@ use App\Models\Cita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Servicio;
+use Spatie\Permission\Models\Role;
+use App\Models\User;
 use App\Http\Requests\Barbero\StoreRequest;
 use App\Http\Requests\Barbero\UpdateRequest;
 use Illuminate\Support\Facades\Auth;
@@ -24,27 +26,20 @@ class BarberoController extends Controller
 
     public function dashboard()
     {
-        // Verificar rol barbero
         if (!Auth::check() || !Auth::user()->hasRole('barbero')) {
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
-
-        // Obtener las citas asignadas al barbero autenticado
         $user = Auth::user();
-        
-        // Buscar el barbero por email del usuario
         $barbero = Barbero::where('email', $user->email)->first();
-        
         if (!$barbero) {
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
-
-        $citas = Cita::where('id_barbero', $barbero->id)
+        // Mejor uso de relaciones y filtrado
+        $citas = $barbero->citas()
             ->with('usuario')
             ->orderBy('fecha', 'asc')
             ->orderBy('hora', 'asc')
             ->get();
-
         return view('worker.dashboard', compact('citas', 'barbero'));
     }
 
@@ -62,33 +57,36 @@ class BarberoController extends Controller
         return view('barberos.create');
     }
 
-    public function store(Request $request)
+    /**
+     * @param \App\Http\Requests\Barbero\StoreRequest|\Illuminate\Http\Request $request
+     */
+    public function store(\App\Http\Requests\Barbero\StoreRequest $request)
     {
-        if (!Auth::check() || !Auth::user()->hasRole('admin')) {
+        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
             abort(403, 'No tienes permiso para realizar esta acción.');
         }
-        $validated = $request->validate([
-            'nombre_completo' => 'required|string|max:255',
-            'email' => 'required|email|unique:barberos,email',
-            'password' => 'required|string|min:8|confirmed',
-            'telefono' => 'nullable|string|max:20',
-            'especialidad' => 'required|string|max:100',
-            'experiencia' => 'required|string',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ],[
-            'foto.max' => 'El tamaño máximo permitido de la imagen es de 2MB.',
-        ]);
-
+        $validated = $request->validated();
         if ($request->hasFile('foto')) {
+            \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory('barberos');
             $validated['foto'] = $request->file('foto')->store('barberos', 'public');
         }
-
-        Barbero::create($validated);
-
+        $password = $request->input('password');
+        if ($password) {
+            $user = \App\Models\User::create([
+                'name' => $validated['nombre_completo'],
+                'email' => $validated['email'],
+                'password' => $password, // hashed via User model
+            ]);
+            \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'barbero']);
+            try {
+                $user->assignRole('barbero');
+            } catch (\Exception $e) {}
+            $validated['user_id'] = $user->id;
+        }
+        $barbero = \App\Models\Barbero::create($validated);
         if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
             return redirect()->route('admin.barberos.index')->with('success', 'Barbero creado exitosamente.');
         }
-
         return redirect()->route('barberos.index')->with('success', 'Barbero creado exitosamente.');
     }
 
@@ -105,41 +103,40 @@ class BarberoController extends Controller
         return view('barberos.edit', compact('barbero'));
     }
 
-    public function update(Request $request, Barbero $barbero)
+    /**
+     * @param \App\Http\Requests\Barbero\UpdateRequest|\Illuminate\Http\Request $request
+     * @param \App\Models\Barbero $barbero
+     */
+    public function update(\App\Http\Requests\Barbero\UpdateRequest $request, \App\Models\Barbero $barbero)
     {
-        if (!Auth::check() || !Auth::user()->hasRole('admin')) {
+        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
             abort(403, 'No tienes permiso para realizar esta acción.');
         }
-        $validated = $request->validate([
-            
-            'email' => 'required|email|unique:barberos,email,' . $barbero->id,
-            'password' => 'nullable|string|min:8',
-            'telefono' => 'nullable|string|max:20',
-            'especialidad' => 'required|string|max:100',
-            'experiencia' => 'required|string',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ],[
-            'foto.max' => 'El tamaño máximo permitido de la imagen es de 2MB.',
-        ]);
-
+        $validated = $request->validated();
         if ($request->hasFile('foto')) {
             if ($barbero->foto) {
-                Storage::disk('public')->delete($barbero->foto);
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($barbero->foto);
             }
+            \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory('barberos');
             $validated['foto'] = $request->file('foto')->store('barberos', 'public');
         }
-
-        // Remover password del array si está vacío
-        if (!$request->filled('password')) {
-            unset($validated['password']);
-        }
-
         $barbero->update($validated);
-
+        if ($barbero->user) {
+            $userUpdates = [
+                'name' => $validated['nombre_completo'] ?? $barbero->nombre_completo,
+                'email' => $validated['email'] ?? $barbero->email,
+            ];
+            $passwordUpdate = $request->input('password');
+            if (!empty($passwordUpdate)) {
+                $userUpdates['password'] = $passwordUpdate;
+            }
+            try {
+                $barbero->user->update($userUpdates);
+            } catch (\Exception $e) {}
+        }
         if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
             return redirect()->route('admin.barberos.index')->with('success', 'Barbero actualizado exitosamente.');
         }
-
         return redirect()->route('barberos.index')->with('success', 'Barbero actualizado exitosamente.');
     }
 
@@ -152,6 +149,20 @@ class BarberoController extends Controller
 
         // Eliminar todas las citas asociadas al barbero
         Cita::where('id_barbero', $id)->delete();
+
+        // Eliminar la foto asociada si existe (evitar archivos huérfanos)
+        if ($barbero->foto) {
+            Storage::disk('public')->delete($barbero->foto);
+        }
+
+        // Eliminar usuario asociado si existe (mantener sincronía entre tablas)
+        if ($barbero->user_id) {
+            try {
+                $barbero->user()->delete();
+            } catch (\Exception $e) {
+                // registrar si hace falta
+            }
+        }
 
         // Ahora eliminar al barbero
         $barbero->delete();

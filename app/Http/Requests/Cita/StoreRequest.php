@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Barbero;
+namespace App\Http\Requests\Cita;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -23,18 +23,13 @@ class StoreRequest extends FormRequest
     {
         return [
             'nombre_completo' => 'required|string|max:255',
-            'email' => 'required|email|unique:barberos,email',
-            'telefono' => 'nullable|string|max:20',
-            'especialidad' => 'required|string|max:100',
-            'experiencia' => 'required|string',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'foto.max' => 'El tamaño máximo permitido de la imagen es de 2MB.',
+            'numero_telefono' => 'required|string|max:255',
+            'correo_electronico' => 'required|email|max:255',
+            'fecha' => 'required|date|after_or_equal:today',
+            'hora' => 'required|string',
+            'servicios' => 'required|array|min:1',
+            'servicios.*' => 'integer|exists:servicios,id',
+            'id_barbero' => 'required|integer|exists:barberos,id',
         ];
     }
 }

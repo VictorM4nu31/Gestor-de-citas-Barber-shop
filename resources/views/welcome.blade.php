@@ -39,31 +39,7 @@
     </style>
 </head>
 <body>
-    <header class="bg-secondary text-light border-b border-metal">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="/" class="text-xl font-bold hover:text-primary">Barbería</a>
-            <nav class="space-x-4 hidden md:flex">
-                <a href="#home" class="hover:text-primary">Inicio</a>
-                <a href="#about" class="hover:text-primary">Sobre Nosotros</a>
-                <a href="#services" class="hover:text-primary">Servicios</a>
-                <a href="#barberos" class="hover:text-primary">Barberos</a>
-                <a href="#contact" class="hover:text-primary">Contacto</a>
-            </nav>
-            <div class="space-x-2">
-                @guest
-                    <a href="{{ route('login') }}" class="bg-primary text-light hover:bg-secondary py-2 px-4 rounded">Iniciar Sesión</a>
-                    <a href="{{ route('register') }}" class="bg-light text-primary hover:bg-graylight py-2 px-4 rounded">Registrarse</a>
-                @endguest
-                @auth
-                    <a href="{{ route('dashboard') }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded">Dashboard</a>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="bg-danger hover:bg-secondary text-light py-2 px-4 rounded">Cerrar Sesión</button>
-                    </form>
-                @endauth
-            </div>
-        </div>
-    </header>
+    <x-user.navbar />
 
     <main class="bg-surface min-h-screen">
         <section id="home" class="text-center py-12 bg-primary">
@@ -131,11 +107,7 @@
         </section>
     </main>
 
-    <footer class="bg-secondary text-graylight border-t border-metal py-4">
-        <div class="container mx-auto text-center">
-            <p class="text-muted">&copy; 2024 Barbería. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+    <x-user.footer />
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@1.5.0/dist/flowbite.min.js"></script>

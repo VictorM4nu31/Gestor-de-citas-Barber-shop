@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Servicio\StoreRequest;
+use App\Http\Requests\Servicio\UpdateRequest;
 
 class ServicioController extends Controller
 {
     public function index()
     {
-        $servicios = Servicio::all();
+        $servicios = \App\Models\Servicio::all();
         return view('servicios.index', compact('servicios'));
     }
 
@@ -22,23 +24,15 @@ class ServicioController extends Controller
         return view('servicios.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
             abort(403, 'No tienes permiso para realizar esta acción.');
         }
-
-        $validated = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'required|string',
-            'duracion' => 'required|integer|min:1',
-            'precio' => 'required|numeric|min:0',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ],[
-            'foto.max' => 'El tamaño máximo permitido de la imagen es de 2MB.',
-        ]);
-
+        $validated = $request->validated();
         if ($request->hasFile('foto')) {
+            // Asegurar que la carpeta exista en el disco public
+            \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory('servicios');
             $validated['foto'] = $request->file('foto')->store('servicios', 'public');
         }
 
@@ -64,26 +58,18 @@ class ServicioController extends Controller
         return view('servicios.edit', compact('servicio'));
     }
 
-    public function update(Request $request, Servicio $servicio)
+    public function update(UpdateRequest $request, Servicio $servicio)
     {
         if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
             abort(403, 'No tienes permiso para realizar esta acción.');
         }
-
-        $validated = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'required|string',
-            'duracion' => 'required|integer|min:1',
-            'precio' => 'required|numeric|min:0',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ],[
-            'foto.max' => 'El tamaño máximo permitido de la imagen es de 2MB.',
-        ]);
-
+        $validated = $request->validated();
         if ($request->hasFile('foto')) {
             if ($servicio->foto) {
                 Storage::disk('public')->delete($servicio->foto);
             }
+            // Asegurar que la carpeta exista en el disco public
+            \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory('servicios');
             $validated['foto'] = $request->file('foto')->store('servicios', 'public');
         }
 

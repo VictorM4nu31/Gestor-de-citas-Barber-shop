@@ -13,7 +13,7 @@
 
 <body>
     <!-- Incluir Navbar -->
-    @include('user.user-elements.navbar')
+    <x-user.navbar />
     <br>
 
     <!-- Hero Section -->
@@ -51,7 +51,7 @@
         <div class="container mx-auto px-6">
             <h2 class="text-3xl font-bold text-center mb-8">Nuestros Trabajos</h2>
             <!-- carrusel -->
-            @include('user.user-elements.gallery')
+            <x-user.gallery />
             <!-- fin de carrusel -->
 
         </div>
@@ -62,12 +62,12 @@
         <div class="container mx-auto px-6">
             <h2 class="text-3xl font-bold text-center mb-8">Productos Destacados</h2>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                @include('user.user-elements.products')
+                <x-user.products />
             </div>
         </div>
     </section>
 
-    @include('user.user-elements.footer')
+    <x-user.footer />
 
     @stack('js')
 </body>

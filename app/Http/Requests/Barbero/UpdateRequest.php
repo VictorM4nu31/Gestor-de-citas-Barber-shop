@@ -25,7 +25,6 @@ class UpdateRequest extends FormRequest
         return [
             'nombre_completo' => 'required|string|max:255',
             'email' => 'required|email|unique:barberos,email,' . $barberoId,
-            'password' => 'nullable|string|min:8|confirmed',
             'telefono' => 'nullable|string|max:20',
             'especialidad' => 'required|string|max:100',
             'experiencia' => 'required|string',

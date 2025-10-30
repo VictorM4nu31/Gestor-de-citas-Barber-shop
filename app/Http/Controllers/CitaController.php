@@ -8,6 +8,7 @@ use App\Models\Barbero;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Http\Requests\Cita\StoreRequest;
 
 class CitaController extends Controller
 {
@@ -18,46 +19,33 @@ class CitaController extends Controller
         return view('citas.create', compact('servicios', 'barberos'));
     }
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         $user = Auth::user();
-        $fecha = $request->input('fecha');
-        $hora = $request->input('hora');
-        $barberoId = $request->input('id_barbero');
+        $datos = $request->validated();
+        $fecha = $datos['fecha'];
+        $hora = $datos['hora'];
+        $barberoId = $datos['id_barbero'];
 
-        // Verificar el número de citas futuras del usuario
-        $citasPendientes = Cita::where('id_usuario', $user->id)
-            ->where('fecha', '>=', Carbon::today())
-            ->count();
-
-        if ($citasPendientes >= 2) {
+        if (Cita::usuarioTieneMaximasFuturas($user->id)) {
             return redirect()->back()->with('error', 'Ya existen 2 citas pendientes, no puedes agendar una tercera cita.');
         }
-
-        // Verificar si ya existe una cita con el mismo barbero, fecha y hora
-        $citaExistente = Cita::where('id_barbero', $barberoId)
-            ->where('fecha', $fecha)
-            ->where('hora', $hora)
-            ->first();
-
-        if ($citaExistente) {
+        if (Cita::barberoNoDisponible($barberoId, $fecha, $hora)) {
             return redirect()->back()->with('error', 'Sin disponibilidad, asegurate de haber elegido alguno de los horarios disponibles');
         }
 
         $cita = new Cita();
-        $cita->nombre_completo = $request->input('nombre_completo');
-        $cita->numero_telefono = $request->input('numero_telefono');
-        $cita->correo_electronico = $request->input('correo_electronico');
+        $cita->nombre_completo = $datos['nombre_completo'];
+        $cita->numero_telefono = $datos['numero_telefono'];
+        $cita->correo_electronico = $datos['correo_electronico'];
         $cita->fecha = $fecha;
         $cita->hora = $hora;
         $cita->id_barbero = $barberoId;
         $cita->id_usuario = $user->id;
 
-        $servicios = $request->input('servicios', []);
-        $serviciosNames = Servicio::whereIn('id', $servicios)->pluck('nombre')->toArray();
-        $cita->servicios = implode(', ', $serviciosNames);
-
-        $cita->costo = Servicio::whereIn('id', $servicios)->sum('precio');
+        $servicios = $datos['servicios'];
+        $cita->servicios = implode(',', $servicios); // Guarda los IDs, ejemplo: "1,5,9"
+        $cita->costo = \App\Models\Servicio::whereIn('id', $servicios)->sum('precio');
 
         $cita->save();
 
