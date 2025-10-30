@@ -15,7 +15,17 @@ class Servicio extends Model
         'duracion',
         'precio',
         'foto',
+        'publicado',
+        'orden',
     ];
+
+    /**
+     * Scope para servicios publicados y ordenados.
+     */
+    public function scopePublicadosOrdenados($query)
+    {
+        return $query->where('publicado', true)->orderBy('orden', 'asc')->orderBy('created_at', 'desc');
+    }
 
     // Si necesitas agregar relaciones u otras funcionalidades, hazlo aquí
 }

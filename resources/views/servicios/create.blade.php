@@ -56,6 +56,16 @@
                                     <p class="mt-2 text-sm text-danger">{{ $errors->first('foto') }}</p>
                                 @endif
                             </div>
+                            <div class="mb-4 flex items-center space-x-2">
+                                <input type="checkbox" id="publicado" name="publicado" value="1" checked class="h-4 w-4 text-primary">
+                                <label for="publicado" class="text-sm text-secondary">Publicar este servicio</label>
+                            </div>
+                            <div class="mb-4">
+                                <label for="orden" class="block text-sm font-medium text-secondary">Orden (prioridad)</label>
+                                <input type="number" id="orden" name="orden" value="0" min="0"
+                                    class="mt-1 block w-full border-graymuted rounded-md shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
+                                <p class="mt-2 text-sm text-muted">Valores más bajos aparecen primero (0 = prioridad normal).</p>
+                            </div>
                         </div>
                         <div class="mb-4">
                             <button type="submit" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded">Guardar</button>

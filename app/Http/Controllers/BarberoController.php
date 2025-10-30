@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Http\Requests\Barbero\StoreRequest;
 use App\Http\Requests\Barbero\UpdateRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 
 class BarberoController extends Controller
@@ -21,7 +22,22 @@ class BarberoController extends Controller
     public function welcome()
     {
         $barberos = Barbero::all();
-        return view('welcome', compact('barberos'));
+
+        // Si el usuario autenticado es admin, mostrar todos los servicios (preview),
+        // en caso contrario sólo los publicados y ordenados.
+        if (Auth::check() && Auth::user()->hasRole('admin')) {
+            $servicios = Servicio::orderBy('orden', 'asc')->orderBy('created_at', 'desc')->get();
+        } else {
+            $servicios = Servicio::publicadosOrdenados()->get();
+        }
+
+        // Añadir descripción truncada desde el controlador para mantener la vista limpia
+        $servicios = $servicios->map(function ($s) {
+            $s->descripcion_corta = Str::limit($s->descripcion, 120);
+            return $s;
+        });
+
+        return view('welcome', compact('barberos', 'servicios'));
     }
 
     public function dashboard()

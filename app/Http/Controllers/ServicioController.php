@@ -36,7 +36,12 @@ class ServicioController extends Controller
             $validated['foto'] = $request->file('foto')->store('servicios', 'public');
         }
 
-        Servicio::create($validated);
+    // Asegurar valor de 'publicado' (checkbox) incluso si no viene en la petición
+    $validated['publicado'] = $request->boolean('publicado');
+    // Orden (prioridad)
+    $validated['orden'] = $request->input('orden', 0);
+
+    Servicio::create($validated);
 
         if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
             return redirect()->route('admin.servicios.index')->with('success', 'Servicio creado exitosamente.');
@@ -73,7 +78,11 @@ class ServicioController extends Controller
             $validated['foto'] = $request->file('foto')->store('servicios', 'public');
         }
 
-        $servicio->update($validated);
+    // Asegurar valor de 'publicado' y 'orden'
+    $validated['publicado'] = $request->boolean('publicado');
+    $validated['orden'] = $request->input('orden', 0);
+
+    $servicio->update($validated);
 
         if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
             return redirect()->route('admin.servicios.index')->with('success', 'Servicio actualizado exitosamente.');

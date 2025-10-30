@@ -27,6 +27,8 @@ class StoreRequest extends FormRequest
             'duracion' => 'required|integer|min:1',
             'precio' => 'required|numeric|min:0',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'publicado' => 'nullable|boolean',
+            'orden' => 'nullable|integer|min:0',
         ];
     }
 
