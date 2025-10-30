@@ -1,31 +1,17 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Citas</title>
-    @vite('resources/css/app.css')
-</head>
-<body class="bg-gray-100">
-    <header class="bg-gray-800 text-white">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center flex-wrap">
-            <a href="/" class="text-xl font-bold">Barbería</a>
-            <nav>
-                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="text-white hover:text-gray-300">Cerrar sesión</button>
-                </form>
-            </nav>
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Mis Citas</h2>
+            <a href="{{ route('citas.create') }}" class="bg-primary text-light hover:bg-secondary py-2 px-4 rounded">Agendar Nueva Cita</a>
         </div>
-    </header>
+    </x-slot>
 
     <main class="container mx-auto px-4 py-8">
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-            <h1 class="text-2xl font-bold mb-4">Mis Citas</h1>
-            <a href="{{ route('citas.create') }}" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mb-4 inline-block">Agendar Nueva Cita</a>
+        <div class="bg-light p-6 rounded-lg shadow-lg">
+            <h1 class="text-2xl font-bold mb-4 text-secondary">Mis Citas</h1>
             
             @if(session('success'))
-                <div class="bg-green-500 text-white p-4 rounded mb-4">
+                <div class="bg-success text-light p-4 rounded mb-4">
                     {{ session('success') }}
                 </div>
             @endif
@@ -33,20 +19,20 @@
             @if($citas->isEmpty())
                 <p class="text-gray-600">No tienes citas agendadas.</p>
             @else
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead>
+                <div class="overflow-x-auto bg-surface">
+                    <table class="min-w-full divide-y divide-metal">
+                        <thead class="bg-secondary text-light">
                             <tr>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre Completo</th>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hora</th>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Barbero</th>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Servicios</th>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Costo</th>
-                                <th class="px-6 py-3 bg-gray-50"></th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nombre Completo</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Fecha</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Hora</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Barbero</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Servicios</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Costo</th>
+                                <th class="px-6 py-3"></th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="divide-y divide-metal text-secondary">
                             @foreach($citas as $cita)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $cita->nombre_completo }}</td>
@@ -71,6 +57,7 @@
         </div>
     </main>
 
+    @push('scripts')
     <script>
         document.querySelectorAll('.delete-form').forEach(form => {
             form.addEventListener('submit', function(event) {
@@ -81,5 +68,5 @@
             });
         });
     </script>
-</body>
-</html>
+    @endpush
+</x-app-layout>

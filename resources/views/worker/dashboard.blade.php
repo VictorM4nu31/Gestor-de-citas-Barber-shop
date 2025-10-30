@@ -9,7 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.4.1/flowbite.min.css" rel="stylesheet" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body class="font-poppins antialiased bg-black text-white">
+<body class="font-poppins antialiased bg-secondary text-light">
     <div id="view" class="h-full w-screen flex flex-row" x-data="{ sidenav: true }">
         <button
             @click="sidenav = true"
@@ -21,13 +21,13 @@
         </button>
         <div
             id="sidebar"
-            class="bg-red-800 h-screen md:block shadow-xl px-3 w-30 md:w-60 lg:w-60 overflow-x-hidden transition-transform duration-300 ease-in-out"
+            class="bg-secondary h-screen md:block shadow-xl px-3 w-30 md:w-60 lg:w-60 overflow-x-hidden transition-transform duration-300 ease-in-out border-r border-metal"
             x-show="sidenav"
             @click.away="sidenav = false"
         >
             <div class="space-y-6 md:space-y-10 mt-10">
-                <h1 class="font-bold text-4xl text-center md:hidden text-white">M<span class="text-red-400">.</span></h1>
-                <h1 class="hidden md:block font-bold text-sm md:text-xl text-center text-white">MasterCut<span class="text-red-400">.</span></h1>
+                <h1 class="font-bold text-4xl text-center md:hidden text-light">M<span class="text-primary">.</span></h1>
+                <h1 class="hidden md:block font-bold text-sm md:text-xl text-center text-light">MasterCut<span class="text-primary">.</span></h1>
                 <div id="profile" class="space-y-3">
                     <img
                         src="https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
@@ -35,12 +35,12 @@
                         class="w-10 md:w-16 rounded-full mx-auto"
                     />
                     <div>
-                        <h2 class="font-medium text-xs md:text-sm text-center text-red-400">{{ $barbero->nombre_completo ?? 'Barbero' }}</h2>
-                        <p class="text-xs text-gray-300 text-center">Barbero</p>
+                        <h2 class="font-medium text-xs md:text-sm text-center text-primary">{{ $barbero->nombre_completo ?? 'Barbero' }}</h2>
+                        <p class="text-xs text-graylight text-center">Barbero</p>
                     </div>
                 </div>
                 <div id="menu" class="flex flex-col space-y-2">
-                    <a href="#" class="text-sm font-medium text-white py-2 px-2 hover:bg-red-700 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
+                    <a href="#" class="text-sm font-medium text-light py-2 px-2 hover:bg-secondary hover:text-light hover:scale-105 rounded-md transition duration-150 ease-in-out bg-primary">
                         <svg class="w-6 h-6 fill-current inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z"></path>
                         </svg>
@@ -48,7 +48,7 @@
                     </a>
                     <form method="POST" action="{{ route('logout') }}" class="mt-4">
                         @csrf
-                        <button type="submit" class="w-full bg-red-900 text-sm font-medium text-white py-2 px-2 hover:bg-red-800 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out">
+                        <button type="submit" class="w-full bg-danger text-sm font-medium text-light py-2 px-2 hover:bg-secondary hover:text-light hover:scale-105 rounded-md transition duration-150 ease-in-out">
                             <svg class="w-6 h-6 fill-current inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V4a1 1 0 00-1-1H3zm11 4.414l-7.707 7.707a1 1 0 01-1.414-1.414L12.586 6H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V7.414z" clip-rule="evenodd"></path>
                             </svg>
@@ -58,8 +58,8 @@
                 </div>
             </div>
         </div>
-        <div class="bg-white flex-grow text-black p-6">
-            <h1 class="text-4xl font-semibold mb-6">Panel de Control</h1>
+        <div class="bg-surface flex-grow text-secondary p-6">
+            <h1 class="text-4xl font-semibold mb-6 text-secondary">Panel de Control</h1>
             <!-- Contenido del panel de control -->
             @include('worker.appointment-manager')
         </div>

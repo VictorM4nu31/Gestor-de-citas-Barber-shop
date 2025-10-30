@@ -18,7 +18,7 @@ class AdminController extends Controller
     public function tableUsers()
     {
         $barberos = Barbero::all();
-        return view('admin.barberos.table-users', compact('barberos'));
+        return view('admin.barberos.index', compact('barberos'));
     }
 
     public function tableUsersCreate()
@@ -35,7 +35,7 @@ class AdminController extends Controller
     public function manageServices()
     {
         $servicios = Servicio::all();
-        return view('admin.servicios.manage-services', compact('servicios'));
+        return view('admin.servicios.index', compact('servicios'));
     }
 
     public function servicesCreate()

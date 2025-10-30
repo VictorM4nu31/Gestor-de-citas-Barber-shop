@@ -39,101 +39,101 @@
     </style>
 </head>
 <body>
-    <header class="bg-gray-800 text-white">
+    <header class="bg-secondary text-light border-b border-metal">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="/" class="text-xl font-bold">Barbería</a>
+            <a href="/" class="text-xl font-bold hover:text-primary">Barbería</a>
             <nav class="space-x-4 hidden md:flex">
-                <a href="#home" class="hover:text-gray-400">Inicio</a>
-                <a href="#about" class="hover:text-gray-400">Sobre Nosotros</a>
-                <a href="#services" class="hover:text-gray-400">Servicios</a>
-                <a href="#barberos" class="hover:text-gray-400">Barberos</a>
-                <a href="#contact" class="hover:text-gray-400">Contacto</a>
+                <a href="#home" class="hover:text-primary">Inicio</a>
+                <a href="#about" class="hover:text-primary">Sobre Nosotros</a>
+                <a href="#services" class="hover:text-primary">Servicios</a>
+                <a href="#barberos" class="hover:text-primary">Barberos</a>
+                <a href="#contact" class="hover:text-primary">Contacto</a>
             </nav>
             <div class="space-x-2">
                 @guest
-                    <a href="{{ route('login') }}" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Iniciar Sesión</a>
-                    <a href="{{ route('register') }}" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Registrarse</a>
+                    <a href="{{ route('login') }}" class="bg-primary text-light hover:bg-secondary py-2 px-4 rounded">Iniciar Sesión</a>
+                    <a href="{{ route('register') }}" class="bg-light text-primary hover:bg-graylight py-2 px-4 rounded">Registrarse</a>
                 @endguest
                 @auth
-                    <a href="{{ route('dashboard') }}" class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded">Dashboard</a>
+                    <a href="{{ route('dashboard') }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded">Dashboard</a>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Cerrar Sesión</button>
+                        <button type="submit" class="bg-danger hover:bg-secondary text-light py-2 px-4 rounded">Cerrar Sesión</button>
                     </form>
                 @endauth
             </div>
         </div>
     </header>
 
-    <main class="bg-gray-100 min-h-screen">
-        <section id="home" class="text-center py-12">
+    <main class="bg-surface min-h-screen">
+        <section id="home" class="text-center py-12 bg-primary">
             <div class="container mx-auto">
-                <h1 class="text-4xl font-bold mb-4">Bienvenidos a Nuestra Barbería</h1>
-                <p class="text-lg mb-8">La mejor experiencia de barbería en la ciudad. ¡Reserva tu cita hoy!</p>
-                <a href="#contact" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Reserva una Cita</a>
+                <h1 class="text-4xl font-bold mb-4 text-light">Bienvenidos a Nuestra Barbería</h1>
+                <p class="text-lg mb-8 text-graylight">La mejor experiencia de barbería en la ciudad. ¡Reserva tu cita hoy!</p>
+                <a href="#contact" class="bg-light text-primary hover:bg-graylight py-2 px-4 rounded">Reserva una Cita</a>
             </div>
         </section>
 
-        <section id="about" class="text-center py-12 bg-white">
+        <section id="about" class="text-center py-12 bg-secondary">
             <div class="container mx-auto flex flex-col md:flex-row items-center">
                 <div class="w-full md:w-1/2">
-                    <h2 class="text-3xl font-semibold mb-4">Sobre Nosotros</h2>
-                    <p class="text-lg mb-8">Conoce al equipo de profesionales que te atenderá con el mejor servicio en nuestra barbería.</p>
+                    <h2 class="text-3xl font-semibold mb-4 text-primary">Sobre Nosotros</h2>
+                    <p class="text-lg mb-8 text-graylight">Conoce al equipo de profesionales que te atenderá con el mejor servicio en nuestra barbería.</p>
                     <!-- Título de Ubicación -->
-                    <h3 class="text-2xl font-semibold mb-4">Ubicación</h3>
+                    <h3 class="text-2xl font-semibold mb-4 text-primary">Ubicación</h3>
                     <!-- Mapa -->
                     <div id="mi_mapa"></div>
                 </div>
                 <div class="w-full md:w-1/2 md:pl-8 mt-8 md:mt-0">
-                    <h2 class="text-3xl font-semibold mb-4">Información de la Barbería</h2>
-                    <p class="text-lg mb-4">Dirección: Calle Ejemplo 123, Ciudad</p>
-                    <p class="text-lg mb-4">Teléfono: (123) 456-7890</p>
-                    <p class="text-lg">Horario: Lunes a Sábado - 9:00 AM a 7:00 PM</p>
+                    <h2 class="text-3xl font-semibold mb-4 text-primary">Información de la Barbería</h2>
+                    <p class="text-lg mb-4 text-graylight">Dirección: Calle Ejemplo 123, Ciudad</p>
+                    <p class="text-lg mb-4 text-graylight">Teléfono: (123) 456-7890</p>
+                    <p class="text-lg text-graylight">Horario: Lunes a Sábado - 9:00 AM a 7:00 PM</p>
                 </div>
             </div>
         </section>
 
-        <section id="services" class="text-center py-12 bg-gray-200">
+        <section id="services" class="text-center py-12 bg-surface">
             <div class="container mx-auto">
-                <h2 class="text-3xl font-semibold mb-4">Nuestros Servicios</h2>
-                <p class="text-lg mb-8">Descubre los servicios que ofrecemos para ti.</p>
+                <h2 class="text-3xl font-semibold mb-4 text-secondary">Nuestros Servicios</h2>
+                <p class="text-lg mb-8 text-muted">Descubre los servicios que ofrecemos para ti.</p>
                 <!-- Agrega más contenido aquí -->
             </div>
         </section>
 
         <!-- Nueva sección de Barberos -->
-        <section id="barberos" class="text-center py-12 bg-white">
+        <section id="barberos" class="text-center py-12 bg-background">
             <div class="container mx-auto">
-                <h2 class="text-3xl font-semibold mb-4">Nuestros Barberos</h2>
-                <p class="text-lg mb-8">Conoce a nuestros talentosos barberos que están listos para atenderte.</p>
+                <h2 class="text-3xl font-semibold mb-4 text-secondary">Nuestros Barberos</h2>
+                <p class="text-lg mb-8 text-muted">Conoce a nuestros talentosos barberos que están listos para atenderte.</p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                     @foreach($barberos as $barbero)
-                        <div class="barbero-card">
+                        <div class="barbero-card border border-metal bg-light">
                             @if($barbero->foto)
                                 <img src="{{ asset('storage/' . $barbero->foto) }}" alt="{{ $barbero->nombre_completo }}">
                             @else
                                 <img src="https://via.placeholder.com/150" alt="{{ $barbero->nombre_completo }}">
                             @endif
-                            <h3>{{ $barbero->nombre_completo }}</h3>
-                            <p>{{ $barbero->especialidad }}</p>
+                            <h3 class="text-secondary">{{ $barbero->nombre_completo }}</h3>
+                            <p class="text-muted">{{ $barbero->especialidad }}</p>
                         </div>
                     @endforeach
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="text-center py-12 bg-white">
+        <section id="contact" class="text-center py-12 bg-background">
             <div class="container mx-auto">
-                <h2 class="text-3xl font-semibold mb-4">Contacto</h2>
-                <p class="text-lg mb-8">Estamos aquí para ayudarte. ¡Envíanos un mensaje o reserva una cita!</p>
+                <h2 class="text-3xl font-semibold mb-4 text-secondary">Contacto</h2>
+                <p class="text-lg mb-8 text-muted">Estamos aquí para ayudarte. ¡Envíanos un mensaje o reserva una cita!</p>
                 <!-- Agrega el formulario de contacto aquí -->
             </div>
         </section>
     </main>
 
-    <footer class="bg-gray-800 text-white py-4">
+    <footer class="bg-secondary text-graylight border-t border-metal py-4">
         <div class="container mx-auto text-center">
-            <p>&copy; 2024 Barbería. Todos los derechos reservados.</p>
+            <p class="text-muted">&copy; 2024 Barbería. Todos los derechos reservados.</p>
         </div>
     </footer>
 

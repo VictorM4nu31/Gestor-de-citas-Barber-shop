@@ -16,11 +16,18 @@ class ServicioController extends Controller
 
     public function create()
     {
+        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
         return view('servicios.create');
     }
 
     public function store(Request $request)
     {
+        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
+            abort(403, 'No tienes permiso para realizar esta acción.');
+        }
+
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string',
@@ -37,6 +44,10 @@ class ServicioController extends Controller
 
         Servicio::create($validated);
 
+        if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
+            return redirect()->route('admin.servicios.index')->with('success', 'Servicio creado exitosamente.');
+        }
+
         return redirect()->route('servicios.index')->with('success', 'Servicio creado exitosamente.');
     }
 
@@ -47,11 +58,18 @@ class ServicioController extends Controller
 
     public function edit(Servicio $servicio)
     {
+        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
         return view('servicios.edit', compact('servicio'));
     }
 
     public function update(Request $request, Servicio $servicio)
     {
+        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
+            abort(403, 'No tienes permiso para realizar esta acción.');
+        }
+
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string',
@@ -71,15 +89,27 @@ class ServicioController extends Controller
 
         $servicio->update($validated);
 
+        if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
+            return redirect()->route('admin.servicios.index')->with('success', 'Servicio actualizado exitosamente.');
+        }
+
         return redirect()->route('servicios.index')->with('success', 'Servicio actualizado exitosamente.');
     }
 
     public function destroy(Servicio $servicio)
     {
+        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
+            abort(403, 'No tienes permiso para realizar esta acción.');
+        }
+
         if ($servicio->foto) {
             Storage::disk('public')->delete($servicio->foto);
         }
         $servicio->delete();
+
+        if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
+            return redirect()->route('admin.servicios.index')->with('success', 'Servicio eliminado exitosamente.');
+        }
 
         return redirect()->route('servicios.index')->with('success', 'Servicio eliminado exitosamente.');
     }

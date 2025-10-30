@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 
 class BarberoController extends Controller
 {
+    // Nota: los checks de rol se realizan en cada método para evitar dependencia en
+    // la clase base Controller que en este proyecto no define middleware().
     public function welcome()
     {
         $barberos = Barbero::all();
@@ -22,6 +24,11 @@ class BarberoController extends Controller
 
     public function dashboard()
     {
+        // Verificar rol barbero
+        if (!Auth::check() || !Auth::user()->hasRole('barbero')) {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
+
         // Obtener las citas asignadas al barbero autenticado
         $user = Auth::user();
         
@@ -49,11 +56,17 @@ class BarberoController extends Controller
 
     public function create()
     {
+        if (!Auth::check() || !Auth::user()->hasRole('admin')) {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
         return view('barberos.create');
     }
 
     public function store(Request $request)
     {
+        if (!Auth::check() || !Auth::user()->hasRole('admin')) {
+            abort(403, 'No tienes permiso para realizar esta acción.');
+        }
         $validated = $request->validate([
             'nombre_completo' => 'required|string|max:255',
             'email' => 'required|email|unique:barberos,email',
@@ -72,6 +85,10 @@ class BarberoController extends Controller
 
         Barbero::create($validated);
 
+        if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
+            return redirect()->route('admin.barberos.index')->with('success', 'Barbero creado exitosamente.');
+        }
+
         return redirect()->route('barberos.index')->with('success', 'Barbero creado exitosamente.');
     }
 
@@ -82,11 +99,17 @@ class BarberoController extends Controller
 
     public function edit(Barbero $barbero)
     {
+        if (!Auth::check() || !Auth::user()->hasRole('admin')) {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
         return view('barberos.edit', compact('barbero'));
     }
 
     public function update(Request $request, Barbero $barbero)
     {
+        if (!Auth::check() || !Auth::user()->hasRole('admin')) {
+            abort(403, 'No tienes permiso para realizar esta acción.');
+        }
         $validated = $request->validate([
             
             'email' => 'required|email|unique:barberos,email,' . $barbero->id,
@@ -113,11 +136,18 @@ class BarberoController extends Controller
 
         $barbero->update($validated);
 
+        if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
+            return redirect()->route('admin.barberos.index')->with('success', 'Barbero actualizado exitosamente.');
+        }
+
         return redirect()->route('barberos.index')->with('success', 'Barbero actualizado exitosamente.');
     }
 
     public function destroy($id)
     {
+        if (!Auth::check() || !Auth::user()->hasRole('admin')) {
+            abort(403, 'No tienes permiso para realizar esta acción.');
+        }
         $barbero = Barbero::findOrFail($id);
 
         // Eliminar todas las citas asociadas al barbero
@@ -125,6 +155,10 @@ class BarberoController extends Controller
 
         // Ahora eliminar al barbero
         $barbero->delete();
+
+        if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
+            return redirect()->route('admin.barberos.index')->with('success', 'Barbero eliminado exitosamente.');
+        }
 
         return redirect()->route('barberos.index')->with('success', 'Barbero eliminado exitosamente.');
     }

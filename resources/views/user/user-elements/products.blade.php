@@ -9,24 +9,24 @@
     <title>Productos Destacados</title>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-surface text-secondary">
     <div class="container mx-auto p-4 lg:h-screen flex items-center justify-center">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <!-- Producto 1: Máquina de Afeitar Eléctrica -->
-            <div class="w-60 h-80 bg-white p-3 flex flex-col gap-1 rounded-2xl shadow-md">
-                <div class="h-48 bg-black rounded-xl">
+            <div class="w-60 h-80 bg-light p-3 flex flex-col gap-1 rounded-2xl shadow-md border border-metal">
+                <div class="h-48 bg-secondary rounded-xl">
                     <img src="https://ejemplo.com/maquina-afeitar.jpg" alt="Máquina de Afeitar Eléctrica"
                         class="w-full h-full object-cover rounded-xl">
                 </div>
                 <div class="flex flex-col gap-4">
                     <div class="flex flex-row justify-between">
                         <div class="flex flex-col">
-                            <span class="text-xl font-bold text-red-600">Máquina de Afeitar Eléctrica Pro</span>
-                            <p class="text-xs text-gray-700">Máquina de afeitar eléctrica de alta precisión con 5 cuchillas y sistema de limpieza automática.</p>
+                            <span class="text-xl font-bold text-secondary">Máquina de Afeitar Eléctrica Pro</span>
+                            <p class="text-xs text-muted">Máquina de afeitar eléctrica de alta precisión con 5 cuchillas y sistema de limpieza automática.</p>
                         </div>
-                        <span class="font-bold text-black">$123.45</span>
+                        <span class="font-bold text-secondary">$123.45</span>
                     </div>
-                    <button class="hover:bg-red-700 bg-red-600 text-white py-2 rounded-md flex items-center justify-center">
+                    <button class="hover:bg-secondary bg-primary text-light py-2 rounded-md flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 512 512">
                             <path
                                 d="m397.78 316h-205.13a15 15 0 0 1 -14.65-11.67l-34.54-150.48a15 15 0 0 1 14.62-18.36h274.27a15 15 0 0 1 14.65 18.36l-34.6 150.48a15 15 0 0 1 -14.62 11.67zm-193.19-30h181.25l27.67-120.48h-236.6z">
@@ -47,20 +47,20 @@
             </div>
 
             <!-- Producto 2: Aceite para Barba -->
-            <div class="w-60 h-80 bg-white p-3 flex flex-col gap-1 rounded-2xl shadow-md">
-                <div class="h-48 bg-black rounded-xl">
+            <div class="w-60 h-80 bg-light p-3 flex flex-col gap-1 rounded-2xl shadow-md border border-metal">
+                <div class="h-48 bg-secondary rounded-xl">
                     <img src="https://ejemplo.com/aceite-barba.jpg" alt="Aceite para Barba"
                         class="w-full h-full object-cover rounded-xl">
                 </div>
                 <div class="flex flex-col gap-4">
                     <div class="flex flex-row justify-between">
                         <div class="flex flex-col">
-                            <span class="text-xl font-bold text-red-600">Aceite para Barba Suavizante</span>
-                            <p class="text-xs text-gray-700">Aceite natural que hidrata, suaviza y promueve el crecimiento saludable del vello facial.</p>
+                            <span class="text-xl font-bold text-secondary">Aceite para Barba Suavizante</span>
+                            <p class="text-xs text-muted">Aceite natural que hidrata, suaviza y promueve el crecimiento saludable del vello facial.</p>
                         </div>
-                        <span class="font-bold text-black">$123.45</span>
+                        <span class="font-bold text-secondary">$123.45</span>
                     </div>
-                    <button class="hover:bg-red-700 bg-red-600 text-white py-2 rounded-md flex items-center justify-center">
+                    <button class="hover:bg-secondary bg-primary text-light py-2 rounded-md flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 512 512">
                             <path
                                 d="m397.78 316h-205.13a15 15 0 0 1 -14.65-11.67l-34.54-150.48a15 15 0 0 1 14.62-18.36h274.27a15 15 0 0 1 14.65 18.36l-34.6 150.48a15 15 0 0 1 -14.62 11.67zm-193.19-30h181.25l27.67-120.48h-236.6z">
@@ -81,20 +81,20 @@
             </div>
 
             <!-- Producto 3: Brocha de Afeitar -->
-            <div class="w-60 h-80 bg-white p-3 flex flex-col gap-1 rounded-2xl shadow-md">
-                <div class="h-48 bg-black rounded-xl">
+            <div class="w-60 h-80 bg-light p-3 flex flex-col gap-1 rounded-2xl shadow-md border border-metal">
+                <div class="h-48 bg-secondary rounded-xl">
                     <img src="https://ejemplo.com/brocha-afeitar.jpg" alt="Brocha de Afeitar"
                         class="w-full h-full object-cover rounded-xl">
                 </div>
                 <div class="flex flex-col gap-4">
                     <div class="flex flex-row justify-between">
                         <div class="flex flex-col">
-                            <span class="text-xl font-bold text-red-600">Brocha de Afeitar Premium</span>
-                            <p class="text-xs text-gray-700">Brocha hecha a mano con cerdas naturales para un afeitado suave y confortable.</p>
+                            <span class="text-xl font-bold text-secondary">Brocha de Afeitar Premium</span>
+                            <p class="text-xs text-muted">Brocha hecha a mano con cerdas naturales para un afeitado suave y confortable.</p>
                         </div>
-                        <span class="font-bold text-black">$49.99</span>
+                        <span class="font-bold text-secondary">$49.99</span>
                     </div>
-                    <button class="hover:bg-red-700 bg-red-600 text-white py-2 rounded-md flex items-center justify-center">
+                    <button class="hover:bg-secondary bg-primary text-light py-2 rounded-md flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 512 512">
                             <path
                                 d="m397.78 316h-205.13a15 15 0 0 1 -14.65-11.67l-34.54-150.48a15 15 0 0 1 14.62-18.36h274.27a15 15 0 0 1 14.65 18.36l-34.6 150.48a15 15 0 0 1 -14.62 11.67zm-193.19-30h181.25l27.67-120.48h-236.6z">
@@ -115,20 +115,20 @@
             </div>
 
             <!-- Producto 4: Jabón de Afeitar -->
-            <div class="w-60 h-80 bg-white p-3 flex flex-col gap-1 rounded-2xl shadow-md">
-                <div class="h-48 bg-black rounded-xl">
+            <div class="w-60 h-80 bg-light p-3 flex flex-col gap-1 rounded-2xl shadow-md border border-metal">
+                <div class="h-48 bg-secondary rounded-xl">
                     <img src="https://ejemplo.com/jabon-afeitar.jpg" alt="Jabón de Afeitar"
                         class="w-full h-full object-cover rounded-xl">
                 </div>
                 <div class="flex flex-col gap-4">
                     <div class="flex flex-row justify-between">
                         <div class="flex flex-col">
-                            <span class="text-xl font-bold text-red-600">Jabón de Afeitar Natural</span>
-                            <p class="text-xs text-gray-700">Jabón de afeitar hecho con ingredientes naturales que proporciona una espuma rica y cremosa.</p>
+                            <span class="text-xl font-bold text-secondary">Jabón de Afeitar Natural</span>
+                            <p class="text-xs text-muted">Jabón de afeitar hecho con ingredientes naturales que proporciona una espuma rica y cremosa.</p>
                         </div>
-                        <span class="font-bold text-black">$12.99</span>
+                        <span class="font-bold text-secondary">$12.99</span>
                     </div>
-                    <button class="hover:bg-red-700 bg-red-600 text-white py-2 rounded-md flex items-center justify-center">
+                    <button class="hover:bg-secondary bg-primary text-light py-2 rounded-md flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 512 512">
                             <path
                                 d="m397.78 316h-205.13a15 15 0 0 1 -14.65-11.67l-34.54-150.48a15 15 0 0 1 14.62-18.36h274.27a15 15 0 0 1 14.65 18.36l-34.6 150.48a15 15 0 0 1 -14.62 11.67zm-193.19-30h181.25l27.67-120.48h-236.6z">
