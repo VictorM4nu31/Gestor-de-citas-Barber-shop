@@ -52,14 +52,74 @@ class BarberoController extends Controller
             abort(403, 'No se encontró el perfil de barbero asociado.');
         }
         
-        // Obtener citas del barbero usando la relación correcta
-        $citas = $barbero->citas()
+        // Obtener citas del barbero para hoy y futuras
+        $citasHoy = $barbero->citas()
             ->with('usuario')
-            ->orderBy('fecha', 'asc')
+            ->where('fecha', now()->toDateString())
             ->orderBy('hora', 'asc')
             ->get();
+
+        $citasFuturas = $barbero->citas()
+            ->with('usuario')
+            ->where('fecha', '>', now()->toDateString())
+            ->orderBy('fecha', 'asc')
+            ->orderBy('hora', 'asc')
+            ->take(10)
+            ->get();
             
-        return view('barbero.dashboard', compact('citas', 'barbero'));
+        return view('barbero.dashboard', compact('citasHoy', 'citasFuturas', 'barbero'));
+    }
+
+    public function citas()
+    {
+        $user = Auth::user();
+        $barbero = $user->barbero;
+        
+        if (!$barbero) {
+            abort(403, 'No se encontró el perfil de barbero asociado.');
+        }
+        
+        // Obtener todas las citas del barbero
+        $citas = $barbero->citas()
+            ->with('usuario')
+            ->orderBy('fecha', 'desc')
+            ->orderBy('hora', 'desc')
+            ->paginate(20);
+            
+        return view('barbero.citas.index', compact('citas', 'barbero'));
+    }
+
+    public function marcarAtendida(Cita $cita)
+    {
+        $user = Auth::user();
+        $barbero = $user->barbero;
+        
+        // Verificar que la cita pertenece al barbero autenticado
+        if ($cita->id_barbero !== $barbero->id) {
+            abort(403, 'No tienes permiso para modificar esta cita.');
+        }
+        
+        // Verificar que la cita puede ser marcada como atendida
+        if (!$cita->puedeSerAtendida()) {
+            return redirect()->back()->with('error', 'Esta cita no puede ser marcada como atendida.');
+        }
+        
+        $cita->marcarComoAtendida();
+        
+        return redirect()->back()->with('success', 'Cita marcada como atendida exitosamente.');
+    }
+
+    public function verCita(Cita $cita)
+    {
+        $user = Auth::user();
+        $barbero = $user->barbero;
+        
+        // Verificar que la cita pertenece al barbero autenticado
+        if ($cita->id_barbero !== $barbero->id) {
+            abort(403, 'No tienes permiso para ver esta cita.');
+        }
+        
+        return view('barbero.citas.show', compact('cita', 'barbero'));
     }
 
     // Public methods for displaying barberos (no admin functionality)

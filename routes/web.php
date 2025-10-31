@@ -104,6 +104,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 // -------------- RUTAS PARA BARBEROS (sólo usuarios con rol barbero) --------------
 Route::middleware(['auth', 'role:barbero', 'active.barbero'])->prefix('barbero')->name('barbero.')->group(function () {
     Route::get('/dashboard', [BarberoController::class, 'dashboard'])->name('dashboard');
+    Route::get('/citas', [BarberoController::class, 'citas'])->name('citas.index');
+    Route::get('/citas/{cita}', [BarberoController::class, 'verCita'])->name('citas.show');
+    Route::patch('/citas/{cita}/atender', [BarberoController::class, 'marcarAtendida'])->name('citas.atender');
 });
 
 
