@@ -56,137 +56,18 @@ class BarberoController extends Controller
             ->orderBy('fecha', 'asc')
             ->orderBy('hora', 'asc')
             ->get();
-        return view('worker.dashboard', compact('citas', 'barbero'));
+        return view('barbero.dashboard', compact('citas', 'barbero'));
     }
 
+    // Public methods for displaying barberos (no admin functionality)
     public function index()
     {
         $barberos = Barbero::all();
-        return view('barberos.index', compact('barberos'));
-    }
-
-    public function create()
-    {
-        if (!Auth::check() || !Auth::user()->hasRole('admin')) {
-            abort(403, 'No tienes permiso para acceder a esta página.');
-        }
-        return view('barberos.create');
-    }
-
-    /**
-     * @param \App\Http\Requests\Barbero\StoreRequest|\Illuminate\Http\Request $request
-     */
-    public function store(\App\Http\Requests\Barbero\StoreRequest $request)
-    {
-        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
-            abort(403, 'No tienes permiso para realizar esta acción.');
-        }
-        $validated = $request->validated();
-        if ($request->hasFile('foto')) {
-            \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory('barberos');
-            $validated['foto'] = $request->file('foto')->store('barberos', 'public');
-        }
-        $password = $request->input('password');
-        if ($password) {
-            $user = \App\Models\User::create([
-                'name' => $validated['nombre_completo'],
-                'email' => $validated['email'],
-                'password' => $password, // hashed via User model
-            ]);
-            \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'barbero']);
-            try {
-                $user->assignRole('barbero');
-            } catch (\Exception $e) {}
-            $validated['user_id'] = $user->id;
-        }
-        $barbero = \App\Models\Barbero::create($validated);
-        if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
-            return redirect()->route('admin.barberos.index')->with('success', 'Barbero creado exitosamente.');
-        }
-        return redirect()->route('barberos.index')->with('success', 'Barbero creado exitosamente.');
+        return view('usuario.publico.barberos-index', compact('barberos'));
     }
 
     public function show(Barbero $barbero)
     {
-        return view('barberos.show', compact('barbero'));
-    }
-
-    public function edit(Barbero $barbero)
-    {
-        if (!Auth::check() || !Auth::user()->hasRole('admin')) {
-            abort(403, 'No tienes permiso para acceder a esta página.');
-        }
-        return view('barberos.edit', compact('barbero'));
-    }
-
-    /**
-     * @param \App\Http\Requests\Barbero\UpdateRequest|\Illuminate\Http\Request $request
-     * @param \App\Models\Barbero $barbero
-     */
-    public function update(\App\Http\Requests\Barbero\UpdateRequest $request, \App\Models\Barbero $barbero)
-    {
-        if (!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
-            abort(403, 'No tienes permiso para realizar esta acción.');
-        }
-        $validated = $request->validated();
-        if ($request->hasFile('foto')) {
-            if ($barbero->foto) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($barbero->foto);
-            }
-            \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory('barberos');
-            $validated['foto'] = $request->file('foto')->store('barberos', 'public');
-        }
-        $barbero->update($validated);
-        if ($barbero->user) {
-            $userUpdates = [
-                'name' => $validated['nombre_completo'] ?? $barbero->nombre_completo,
-                'email' => $validated['email'] ?? $barbero->email,
-            ];
-            $passwordUpdate = $request->input('password');
-            if (!empty($passwordUpdate)) {
-                $userUpdates['password'] = $passwordUpdate;
-            }
-            try {
-                $barbero->user->update($userUpdates);
-            } catch (\Exception $e) {}
-        }
-        if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
-            return redirect()->route('admin.barberos.index')->with('success', 'Barbero actualizado exitosamente.');
-        }
-        return redirect()->route('barberos.index')->with('success', 'Barbero actualizado exitosamente.');
-    }
-
-    public function destroy($id)
-    {
-        if (!Auth::check() || !Auth::user()->hasRole('admin')) {
-            abort(403, 'No tienes permiso para realizar esta acción.');
-        }
-        $barbero = Barbero::findOrFail($id);
-
-        // Eliminar todas las citas asociadas al barbero
-        Cita::where('id_barbero', $id)->delete();
-
-        // Eliminar la foto asociada si existe (evitar archivos huérfanos)
-        if ($barbero->foto) {
-            Storage::disk('public')->delete($barbero->foto);
-        }
-
-        // Eliminar usuario asociado si existe (mantener sincronía entre tablas)
-        if ($barbero->user_id) {
-            try {
-                $barbero->user()->delete();
-            } catch (\Exception $e) {
-                // registrar si hace falta
-            }
-        }
-
-        // Ahora eliminar al barbero
-        $barbero->delete();
-
-        if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
-            return redirect()->route('admin.barberos.index')->with('success', 'Barbero eliminado exitosamente.');
-        }
-
-        return redirect()->route('barberos.index')->with('success', 'Barbero eliminado exitosamente.');
+        return view('usuario.publico.barberos-show', compact('barbero'));
     }
 }

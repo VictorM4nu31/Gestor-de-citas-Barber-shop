@@ -5,18 +5,6 @@
         </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-surface overflow-hidden shadow-sm sm:rounded-lg p-6 text-secondary">
-                <div id="employees-section" class="">
-                    @includeWhen(View::exists('admin.barberos.table-users'), 'admin.barberos.table-users')
-                </div>
-                <div id="services-section" class="hidden">
-                    @includeWhen(View::exists('admin.servicios.manage-services'), 'admin.servicios.manage-services')
-                </div>
-            </div>
-        </div>
-    </div>
 
     @push('scripts')
     <script>

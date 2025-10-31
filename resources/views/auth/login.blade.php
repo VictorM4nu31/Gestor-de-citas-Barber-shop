@@ -29,7 +29,7 @@
                                 class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                                 :value="old('email')" required autofocus autocomplete="username">
                         </div>
-                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                        <x-shared.input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
                     <div class="mb-6">
@@ -46,7 +46,7 @@
                                 class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                                 required autocomplete="current-password">
                         </div>
-                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                        <x-shared.input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
                     <button type="submit"

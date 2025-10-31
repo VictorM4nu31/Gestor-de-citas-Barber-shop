@@ -25,7 +25,7 @@
                                    class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                                    :value="old('name')" required autofocus autocomplete="name">
                         </div>
-                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                        <x-shared.input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
                     <!-- Correo electrónico -->
@@ -38,7 +38,7 @@
                                    class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                                    :value="old('email')" required autocomplete="username">
                         </div>
-                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                        <x-shared.input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
                     <!-- Contraseña -->
@@ -51,7 +51,7 @@
                                    class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                                    required autocomplete="new-password">
                         </div>
-                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                        <x-shared.input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
                     <!-- Confirmar Contraseña -->
@@ -64,7 +64,7 @@
                                    class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                                    required autocomplete="new-password">
                         </div>
-                        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                        <x-shared.input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                     </div>
 
                     <button type="submit" class="w-full bg-primary text-light py-2 rounded-md hover:bg-secondary transition duration-300">

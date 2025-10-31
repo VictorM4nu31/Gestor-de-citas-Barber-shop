@@ -16,7 +16,7 @@ class CitaController extends Controller
     {
         $servicios = Servicio::all();
         $barberos = Barbero::all();
-        return view('citas.create', compact('servicios', 'barberos'));
+        return view('usuario.citas.create', compact('servicios', 'barberos'));
     }
 
     public function store(StoreRequest $request)
@@ -64,7 +64,17 @@ class CitaController extends Controller
             ->where('fecha', '>=', Carbon::today())
             ->get();
 
-        return view('citas.index', compact('citas'));
+        return view('usuario.citas.index', compact('citas'));
+    }
+
+    public function show($id)
+    {
+        $user = Auth::user();
+        $cita = Cita::where('id', $id)
+            ->where('id_usuario', $user->id)
+            ->firstOrFail();
+
+        return view('usuario.citas.show', compact('cita'));
     }
 
     public function destroy($id)

@@ -8,11 +8,11 @@
 @endpush
 
 @section('content')
-    <x-user.navbar />
+    <x-usuario.navbar />
 
     <main class="min-h-screen">
         {{-- Hero component: acepta title, subtitle, ctas e imagen opcional --}}
-        <x-welcome.hero :title="'Crafted to Perfection'" :subtitle="'Experience the art of traditional barbering combined with modern techniques. Our master barbers deliver precision cuts and grooming services that define excellence.'" :primary_cta="'Book Appointment'" :secondary_cta="'Learn More'" :image="asset('img/hero.jpg')" />
+        <x-usuario.hero :title="'Crafted to Perfection'" :subtitle="'Experience the art of traditional barbering combined with modern techniques. Our master barbers deliver precision cuts and grooming services that define excellence.'" :primary_cta="'Book Appointment'" :secondary_cta="'Learn More'" :image="asset('img/hero.jpg')" />
 
         {{-- About / Map section --}}
         <section id="about" class="text-center py-12 bg-secondary">
@@ -33,7 +33,7 @@
         </section>
 
     {{-- Services component (dinámico) --}}
-    <x-welcome.services :servicios="$servicios" />
+    <x-usuario.services :servicios="$servicios" />
 
         {{-- Barberos grid using component --}}
         <section id="barberos" class="text-center py-12 bg-background">
@@ -42,7 +42,7 @@
                 <p class="text-lg mb-8 text-muted">Conoce a nuestros talentosos barberos que están listos para atenderte.</p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                     @foreach($barberos as $barbero)
-                        <x-welcome.barbero-card :barbero="$barbero" />
+                        <x-usuario.barbero-card :barbero="$barbero" />
                     @endforeach
                 </div>
             </div>
@@ -56,7 +56,7 @@
         </section>
     </main>
 
-    <x-user.footer />
+    <x-usuario.footer />
 @endsection
 
 @push('scripts')

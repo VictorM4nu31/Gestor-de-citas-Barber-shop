@@ -27,10 +27,13 @@ require __DIR__.'/auth.php';
 
 /*-------------------------rutas agregadas--------------------------------*/
 Route::middleware('auth')->group(function () {
-    Route::resource('barberos', BarberoController::class);
-    Route::resource('servicios', ServicioController::class);
+    // Public barberos and servicios routes (read-only)
+    Route::get('barberos', [BarberoController::class, 'index'])->name('barberos.index');
+    Route::get('barberos/{barbero}', [BarberoController::class, 'show'])->name('barberos.show');
+    Route::get('servicios', [ServicioController::class, 'index'])->name('servicios.index');
+    Route::get('servicios/{servicio}', [ServicioController::class, 'show'])->name('servicios.show');
     
-    // Rutas para las citas
+    // Rutas para las citas (user functionality)
     Route::resource('citas', CitaController::class);
 });
 
@@ -65,12 +68,34 @@ use App\Http\Controllers\AdminController;
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/barberos', [AdminController::class, 'tableUsers'])->name('barberos.index');
-    Route::get('/barberos/create', [AdminController::class, 'tableUsersCreate'])->name('barberos.create');
-    Route::get('/barberos/{id}/edit', [AdminController::class, 'tableUsersEdit'])->name('barberos.edit');
-    Route::get('/servicios', [AdminController::class, 'manageServices'])->name('servicios.index');
-    Route::get('/servicios/create', [AdminController::class, 'servicesCreate'])->name('servicios.create');
-    Route::get('/servicios/{id}/edit', [AdminController::class, 'servicesEdit'])->name('servicios.edit');
+    
+    // Barberos CRUD
+    Route::get('/barberos', [AdminController::class, 'barberosIndex'])->name('barberos.index');
+    Route::get('/barberos/create', [AdminController::class, 'barberosCreate'])->name('barberos.create');
+    Route::post('/barberos', [AdminController::class, 'barberosStore'])->name('barberos.store');
+    Route::get('/barberos/{barbero}', [AdminController::class, 'barberosShow'])->name('barberos.show');
+    Route::get('/barberos/{barbero}/edit', [AdminController::class, 'barberosEdit'])->name('barberos.edit');
+    Route::put('/barberos/{barbero}', [AdminController::class, 'barberosUpdate'])->name('barberos.update');
+    Route::delete('/barberos/{barbero}', [AdminController::class, 'barberosDestroy'])->name('barberos.destroy');
+    
+    // Servicios CRUD
+    Route::get('/servicios', [AdminController::class, 'serviciosIndex'])->name('servicios.index');
+    Route::get('/servicios/create', [AdminController::class, 'serviciosCreate'])->name('servicios.create');
+    Route::post('/servicios', [AdminController::class, 'serviciosStore'])->name('servicios.store');
+    Route::get('/servicios/{servicio}', [AdminController::class, 'serviciosShow'])->name('servicios.show');
+    Route::get('/servicios/{servicio}/edit', [AdminController::class, 'serviciosEdit'])->name('servicios.edit');
+    Route::put('/servicios/{servicio}', [AdminController::class, 'serviciosUpdate'])->name('servicios.update');
+    Route::delete('/servicios/{servicio}', [AdminController::class, 'serviciosDestroy'])->name('servicios.destroy');
+    
+    // Citas CRUD
+    Route::get('/citas', [AdminController::class, 'citasIndex'])->name('citas.index');
+    Route::get('/citas/create', [AdminController::class, 'citasCreate'])->name('citas.create');
+    Route::post('/citas', [AdminController::class, 'citasStore'])->name('citas.store');
+    Route::get('/citas/{cita}', [AdminController::class, 'citasShow'])->name('citas.show');
+    Route::get('/citas/{cita}/edit', [AdminController::class, 'citasEdit'])->name('citas.edit');
+    Route::put('/citas/{cita}', [AdminController::class, 'citasUpdate'])->name('citas.update');
+    Route::delete('/citas/{cita}', [AdminController::class, 'citasDestroy'])->name('citas.destroy');
+    Route::post('/citas/check-availability', [AdminController::class, 'citasCheckAvailability'])->name('citas.check_availability');
 });
 
 // -------------- RUTAS PARA BARBEROS (sólo usuarios con rol barbero) --------------
