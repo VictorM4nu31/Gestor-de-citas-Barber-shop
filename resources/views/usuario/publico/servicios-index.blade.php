@@ -22,7 +22,7 @@
                     </div>
                     
                     <div class="text-center">
-                        <a href="{{ route('servicios.show', $servicio->id) }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded">Ver Detalles</a>
+                        <a href="{{ route('public.servicios.show', $servicio->id) }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded">Ver Detalles</a>
                     </div>
                 </div>
             @endforeach

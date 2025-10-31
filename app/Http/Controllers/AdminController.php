@@ -5,12 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Barbero;
 use App\Models\Servicio;
 use App\Models\Cita;
+use App\Models\User;
+use App\Http\Requests\StoreBarberoRequest;
+use App\Http\Requests\UpdateBarberoRequest;
+use App\Services\BarberoValidationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class AdminController extends Controller
 {
+    protected $barberoValidationService;
+
+    public function __construct(BarberoValidationService $barberoValidationService)
+    {
+        $this->barberoValidationService = $barberoValidationService;
+    }
     public function dashboard()
     {
         $barberos = \App\Models\Barbero::all();
@@ -19,9 +31,24 @@ class AdminController extends Controller
     }
 
     // ============ BARBEROS CRUD ============
-    public function barberosIndex()
+    public function barberosIndex(Request $request)
     {
-        $barberos = Barbero::all();
+        $query = Barbero::query();
+        
+        // Filtrar por estado si se especifica
+        if ($request->has('estado')) {
+            switch ($request->get('estado')) {
+                case 'activos':
+                    $query->activos();
+                    break;
+                case 'inactivos':
+                    $query->inactivos();
+                    break;
+                // 'todos' o cualquier otro valor muestra todos
+            }
+        }
+        
+        $barberos = $query->get();
         return view('admin.barberos.index', compact('barberos'));
     }
 
@@ -30,26 +57,49 @@ class AdminController extends Controller
         return view('admin.barberos.create');
     }
 
-    public function barberosStore(Request $request)
+    public function barberosStore(StoreBarberoRequest $request)
     {
-        $validated = $request->validate([
-            'nombre_completo' => 'required|string|max:255',
-            'email' => 'required|email|unique:barberos,email',
-            'password' => 'required|string|min:8|confirmed',
-            'telefono' => 'nullable|string|max:20',
-            'especialidad' => 'required|string|max:255',
-            'experiencia' => 'required|string',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+        $validated = $request->validated();
 
-        if ($request->hasFile('foto')) {
-            $validated['foto'] = $request->file('foto')->store('barberos', 'public');
+        try {
+            \DB::transaction(function () use ($validated, $request) {
+                // 1. Crear usuario en tabla users
+                $user = \App\Models\User::create([
+                    'name' => $validated['nombre_completo'],
+                    'email' => $validated['email'],
+                    'password' => Hash::make($validated['password']),
+                ]);
+
+                // 2. Asignar rol "barbero" al usuario creado
+                $user->assignRole('barbero');
+
+                // 3. Preparar datos del barbero
+                $barberoData = [
+                    'nombre_completo' => $validated['nombre_completo'],
+                    'email' => $validated['email'],
+                    'telefono' => $validated['telefono'],
+                    'especialidad' => $validated['especialidad'],
+                    'experiencia' => $validated['experiencia'],
+                    'user_id' => $user->id,
+                    'activo' => true,
+                ];
+
+                // 4. Manejar foto si existe
+                if ($request->hasFile('foto')) {
+                    $barberoData['foto'] = $request->file('foto')->store('barberos', 'public');
+                }
+
+                // 5. Crear barbero vinculado al usuario
+                Barbero::create($barberoData);
+            });
+
+            return redirect()->route('admin.barberos.index')->with('success', 'Barbero creado exitosamente.');
+        } catch (\Exception $e) {
+            // Manejar errores y rollback automático por la transacción
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Error al crear el barbero: ' . $e->getMessage()]);
         }
-
-        $validated['password'] = Hash::make($validated['password']);
-        Barbero::create($validated);
-
-        return redirect()->route('admin.barberos.index')->with('success', 'Barbero creado exitosamente.');
     }
 
     public function barberosShow(Barbero $barbero)
@@ -62,34 +112,190 @@ class AdminController extends Controller
         return view('admin.barberos.edit', compact('barbero'));
     }
 
-    public function barberosUpdate(Request $request, Barbero $barbero)
+    public function barberosUpdate(UpdateBarberoRequest $request, Barbero $barbero)
     {
-        $validated = $request->validate([
-            'nombre_completo' => 'required|string|max:255',
-            'email' => 'required|email|unique:barberos,email,' . $barbero->id,
-            'password' => 'nullable|string|min:8|confirmed',
-            'telefono' => 'nullable|string|max:20',
-            'especialidad' => 'required|string|max:255',
-            'experiencia' => 'required|string',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
-
-        if ($request->hasFile('foto')) {
-            if ($barbero->foto) {
-                Storage::disk('public')->delete($barbero->foto);
-            }
-            $validated['foto'] = $request->file('foto')->store('barberos', 'public');
+        $validated = $request->validated();
+        
+        // Validar integridad de datos si el barbero está activo
+        if ($barbero->activo) {
+            $this->barberoValidationService->validateIsActive($barbero);
         }
 
-        if ($request->filled('password')) {
-            $validated['password'] = Hash::make($validated['password']);
-        } else {
-            unset($validated['password']);
+        try {
+            DB::transaction(function () use ($validated, $request, $barbero) {
+                // 1. Manejar foto si existe
+                if ($request->hasFile('foto')) {
+                    if ($barbero->foto) {
+                        Storage::disk('public')->delete($barbero->foto);
+                    }
+                    $validated['foto'] = $request->file('foto')->store('barberos', 'public');
+                }
+
+                // 2. Crear usuario automáticamente si no existe
+                if (!$barbero->user_id || !$barbero->user) {
+                    $user = User::create([
+                        'name' => $validated['nombre_completo'],
+                        'email' => $validated['email'],
+                        'password' => Hash::make($validated['password'] ?? 'temporal123'),
+                    ]);
+                    
+                    // Asignar rol "barbero" al usuario creado
+                    $user->assignRole('barbero');
+                    
+                    $barbero->user_id = $user->id;
+                } else {
+                    // 3. Sincronizar cambios con el usuario existente
+                    $user = $barbero->user;
+                    $userUpdateData = [
+                        'name' => $validated['nombre_completo'],
+                        'email' => $validated['email'],
+                    ];
+
+                    // 4. Actualizar contraseña en tabla users si se proporciona
+                    if ($request->filled('password')) {
+                        $userUpdateData['password'] = Hash::make($validated['password']);
+                    }
+
+                    $user->update($userUpdateData);
+                }
+
+                // 5. Actualizar datos del barbero (sin password ya que se maneja en users)
+                $barberoData = [
+                    'nombre_completo' => $validated['nombre_completo'],
+                    'email' => $validated['email'],
+                    'telefono' => $validated['telefono'],
+                    'especialidad' => $validated['especialidad'],
+                    'experiencia' => $validated['experiencia'],
+                    'user_id' => $barbero->user_id,
+                ];
+
+                if (isset($validated['foto'])) {
+                    $barberoData['foto'] = $validated['foto'];
+                }
+
+                $barbero->update($barberoData);
+            });
+
+            return redirect()->route('admin.barberos.index')->with('success', 'Barbero actualizado exitosamente.');
+        } catch (\Exception $e) {
+            // Manejar errores y rollback automático por la transacción
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Error al actualizar el barbero: ' . $e->getMessage()]);
         }
+    }
 
-        $barbero->update($validated);
+    public function barberosDarDeBaja(Barbero $barbero)
+    {
+        try {
+            // Validar que el barbero puede ser dado de baja
+            $this->barberoValidationService->validateCanDeactivate($barbero);
+            
+            DB::transaction(function () use ($barbero) {
+                // 1. Marcar barbero como inactivo (activo = false)
+                $barbero->update([
+                    'activo' => false,
+                    'fecha_baja' => now(),
+                ]);
 
-        return redirect()->route('admin.barberos.index')->with('success', 'Barbero actualizado exitosamente.');
+                // 2. Desactivar usuario correspondiente si existe
+                if ($barbero->user) {
+                    // Remover rol de barbero para desactivar acceso
+                    $barbero->user->removeRole('barbero');
+                    
+                    // Opcional: También podríamos desactivar completamente el usuario
+                    // pero mantenemos el usuario para preservar integridad referencial
+                }
+            });
+
+            return redirect()->route('admin.barberos.index')
+                ->with('success', 'Barbero dado de baja exitosamente.');
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors());
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withErrors(['error' => 'Error al dar de baja el barbero: ' . $e->getMessage()]);
+        }
+    }
+
+    public function barberosReactivar(Barbero $barbero)
+    {
+        try {
+            // Validar que el barbero puede ser reactivado
+            $this->barberoValidationService->validateCanReactivate($barbero);
+            
+            DB::transaction(function () use ($barbero) {
+                // 1. Marcar barbero como activo (activo = true)
+                $barbero->update([
+                    'activo' => true,
+                    'fecha_baja' => null,
+                ]);
+
+                // 2. Reactivar usuario correspondiente
+                if ($barbero->user) {
+                    // Asignar rol de barbero para reactivar acceso
+                    $barbero->user->assignRole('barbero');
+                } else {
+                    // Si no existe usuario, crear uno automáticamente
+                    $user = User::create([
+                        'name' => $barbero->nombre_completo,
+                        'email' => $barbero->email,
+                        'password' => Hash::make('temporal123'), // Contraseña temporal
+                    ]);
+                    
+                    // Asignar rol "barbero" al usuario creado
+                    $user->assignRole('barbero');
+                    
+                    // Vincular barbero con el usuario
+                    $barbero->update(['user_id' => $user->id]);
+                }
+            });
+
+            return redirect()->route('admin.barberos.index')
+                ->with('success', 'Barbero reactivado exitosamente.');
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors());
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withErrors(['error' => 'Error al reactivar el barbero: ' . $e->getMessage()]);
+        }
+    }
+
+    public function barberosEliminarPermanente(Barbero $barbero)
+    {
+        try {
+            // Validar que el barbero puede ser eliminado permanentemente
+            $this->barberoValidationService->validateCanDelete($barbero);
+            
+            DB::transaction(function () use ($barbero) {
+
+                // 1. Eliminar foto si existe
+                if ($barbero->foto) {
+                    Storage::disk('public')->delete($barbero->foto);
+                }
+
+                // 2. Eliminar usuario de tabla users (cascade eliminará barbero)
+                if ($barbero->user) {
+                    // Remover roles antes de eliminar
+                    $barbero->user->roles()->detach();
+                    $barbero->user->delete();
+                } else {
+                    // Si no hay usuario asociado, eliminar barbero directamente
+                    $barbero->delete();
+                }
+            });
+
+            return redirect()->route('admin.barberos.index')
+                ->with('success', 'Barbero eliminado permanentemente del sistema.');
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors());
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     public function barberosDestroy(Barbero $barbero)

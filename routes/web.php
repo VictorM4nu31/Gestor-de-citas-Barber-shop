@@ -26,13 +26,13 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 /*-------------------------rutas agregadas--------------------------------*/
+// Public barberos and servicios routes (accessible to all users)
+Route::get('barberos', [BarberoController::class, 'index'])->name('public.barberos.index');
+Route::get('barberos/{barbero}', [BarberoController::class, 'show'])->name('public.barberos.show');
+Route::get('servicios', [ServicioController::class, 'index'])->name('public.servicios.index');
+Route::get('servicios/{servicio}', [ServicioController::class, 'show'])->name('public.servicios.show');
+
 Route::middleware('auth')->group(function () {
-    // Public barberos and servicios routes (read-only)
-    Route::get('barberos', [BarberoController::class, 'index'])->name('barberos.index');
-    Route::get('barberos/{barbero}', [BarberoController::class, 'show'])->name('barberos.show');
-    Route::get('servicios', [ServicioController::class, 'index'])->name('servicios.index');
-    Route::get('servicios/{servicio}', [ServicioController::class, 'show'])->name('servicios.show');
-    
     // Rutas para las citas (user functionality)
     Route::resource('citas', CitaController::class);
 });
@@ -69,13 +69,16 @@ use App\Http\Controllers\AdminController;
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     
-    // Barberos CRUD
+    // Barberos CRUD (admin routes with admin. prefix)
     Route::get('/barberos', [AdminController::class, 'barberosIndex'])->name('barberos.index');
     Route::get('/barberos/create', [AdminController::class, 'barberosCreate'])->name('barberos.create');
     Route::post('/barberos', [AdminController::class, 'barberosStore'])->name('barberos.store');
     Route::get('/barberos/{barbero}', [AdminController::class, 'barberosShow'])->name('barberos.show');
     Route::get('/barberos/{barbero}/edit', [AdminController::class, 'barberosEdit'])->name('barberos.edit');
     Route::put('/barberos/{barbero}', [AdminController::class, 'barberosUpdate'])->name('barberos.update');
+    Route::patch('/barberos/{barbero}/dar-de-baja', [AdminController::class, 'barberosDarDeBaja'])->name('barberos.dar_de_baja');
+    Route::patch('/barberos/{barbero}/reactivar', [AdminController::class, 'barberosReactivar'])->name('barberos.reactivar');
+    Route::delete('/barberos/{barbero}/eliminar-permanente', [AdminController::class, 'barberosEliminarPermanente'])->name('barberos.eliminar_permanente');
     Route::delete('/barberos/{barbero}', [AdminController::class, 'barberosDestroy'])->name('barberos.destroy');
     
     // Servicios CRUD
@@ -99,7 +102,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
 // -------------- RUTAS PARA BARBEROS (sólo usuarios con rol barbero) --------------
-Route::middleware(['auth', 'role:barbero'])->prefix('barbero')->name('barbero.')->group(function () {
+Route::middleware(['auth', 'role:barbero', 'active.barbero'])->prefix('barbero')->name('barbero.')->group(function () {
     Route::get('/dashboard', [BarberoController::class, 'dashboard'])->name('dashboard');
 });
 

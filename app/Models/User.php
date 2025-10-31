@@ -45,4 +45,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the barbero associated with the user.
+     */
+    public function barbero()
+    {
+        return $this->hasOne(Barbero::class);
+    }
 }

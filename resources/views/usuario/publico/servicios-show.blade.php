@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $servicio->nombre }}</h2>
-            <a href="{{ route('servicios.index') }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded">Volver a Servicios</a>
+            <a href="{{ route('public.servicios.index') }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded">Volver a Servicios</a>
         </div>
     </x-slot>
 

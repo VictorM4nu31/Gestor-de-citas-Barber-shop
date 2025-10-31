@@ -42,20 +42,23 @@ class BarberoController extends Controller
 
     public function dashboard()
     {
-        if (!Auth::check() || !Auth::user()->hasRole('barbero')) {
-            abort(403, 'No tienes permiso para acceder a esta página.');
-        }
+        // El middleware ya verifica auth, role:barbero y active.barbero
+        // por lo que no necesitamos verificaciones adicionales aquí
         $user = Auth::user();
-        $barbero = Barbero::where('email', $user->email)->first();
+        $barbero = $user->barbero;
+        
         if (!$barbero) {
-            abort(403, 'No tienes permiso para acceder a esta página.');
+            // Esto no debería pasar si el middleware funciona correctamente
+            abort(403, 'No se encontró el perfil de barbero asociado.');
         }
-        // Mejor uso de relaciones y filtrado
+        
+        // Obtener citas del barbero usando la relación correcta
         $citas = $barbero->citas()
             ->with('usuario')
             ->orderBy('fecha', 'asc')
             ->orderBy('hora', 'asc')
             ->get();
+            
         return view('barbero.dashboard', compact('citas', 'barbero'));
     }
 
