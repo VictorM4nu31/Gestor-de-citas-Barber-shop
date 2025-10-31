@@ -19,15 +19,15 @@
             <div class="container mx-auto px-4 lg:px-8 flex flex-col md:flex-row items-center">
                 <div class="w-full md:w-1/2">
                     <h2 class="text-3xl font-semibold mb-4 text-primary">Sobre Nosotros</h2>
-                    <p class="text-lg mb-8 text-graylight">Conoce al equipo de profesionales que te atenderá con el mejor servicio en nuestra barbería.</p>
+                    <p class="text-lg mb-8 text-muted">Conoce al equipo de profesionales que te atenderá con el mejor servicio en nuestra barbería.</p>
                     <h3 class="text-2xl font-semibold mb-4 text-primary">Ubicación</h3>
                     <div id="mi_mapa" class="h-96 w-full rounded-lg overflow-hidden"></div>
                 </div>
                 <div class="w-full md:w-1/2 md:pl-8 mt-8 md:mt-0">
                     <h2 class="text-3xl font-semibold mb-4 text-primary">Información de la Barbería</h2>
-                    <p class="text-lg mb-4 text-graylight">Dirección: Calle Ejemplo 123, Ciudad</p>
-                    <p class="text-lg mb-4 text-graylight">Teléfono: (123) 456-7890</p>
-                    <p class="text-lg text-graylight">Horario: Lunes a Sábado - 9:00 AM a 7:00 PM</p>
+                    <p class="text-lg mb-4 text-muted">Dirección: Calle Ejemplo 123, Ciudad</p>
+                    <p class="text-lg mb-4 text-muted">Teléfono: (123) 456-7890</p>
+                    <p class="text-lg text-muted">Horario: Lunes a Sábado - 9:00 AM a 7:00 PM</p>
                 </div>
             </div>
         </section>

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Agendar Cita</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">Agendar Cita</h2>
         </div>
     </x-slot>
 
@@ -12,40 +12,49 @@
                 <h1 class="text-2xl font-bold mb-6 text-secondary">Agendar Cita</h1>
 
                 @if(session('error'))
-                    <div id="error-message" class="bg-danger text-light p-4 rounded mb-4">
+                    <x-ui.alert type="danger" dismissible id="error-message" class="mb-4">
                         {{ session('error') }}
-                    </div>
+                    </x-ui.alert>
                 @endif
 
                 <form action="{{ route('citas.store') }}" method="POST">
                     @csrf
                     <div class="space-y-4">
-                        <!-- Nombre Completo -->
-                        <div>
-                            <label for="nombre_completo" class="block text-sm font-medium text-secondary">Nombre Completo</label>
-                            <input type="text" id="nombre_completo" name="nombre_completo" class="mt-1 block w-full border border-graymuted rounded-md shadow-sm focus:border-primary focus:ring-primary" required>
-                        </div>
+                        <x-form.input 
+                            name="nombre_completo" 
+                            type="text" 
+                            label="Nombre Completo" 
+                            required 
+                        />
 
-                        <!-- Número de Teléfono -->
-                        <div>
-                            <label for="numero_telefono" class="block text-sm font-medium text-secondary">Número de Teléfono</label>
-                            <input type="text" id="numero_telefono" name="numero_telefono" class="mt-1 block w-full border border-graymuted rounded-md shadow-sm focus:border-primary focus:ring-primary" required>
-                        </div>
+                        <x-form.input 
+                            name="numero_telefono" 
+                            type="text" 
+                            label="Número de Teléfono" 
+                            required 
+                        />
 
-                        <!-- Correo Electrónico -->
-                        <div>
-                            <label for="correo_electronico" class="block text-sm font-medium text-secondary">Correo Electrónico</label>
-                            <input type="email" id="correo_electronico" name="correo_electronico" class="mt-1 block w-full border border-graymuted rounded-md shadow-sm focus:border-primary focus:ring-primary" required>
-                        </div>
+                        <x-form.input 
+                            name="correo_electronico" 
+                            type="email" 
+                            label="Correo Electrónico" 
+                            required 
+                        />
 
                         <!-- Servicios -->
                         <div>
-                            <label class="block text-sm font-medium text-secondary">Servicios</label>
+                            <x-form.label>Servicios</x-form.label>
                             <div class="space-y-2">
                                 @foreach($servicios as $servicio)
-                                    <div>
-                                        <input type="checkbox" id="servicio_{{ $servicio->id }}" name="servicios[]" value="{{ $servicio->id }}" class="mr-2">
-                                        <label for="servicio_{{ $servicio->id }}" class="text-sm text-gray-600">{{ $servicio->nombre }} - ${{ $servicio->precio }}</label>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" 
+                                               id="servicio_{{ $servicio->id }}" 
+                                               name="servicios[]" 
+                                               value="{{ $servicio->id }}" 
+                                               class="h-4 w-4 text-primary border-accent rounded focus:ring-primary focus:ring-2 mr-2">
+                                        <label for="servicio_{{ $servicio->id }}" class="text-sm text-secondary cursor-pointer">
+                                            {{ $servicio->nombre }} - ${{ $servicio->precio }}
+                                        </label>
                                     </div>
                                 @endforeach
                             </div>
@@ -53,35 +62,45 @@
                             <p id="costo_total" class="text-lg font-semibold mt-4 text-secondary">Total: $0</p>
                         </div>
 
-                        <!-- Barbero -->
-                        <div>
-                            <label for="id_barbero" class="block text-sm font-medium text-secondary">Seleccionar Barbero</label>
-                            <select id="id_barbero" name="id_barbero" class="mt-1 block w-full border border-graymuted rounded-md shadow-sm focus:border-primary focus:ring-primary" required>
-                                <option value="">Seleccionar barbero</option>
-                                @foreach($barberos as $barbero)
-                                    <option value="{{ $barbero->id }}">{{ $barbero->nombre_completo }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @php
+                            $barberoOptions = [];
+                            foreach($barberos as $barbero) {
+                                $barberoOptions[$barbero->id] = $barbero->nombre_completo;
+                            }
+                            
+                            $horaOptions = [];
+                            for($i = 9; $i <= 20; $i++) {
+                                $hora = str_pad($i, 2, '0', STR_PAD_LEFT) . ':00';
+                                $horaOptions[$hora] = $hora;
+                            }
+                        @endphp
 
-                        <!-- Fecha -->
-                        <div>
-                            <label for="fecha" class="block text-sm font-medium text-secondary">Fecha</label>
-                            <input type="date" id="fecha" name="fecha" class="mt-1 block w-full border border-graymuted rounded-md shadow-sm focus:border-primary focus:ring-primary" required>
-                        </div>
+                        <x-form.select 
+                            name="id_barbero" 
+                            label="Seleccionar Barbero" 
+                            placeholder="Seleccionar barbero"
+                            :options="$barberoOptions"
+                            required 
+                        />
 
-                        <!-- Hora -->
-                        <div>
-                            <label for="hora" class="block text-sm font-medium text-secondary">Hora</label>
-                            <select id="hora" name="hora" class="mt-1 block w-full border border-graymuted rounded-md shadow-sm focus:border-primary focus:ring-primary" required>
-                                @for($i = 9; $i <= 20; $i++)
-                                    <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00</option>
-                                @endfor
-                            </select>
-                        </div>
+                        <x-form.input 
+                            name="fecha" 
+                            type="date" 
+                            label="Fecha" 
+                            required 
+                        />
+
+                        <x-form.select 
+                            name="hora" 
+                            label="Hora" 
+                            :options="$horaOptions"
+                            required 
+                        />
 
                         <div class="mt-4">
-                            <button type="submit" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded">Agendar Cita</button>
+                            <x-ui.button type="submit">
+                                Agendar Cita
+                            </x-ui.button>
                         </div>
                     </div>
                 </form>
@@ -205,17 +224,17 @@
                     .then(data => {
                         let resultHtml = '<h3 class="text-lg font-bold mb-2"></h3>';
                         if (data.length === 0) {
-                            resultHtml += '<p class="text-green-500">Fecha totalmente libre.</p>';
+                            resultHtml += '<p class="text-success">Fecha totalmente libre.</p>';
                         } else {
                             // Obtener el nombre del barbero seleccionado
                             const selectedBarbero = barberoSelect.options[barberoSelect.selectedIndex].text;
 
-                            resultHtml += `<p class="text-lg font-bold mb-2">${selectedBarbero}</p><p class="text-gray-600 mb-2">Ya tiene agendado los siguientes horarios:</p>`;
+                            resultHtml += `<p class="text-lg font-bold mb-2">${selectedBarbero}</p><p class="text-muted mb-2">Ya tiene agendado los siguientes horarios:</p>`;
                             resultHtml += '<ul class="list-disc pl-5">';
                             data.forEach(cita => {
                                 resultHtml += `
-                                    <li class="text-red-500">
-                                        <i class="fas fa-times-circle mr-2 text-red-500"></i>
+                                    <li class="text-danger">
+                                        <i class="fas fa-times-circle mr-2 text-danger"></i>
                                         ${cita.hora} - ${cita.nombre_completo} (${cita.servicios})
                                     </li>`;
                             });

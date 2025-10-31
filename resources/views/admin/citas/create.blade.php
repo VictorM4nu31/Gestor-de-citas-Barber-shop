@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Agendar Cita</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">Agendar Cita</h2>
             <a href="{{ route('admin.citas.index') }}" class="border-2 border-black text-black py-2 px-4 rounded-md">Ver Citas Programadas</a>
         </div>
     </x-slot>

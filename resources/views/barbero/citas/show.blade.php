@@ -1,35 +1,35 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 class="text-2xl font-semibold">Detalles de la Cita</h1>
+        <h1 class="text-2xl font-semibold text-white">Detalles de la Cita</h1>
     </x-slot>
 
     <div id="view" class="h-full w-screen flex flex-row">
         <div class="bg-surface flex-grow text-secondary p-6">
             <!-- Mensajes de éxito/error -->
             @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                <x-ui.alert type="success" class="mb-4">
                     {{ session('success') }}
-                </div>
+                </x-ui.alert>
             @endif
 
             @if(session('error'))
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <x-ui.alert type="danger" class="mb-4">
                     {{ session('error') }}
-                </div>
+                </x-ui.alert>
             @endif
 
             <!-- Navegación -->
             <div class="mb-6 space-x-2">
-                <a href="{{ route('barbero.dashboard') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                <x-ui.button type="secondary" href="{{ route('barbero.dashboard') }}">
                     ← Dashboard
-                </a>
-                <a href="{{ route('barbero.citas.index') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                </x-ui.button>
+                <x-ui.button type="info" href="{{ route('barbero.citas.index') }}">
                     Todas las Citas
-                </a>
+                </x-ui.button>
             </div>
 
             <!-- Detalles de la Cita -->
-            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <x-ui.card class="overflow-hidden">
                 <div class="px-4 py-5 sm:px-6">
                     <h3 class="text-lg leading-6 font-medium text-gray-900">
                         Información de la Cita
@@ -45,12 +45,10 @@
                                 Estado
                             </dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                    @if($cita->estado === 'pendiente') bg-yellow-100 text-yellow-800
-                                    @elseif($cita->estado === 'atendida') bg-green-100 text-green-800
-                                    @else bg-red-100 text-red-800 @endif">
+                                <x-ui.badge 
+                                    type="@if($cita->estado === 'pendiente') warning @elseif($cita->estado === 'atendida') success @else danger @endif">
                                     {{ $cita->estado_texto }}
-                                </span>
+                                </x-ui.badge>
                                 @if($cita->fecha_atencion)
                                     <div class="text-xs text-gray-500 mt-1">
                                         Atendida el {{ $cita->fecha_atencion->format('d/m/Y a las H:i') }}
@@ -125,7 +123,7 @@
                         </div>
                     </dl>
                 </div>
-            </div>
+            </x-ui.card>
 
             <!-- Acciones -->
             @if($cita->puedeSerAtendida())
@@ -133,11 +131,10 @@
                     <form action="{{ route('barbero.citas.atender', $cita) }}" method="POST" class="inline">
                         @csrf
                         @method('PATCH')
-                        <button type="submit" 
-                                class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                        <x-ui.button type="success" 
                                 onclick="return confirm('¿Confirmas que has atendido a este cliente?')">
                             ✓ Marcar como Atendida
-                        </button>
+                        </x-ui.button>
                     </form>
                 </div>
             @endif

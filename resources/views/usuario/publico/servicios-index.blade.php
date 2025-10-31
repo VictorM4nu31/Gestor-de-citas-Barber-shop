@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Nuestros Servicios</h2>
+        <h2 class="font-semibold text-xl text-white leading-tight">Nuestros Servicios</h2>
     </x-slot>
 
     <main class="container mx-auto px-4 py-8">
@@ -8,7 +8,7 @@
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($servicios as $servicio)
-                <div class="bg-light border border-metal rounded-lg shadow-md p-6">
+                <div class="bg-background border border-accent rounded-lg shadow-md p-6">
                     @if ($servicio->foto)
                         <img src="{{ asset('storage/' . $servicio->foto) }}" alt="Foto de {{ $servicio->nombre }}" class="w-full h-48 object-cover rounded-lg mb-4">
                     @endif
@@ -22,14 +22,14 @@
                     </div>
                     
                     <div class="text-center">
-                        <a href="{{ route('public.servicios.show', $servicio->id) }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded">Ver Detalles</a>
+                        <a href="{{ route('public.servicios.show', $servicio->id) }}" class="bg-primary hover:bg-secondary text-white py-2 px-4 rounded">Ver Detalles</a>
                     </div>
                 </div>
             @endforeach
         </div>
         
         <div class="text-center mt-8">
-            <a href="{{ route('citas.create') }}" class="bg-success hover:bg-primary text-light py-3 px-6 rounded-lg text-lg">Agendar una Cita</a>
+            <a href="{{ route('citas.create') }}" class="bg-success hover:bg-primary text-white py-3 px-6 rounded-lg text-lg">Agendar una Cita</a>
         </div>
     </main>
 </x-app-layout>

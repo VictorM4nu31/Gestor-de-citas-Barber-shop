@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Editar Servicio</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">Editar Servicio</h2>
             <a href="{{ route('admin.servicios.index') }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded-md">Volver a la Lista</a>
         </div>
     </x-slot>

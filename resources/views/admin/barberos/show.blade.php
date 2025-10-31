@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Ver Barbero</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">Ver Barbero</h2>
             <a href="{{ route('admin.barberos.index') }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded">Volver a la Lista</a>
         </div>
     </x-slot>
@@ -12,12 +12,12 @@
             <div class="mb-4">
                 <strong class="text-secondary">Estado:</strong>
                 @if($barbero->activo)
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 ml-2">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-success/10 text-success ml-2">
                         <i class="fas fa-check-circle mr-2"></i>
                         Activo
                     </span>
                 @else
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800 ml-2">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-danger/10 text-danger ml-2">
                         <i class="fas fa-times-circle mr-2"></i>
                         Inactivo
                     </span>
@@ -69,7 +69,7 @@
                         @csrf
                         @method('PATCH')
                         <button type="submit" 
-                                class="bg-warning hover:bg-yellow-600 text-white py-2 px-4 rounded flex items-center"
+                                class="bg-warning hover:bg-warning/90 text-white py-2 px-4 rounded flex items-center"
                                 onclick="return confirm('¿Estás seguro de que deseas dar de baja a este barbero? No podrá acceder al sistema pero se mantendrá su historial.')">
                             <i class="fas fa-user-times mr-2"></i>Dar de Baja
                         </button>
@@ -80,7 +80,7 @@
                         @csrf
                         @method('PATCH')
                         <button type="submit" 
-                                class="bg-success hover:bg-green-600 text-white py-2 px-4 rounded flex items-center"
+                                class="bg-success hover:bg-success/90 text-white py-2 px-4 rounded flex items-center"
                                 onclick="return confirm('¿Estás seguro de que deseas reactivar a este barbero?')">
                             <i class="fas fa-user-check mr-2"></i>Reactivar Barbero
                         </button>
@@ -92,7 +92,7 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit" 
-                            class="bg-danger hover:bg-red-700 text-white py-2 px-4 rounded flex items-center"
+                            class="bg-danger hover:bg-danger/90 text-white py-2 px-4 rounded flex items-center"
                             onclick="return confirm('⚠️ ADVERTENCIA: Esta acción eliminará PERMANENTEMENTE al barbero y todos sus datos.\n\n• Se eliminará su cuenta de usuario\n• Se eliminará su perfil de barbero\n• Se mantendrán las citas históricas por integridad\n\n¿Estás COMPLETAMENTE seguro de continuar? Esta acción NO se puede deshacer.')">
                         <i class="fas fa-trash-alt mr-2"></i>Eliminar Permanentemente
                     </button>

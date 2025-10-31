@@ -1,23 +1,11 @@
-<nav x-data="{ open: false }" class="bg-secondary text-light border-b border-metal">
+<nav x-data="{ open: false }" class="bg-secondary text-white border-b border-accent">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    @if(auth()->check() && auth()->user()->hasRole('admin'))
-                        <a href="{{ route('admin.dashboard') }}">
-                            <x-shared.application-logo class="block h-9 w-auto fill-current text-light" />
-                        </a>
-                    @elseif(auth()->check() && auth()->user()->hasRole('barbero'))
-                        <a href="{{ route('barbero.dashboard') }}">
-                            <x-shared.application-logo class="block h-9 w-auto fill-current text-light" />
-                        </a>
-                    @else
-                        <a href="{{ route('dashboard') }}">
-                            <x-shared.application-logo class="block h-9 w-auto fill-current text-light" />
-                        </a>
-                    @endif
+                    <x-layout.logo size="md" />
                 </div>
 
                 <!-- Navigation Links (role-based) -->
@@ -55,7 +43,7 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-shared.dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-light bg-secondary hover:text-primary focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-secondary hover:text-primary focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
@@ -88,7 +76,7 @@
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-light hover:text-primary hover:bg-secondary/60 focus:outline-none focus:bg-secondary/60 focus:text-light transition duration-150 ease-in-out">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-primary hover:bg-secondary/60 focus:outline-none focus:bg-secondary/60 focus:text-white transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -99,7 +87,7 @@
     </div>
 
         <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-secondary text-light">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-secondary text-white">
         <div class="pt-2 pb-3 space-y-1">
             @if(auth()->check() && auth()->user()->hasRole('admin'))
                 <x-shared.responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
@@ -130,10 +118,10 @@
 
         <!-- Responsive Settings Options -->
         @auth
-        <div class="pt-4 pb-1 border-t border-metal">
+        <div class="pt-4 pb-1 border-t border-accent">
             <div class="px-4">
-                <div class="font-medium text-base text-light">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-graylight">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-base text-white">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-sm text-muted">{{ Auth::user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">

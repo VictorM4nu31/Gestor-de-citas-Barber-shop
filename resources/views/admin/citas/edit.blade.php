@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Editar Cita</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">Editar Cita</h2>
             <a href="{{ route('admin.citas.index') }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded">Volver a la Lista</a>
         </div>
     </x-slot>

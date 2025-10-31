@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center flex-wrap">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Panel de Administración</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">Panel de Administración</h2>
         </div>
     </x-slot>
 

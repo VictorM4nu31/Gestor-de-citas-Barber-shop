@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Gestión de Citas</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">Gestión de Citas</h2>
             <a href="{{ route('admin.citas.create') }}" class="bg-primary text-light hover:bg-secondary py-2 px-4 rounded">Agendar Nueva Cita</a>
         </div>
     </x-slot>
@@ -17,7 +17,7 @@
             @endif
 
             @if($citas->isEmpty())
-                <p class="text-gray-600">No hay citas agendadas.</p>
+                <p class="text-muted">No hay citas agendadas.</p>
             @else
                 <div class="overflow-x-auto bg-surface">
                     <table class="min-w-full divide-y divide-metal">
@@ -45,17 +45,17 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $cita->servicios_nombres_texto }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $cita->costo }}$</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-success/10 text-success">
                                             Activa
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="{{ route('admin.citas.show', $cita->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Ver</a>
-                                        <a href="{{ route('admin.citas.edit', $cita->id) }}" class="text-blue-600 hover:text-blue-900 mr-2">Editar</a>
+                                        <a href="{{ route('admin.citas.show', $cita->id) }}" class="text-primary hover:text-primary/90 mr-2">Ver</a>
+                                        <a href="{{ route('admin.citas.edit', $cita->id) }}" class="text-info hover:text-info/90 mr-2">Editar</a>
                                         <form action="{{ route('admin.citas.destroy', $cita->id) }}" method="POST" class="inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900">Eliminar</button>
+                                            <button type="submit" class="text-danger hover:text-danger/90">Eliminar</button>
                                         </form>
                                     </td>
                                 </tr>

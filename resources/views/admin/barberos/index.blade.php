@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Lista de Barberos</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">Lista de Barberos</h2>
             <a href="{{ route('admin.barberos.create') }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded flex items-center space-x-2">
                 <i class="fas fa-user-plus"></i>
                 <span>Crear Barbero</span>
@@ -21,15 +21,15 @@
         <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
             <div class="flex flex-wrap gap-2">
                 <a href="{{ route('admin.barberos.index') }}" 
-                   class="px-4 py-2 rounded transition-colors {{ !request('estado') ? 'bg-primary text-light' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                   class="px-4 py-2 rounded transition-colors {{ !request('estado') ? 'bg-primary text-white' : 'bg-surface text-secondary hover:bg-accent' }}">
                     <i class="fas fa-users mr-1"></i>Todos
                 </a>
                 <a href="{{ route('admin.barberos.index', ['estado' => 'activos']) }}" 
-                   class="px-4 py-2 rounded transition-colors {{ request('estado') === 'activos' ? 'bg-success text-light' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                   class="px-4 py-2 rounded transition-colors {{ request('estado') === 'activos' ? 'bg-success text-white' : 'bg-surface text-secondary hover:bg-accent' }}">
                     <i class="fas fa-user-check mr-1"></i>Activos
                 </a>
                 <a href="{{ route('admin.barberos.index', ['estado' => 'inactivos']) }}" 
-                   class="px-4 py-2 rounded transition-colors {{ request('estado') === 'inactivos' ? 'bg-warning text-light' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                   class="px-4 py-2 rounded transition-colors {{ request('estado') === 'inactivos' ? 'bg-warning text-white' : 'bg-surface text-secondary hover:bg-accent' }}">
                     <i class="fas fa-user-times mr-1"></i>Inactivos
                 </a>
             </div>
@@ -58,16 +58,16 @@
                 </thead>
                 <tbody class="text-secondary">
                     @forelse($barberos as $barbero)
-                    <tr class="{{ !$barbero->activo ? 'bg-gray-100 opacity-75' : '' }}">
+                    <tr class="{{ !$barbero->activo ? 'bg-surface opacity-75' : '' }}">
                         <td class="py-2 px-4 border-metal">{{ $barbero->id }}</td>
                         <td class="py-2 px-4 border-metal">
                             @if($barbero->activo)
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">
                                     <i class="fas fa-check-circle mr-1"></i>
                                     Activo
                                 </span>
                             @else
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-danger/10 text-danger">
                                     <i class="fas fa-times-circle mr-1"></i>
                                     Inactivo
                                 </span>
@@ -104,7 +104,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" 
-                                                class="bg-warning hover:bg-yellow-600 text-white py-1 px-3 rounded w-full text-sm transition-colors"
+                                                class="bg-warning hover:bg-warning/90 text-white py-1 px-3 rounded w-full text-sm transition-colors"
                                                 onclick="return confirm('¿Estás seguro de que deseas dar de baja a este barbero?\n\nEl barbero:\n• No podrá acceder al sistema\n• Se mantendrá su historial de citas\n• Podrá ser reactivado más tarde')">
                                             <i class="fas fa-user-times mr-1"></i>Dar de Baja
                                         </button>

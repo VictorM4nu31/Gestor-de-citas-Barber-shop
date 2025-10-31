@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Lista de Servicios</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">Lista de Servicios</h2>
             <a href="{{ route('admin.servicios.create') }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded flex items-center space-x-2">
                 <i class="fas fa-plus-circle"></i>
                 <span>Crear Servicio</span>

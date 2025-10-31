@@ -1,32 +1,32 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 class="text-2xl font-semibold">Todas mis Citas</h1>
+        <h1 class="text-2xl font-semibold text-white">Todas mis Citas</h1>
     </x-slot>
 
     <div id="view" class="h-full w-screen flex flex-row">
         <div class="bg-surface flex-grow text-secondary p-6">
             <!-- Mensajes de éxito/error -->
             @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                <x-ui.alert type="success" class="mb-4">
                     {{ session('success') }}
-                </div>
+                </x-ui.alert>
             @endif
 
             @if(session('error'))
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <x-ui.alert type="danger" class="mb-4">
                     {{ session('error') }}
-                </div>
+                </x-ui.alert>
             @endif
 
             <!-- Navegación -->
             <div class="mb-6">
-                <a href="{{ route('barbero.dashboard') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                <x-ui.button type="secondary" href="{{ route('barbero.dashboard') }}">
                     ← Volver al Dashboard
-                </a>
+                </x-ui.button>
             </div>
 
             <!-- Gestión de Citas para Barbero -->
-            <div class="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg w-full">
+            <x-ui.card padding="lg" class="w-full">
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-2xl sm:text-3xl font-bold text-black">Todas mis Citas</h1>
                     <div class="text-sm text-gray-600">
@@ -66,12 +66,10 @@
                                             {{ $cita->servicios_nombres_texto }}
                                         </td>
                                         <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                            <span class="px-2 py-1 rounded-full text-xs
-                                                @if($cita->estado === 'pendiente') bg-yellow-100 text-yellow-800
-                                                @elseif($cita->estado === 'atendida') bg-green-100 text-green-800
-                                                @else bg-red-100 text-red-800 @endif">
+                                            <x-ui.badge 
+                                                type="@if($cita->estado === 'pendiente') warning @elseif($cita->estado === 'atendida') success @else danger @endif">
                                                 {{ $cita->estado_texto }}
-                                            </span>
+                                            </x-ui.badge>
                                             @if($cita->fecha_atencion)
                                                 <div class="text-xs text-gray-500 mt-1">
                                                     {{ $cita->fecha_atencion->format('d/m/Y H:i') }}
@@ -79,19 +77,17 @@
                                             @endif
                                         </td>
                                         <td class="px-4 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                            <a href="{{ route('barbero.citas.show', $cita) }}" 
-                                               class="text-indigo-600 hover:text-indigo-900">
+                                            <x-ui.button type="info" size="sm" href="{{ route('barbero.citas.show', $cita) }}">
                                                 Ver
-                                            </a>
+                                            </x-ui.button>
                                             @if($cita->puedeSerAtendida())
                                                 <form action="{{ route('barbero.citas.atender', $cita) }}" method="POST" class="inline">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit" 
-                                                            class="text-green-600 hover:text-green-900" 
+                                                    <x-ui.button type="success" size="sm" 
                                                             onclick="return confirm('¿Confirmas que has atendido a este cliente?')">
                                                         Marcar Atendida
-                                                    </button>
+                                                    </x-ui.button>
                                                 </form>
                                             @endif
                                         </td>
@@ -114,7 +110,7 @@
                         <p class="mt-1 text-sm text-gray-500">No tienes todavía citas programadas.</p>
                     </div>
                 @endif
-            </div>
+            </x-ui.card>
         </div>
     </div>
 </x-app-layout>

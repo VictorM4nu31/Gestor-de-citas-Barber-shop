@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Detalle de Cita</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">Detalle de Cita</h2>
             <a href="{{ route('admin.citas.index') }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded">Volver a la Lista</a>
         </div>
     </x-slot>
@@ -37,11 +37,11 @@
             </div>
             
             <div class="mt-6 flex space-x-4">
-                <a href="{{ route('admin.citas.edit', $cita->id) }}" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Editar</a>
+                <a href="{{ route('admin.citas.edit', $cita->id) }}" class="bg-info hover:bg-info/90 text-white py-2 px-4 rounded">Editar</a>
                 <form action="{{ route('admin.citas.destroy', $cita->id) }}" method="POST" class="inline">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded" onclick="return confirm('¿Estás seguro de que deseas eliminar esta cita?')">Eliminar</button>
+                    <button type="submit" class="bg-danger hover:bg-danger/90 text-white py-2 px-4 rounded" onclick="return confirm('¿Estás seguro de que deseas eliminar esta cita?')">Eliminar</button>
                 </form>
             </div>
         </div>
