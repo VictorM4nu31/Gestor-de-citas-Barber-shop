@@ -65,6 +65,47 @@
                             @endif
                         </div>
                     </div>
+                    
+                    <!-- Sección de servicios - fuera del grid para ocupar todo el ancho -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-secondary mb-3">Servicios que ofrece</label>
+                        <div class="space-y-3 max-h-64 overflow-y-auto border border-graymuted rounded-md p-4">
+                            @if($servicios->count() > 0)
+                                @foreach($servicios as $servicio)
+                                    <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-md hover:bg-gray-50">
+                                        <input type="checkbox" 
+                                               name="servicios[]" 
+                                               value="{{ $servicio->id }}"
+                                               id="servicio_{{ $servicio->id }}"
+                                               @if(in_array($servicio->id, $serviciosAsignados ?? [])) checked @endif
+                                               class="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                                        <div class="flex-1">
+                                            <label for="servicio_{{ $servicio->id }}" class="block text-sm font-medium text-gray-900 cursor-pointer">
+                                                {{ $servicio->nombre }}
+                                            </label>
+                                            <div class="text-sm text-gray-600 mt-1">
+                                                <span class="font-medium">${{ number_format($servicio->precio, 0, ',', '.') }}</span>
+                                                <span class="mx-2">•</span>
+                                                <span>{{ $servicio->duracion }} min</span>
+                                            </div>
+                                            @if($servicio->descripcion)
+                                                <p class="text-xs text-gray-500 mt-1">{{ Str::limit($servicio->descripcion, 80) }}</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <p class="text-sm text-gray-500 italic">No hay servicios publicados disponibles.</p>
+                            @endif
+                        </div>
+                        @if ($errors->has('servicios'))
+                            <p class="mt-2 text-sm text-danger">{{ $errors->first('servicios') }}</p>
+                        @endif
+                        <p class="mt-2 text-xs text-gray-500">
+                            Servicios actuales: {{ $barbero->servicios->count() }} asignados. 
+                            Modifica la selección para cambiar los servicios que este barbero puede ofrecer.
+                        </p>
+                    </div>
                     <div class="mt-6">
                         <button type="submit" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded">Guardar</button>
                     </div>

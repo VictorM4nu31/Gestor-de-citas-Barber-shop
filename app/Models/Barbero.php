@@ -85,6 +85,19 @@ class Barbero extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function servicios()
+    {
+        return $this->belongsToMany(Servicio::class, 'barbero_servicio');
+    }
+
+    public function serviciosPublicados()
+    {
+        return $this->belongsToMany(Servicio::class, 'barbero_servicio')
+                    ->where('publicado', true)
+                    ->orderBy('orden', 'asc')
+                    ->orderBy('created_at', 'desc');
+    }
+
     // Scopes para filtrar barberos activos/inactivos
     public function scopeActivos($query)
     {

@@ -27,6 +27,9 @@ class Servicio extends Model
         return $query->where('publicado', true)->orderBy('orden', 'asc')->orderBy('created_at', 'desc');
     }
 
-    // Si necesitas agregar relaciones u otras funcionalidades, hazlo aquí
+    public function barberos()
+    {
+        return $this->belongsToMany(Barbero::class, 'barbero_servicio');
+    }
 }
 

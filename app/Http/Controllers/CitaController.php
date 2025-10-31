@@ -14,8 +14,8 @@ class CitaController extends Controller
 {
     public function create()
     {
-        $servicios = Servicio::all();
-        $barberos = Barbero::all();
+        $servicios = Servicio::publicadosOrdenados()->get();
+        $barberos = Barbero::activos()->get();
         return view('usuario.citas.create', compact('servicios', 'barberos'));
     }
 
@@ -95,6 +95,21 @@ class CitaController extends Controller
             ->get(['hora', 'nombre_completo', 'servicios']);
 
         return response()->json($citas);
+    }
+
+    public function getServiciosByBarbero($barberoId)
+    {
+        $barbero = Barbero::where('id', $barberoId)
+            ->where('activo', true)
+            ->first();
+
+        if (!$barbero) {
+            return response()->json(['error' => 'Barbero no encontrado o inactivo'], 404);
+        }
+
+        $servicios = $barbero->serviciosPublicados()->get();
+
+        return response()->json($servicios);
     }
 
 }

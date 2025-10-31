@@ -108,10 +108,81 @@
             const barberoSelect = document.getElementById('id_barbero');
             const fechaInput = document.getElementById('fecha');
             const availabilityResult = document.getElementById('availability_result');
+            const serviciosCheckboxes = document.querySelectorAll('input[name="servicios[]"]');
+            const totalServicios = document.getElementById('total_servicios');
+            const costoTotal = document.getElementById('costo_total');
 
             // Establecer la fecha mínima como hoy
             const today = new Date().toISOString().split('T')[0];
             fechaInput.setAttribute('min', today);
+
+            // Función para actualizar servicios disponibles según el barbero seleccionado
+            function updateServiciosCheckboxes(serviciosDisponibles) {
+                serviciosCheckboxes.forEach(checkbox => {
+                    const servicioId = parseInt(checkbox.value);
+                    const disponible = serviciosDisponibles.some(s => s.id === servicioId);
+                    
+                    checkbox.disabled = !disponible;
+                    if (!disponible) {
+                        checkbox.checked = false; // Limpiar selecciones previas de servicios no disponibles
+                    }
+                    
+                    const label = checkbox.nextElementSibling;
+                    label.style.opacity = disponible ? '1' : '0.5';
+                    label.style.textDecoration = disponible ? 'none' : 'line-through';
+                });
+                
+                // Recalcular costo total después de filtrar servicios
+                updateCostoTotal();
+            }
+
+            // Función para resetear todos los servicios como disponibles
+            function resetServiciosCheckboxes() {
+                serviciosCheckboxes.forEach(checkbox => {
+                    checkbox.disabled = false;
+                    checkbox.checked = false; // Limpiar todas las selecciones
+                    
+                    const label = checkbox.nextElementSibling;
+                    label.style.opacity = '1';
+                    label.style.textDecoration = 'none';
+                });
+                
+                updateCostoTotal();
+            }
+
+            // Función para calcular y actualizar el costo total
+            function updateCostoTotal() {
+                let total = 0;
+                document.querySelectorAll('input[name="servicios[]"]:checked:not(:disabled)').forEach(checked => {
+                    const precio = parseFloat(checked.nextElementSibling.textContent.split('$')[1]);
+                    total += precio;
+                });
+                totalServicios.value = total;
+                costoTotal.textContent = `Total: $${total.toFixed(2)}`;
+            }
+
+            // Listener para cambio de barbero - filtrar servicios
+            barberoSelect.addEventListener('change', function() {
+                const barberoId = this.value;
+                
+                if (barberoId) {
+                    fetch(`/citas/servicios-barbero/${barberoId}`)
+                        .then(response => response.json())
+                        .then(servicios => {
+                            updateServiciosCheckboxes(servicios);
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener servicios del barbero:', error);
+                            resetServiciosCheckboxes();
+                        });
+                } else {
+                    // Si no hay barbero seleccionado, mostrar todos los servicios
+                    resetServiciosCheckboxes();
+                }
+                
+                // También actualizar disponibilidad
+                fetchAvailability();
+            });
 
             function fetchAvailability() {
                 const barberoId = barberoSelect.value;
@@ -158,25 +229,11 @@
                 }
             }
 
-            barberoSelect.addEventListener('change', fetchAvailability);
             fechaInput.addEventListener('change', fetchAvailability);
-        });
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const servicios = document.querySelectorAll('input[name="servicios[]"]');
-            const totalServicios = document.getElementById('total_servicios');
-            const costoTotal = document.getElementById('costo_total');
-
-            servicios.forEach(servicio => {
-                servicio.addEventListener('change', function () {
-                    let total = 0;
-                    document.querySelectorAll('input[name="servicios[]"]:checked').forEach(checked => {
-                        const precio = parseFloat(checked.nextElementSibling.textContent.split('$')[1]);
-                        total += precio;
-                    });
-                    totalServicios.value = total;
-                    costoTotal.textContent = `Total: $${total.toFixed(2)}`;
-                });
+            // Listener para cambios en servicios - actualizar costo total
+            serviciosCheckboxes.forEach(servicio => {
+                servicio.addEventListener('change', updateCostoTotal);
             });
 
             // Manejar el mensaje de error

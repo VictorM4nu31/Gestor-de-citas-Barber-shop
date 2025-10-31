@@ -54,7 +54,8 @@ class AdminController extends Controller
 
     public function barberosCreate()
     {
-        return view('admin.barberos.create');
+        $servicios = Servicio::publicadosOrdenados()->get();
+        return view('admin.barberos.create', compact('servicios'));
     }
 
     public function barberosStore(StoreBarberoRequest $request)
@@ -90,7 +91,12 @@ class AdminController extends Controller
                 }
 
                 // 5. Crear barbero vinculado al usuario
-                Barbero::create($barberoData);
+                $barbero = Barbero::create($barberoData);
+                
+                // 6. Sincronizar servicios seleccionados
+                if ($request->has('servicios')) {
+                    $barbero->servicios()->sync($request->input('servicios', []));
+                }
             });
 
             return redirect()->route('admin.barberos.index')->with('success', 'Barbero creado exitosamente.');
@@ -109,7 +115,9 @@ class AdminController extends Controller
 
     public function barberosEdit(Barbero $barbero)
     {
-        return view('admin.barberos.edit', compact('barbero'));
+        $servicios = Servicio::publicadosOrdenados()->get();
+        $serviciosAsignados = $barbero->servicios->pluck('id')->toArray();
+        return view('admin.barberos.edit', compact('barbero', 'servicios', 'serviciosAsignados'));
     }
 
     public function barberosUpdate(UpdateBarberoRequest $request, Barbero $barbero)
@@ -174,6 +182,14 @@ class AdminController extends Controller
                 }
 
                 $barbero->update($barberoData);
+                
+                // 6. Sincronizar servicios seleccionados
+                if ($request->has('servicios')) {
+                    $barbero->servicios()->sync($request->input('servicios', []));
+                } else {
+                    // Si no se envían servicios, desasignar todos
+                    $barbero->servicios()->sync([]);
+                }
             });
 
             return redirect()->route('admin.barberos.index')->with('success', 'Barbero actualizado exitosamente.');

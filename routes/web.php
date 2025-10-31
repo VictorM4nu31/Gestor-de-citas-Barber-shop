@@ -35,6 +35,8 @@ Route::get('servicios/{servicio}', [ServicioController::class, 'show'])->name('p
 Route::middleware('auth')->group(function () {
     // Rutas para las citas (user functionality)
     Route::resource('citas', CitaController::class);
+    Route::get('/citas/servicios-barbero/{barbero}', [CitaController::class, 'getServiciosByBarbero'])->name('citas.servicios_barbero');
+    Route::post('/citas/check-availability', [CitaController::class, 'checkAvailability'])->name('citas.check_availability');
 });
 
 // Ruta para cerrar sesión
@@ -58,8 +60,6 @@ Route::get('/citas/available-hours', [CitaController::class, 'availableHours'])-
 
 Route::get('/citas/disponibilidad', [CitaController::class, 'obtenerDisponibilidad'])->name('citas.disponibilidad'); */
 // routes/web.php
-
-Route::post('/citas/check-availability', [CitaController::class, 'checkAvailability'])->name('citas.check_availability');
 
 Route::get('/', [BarberoController::class, 'welcome']);
 
