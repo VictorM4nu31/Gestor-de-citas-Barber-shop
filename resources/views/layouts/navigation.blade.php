@@ -1,14 +1,11 @@
 <nav x-data="{ open: false }" class="bg-secondary text-white border-b border-accent">
-    <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
-                <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <x-layout.logo size="md" />
                 </div>
 
-                <!-- Navigation Links (role-based) -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @if(auth()->check() && auth()->user()->hasRole('admin'))
                         <x-shared.nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
@@ -19,6 +16,9 @@
                         </x-shared.nav-link>
                         <x-shared.nav-link :href="route('admin.servicios.index')" :active="request()->routeIs('admin.servicios.*')">
                             {{ 'Servicios' }}
+                        </x-shared.nav-link>
+                        <x-shared.nav-link :href="route('admin.gallery.index')" :active="request()->routeIs('admin.gallery.*')">
+                            {{ 'Galería' }}
                         </x-shared.nav-link>
                     @elseif(auth()->check() && auth()->user()->hasRole('barbero'))
                         <x-shared.nav-link :href="route('barbero.dashboard')" :active="request()->routeIs('barbero.*')">
@@ -38,7 +38,6 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
             @auth
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-shared.dropdown align="right" width="48">
@@ -59,7 +58,6 @@
                             {{ __('Profile') }}
                         </x-shared.dropdown-link>
 
-                        <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
@@ -74,7 +72,6 @@
             </div>
             @endauth
 
-            <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-primary hover:bg-secondary/60 focus:outline-none focus:bg-secondary/60 focus:text-white transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -86,7 +83,6 @@
         </div>
     </div>
 
-        <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-secondary text-white">
         <div class="pt-2 pb-3 space-y-1">
             @if(auth()->check() && auth()->user()->hasRole('admin'))
@@ -98,6 +94,9 @@
                 </x-shared.responsive-nav-link>
                 <x-shared.responsive-nav-link :href="route('admin.servicios.index')" :active="request()->routeIs('admin.servicios.*')">
                     {{ 'Servicios' }}
+                </x-shared.responsive-nav-link>
+                <x-shared.responsive-nav-link :href="route('admin.gallery.index')" :active="request()->routeIs('admin.gallery.*')">
+                    {{ 'Galería' }}
                 </x-shared.responsive-nav-link>
             @elseif(auth()->check() && auth()->user()->hasRole('barbero'))
                 <x-shared.responsive-nav-link :href="route('barbero.dashboard')" :active="request()->routeIs('barbero.*')">
@@ -116,7 +115,6 @@
             @endif
         </div>
 
-        <!-- Responsive Settings Options -->
         @auth
         <div class="pt-4 pb-1 border-t border-accent">
             <div class="px-4">
@@ -129,7 +127,6 @@
                     {{ __('Profile') }}
                 </x-shared.responsive-nav-link>
 
-                <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
 

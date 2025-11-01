@@ -15,4 +15,3 @@ class AuthLayout extends Component
         return view('layouts.auth');
     }
 }
-

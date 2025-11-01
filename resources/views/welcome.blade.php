@@ -5,16 +5,18 @@
 @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link href="https://cdn.jsdelivr.net/npm/flowbite@1.5.0/dist/flowbite.min.css" rel="stylesheet">
+    
+    <!-- Preload first gallery image for better performance -->
+    @if($galleryImages->isNotEmpty())
+        <link rel="preload" as="image" href="{{ $galleryImages->first()->thumbnail_url }}">
+    @endif
 @endpush
 
 @section('content')
     <x-usuario.navbar />
 
     <main class="min-h-screen">
-        {{-- Hero component: acepta title, subtitle, ctas e imagen opcional --}}
         <x-usuario.hero :title="'Crafted to Perfection'" :subtitle="'Experience the art of traditional barbering combined with modern techniques. Our master barbers deliver precision cuts and grooming services that define excellence.'" :primary_cta="'Book Appointment'" :secondary_cta="'Learn More'" :image="asset('img/hero.jpg')" />
-
-        {{-- About / Map section --}}
         <section id="about" class="text-center py-12 bg-secondary">
             <div class="container mx-auto px-4 lg:px-8 flex flex-col md:flex-row items-center">
                 <div class="w-full md:w-1/2">
@@ -32,10 +34,26 @@
             </div>
         </section>
 
-    {{-- Services component (dinámico) --}}
-    <x-usuario.services :servicios="$servicios" />
+        <x-usuario.services :servicios="$servicios" />
+        
+        <!-- Gallery Section -->
+        @if($galleryImages->isNotEmpty())
+            <x-gallery.section 
+                title="Nuestra Galería"
+                :images="$galleryImages"
+                :columns="['mobile' => 1, 'tablet' => 2, 'desktop' => 3]"
+                :lazy-load="true"
+                :show-count="false"
+                class="py-12 bg-secondary"
+                id="gallery"
+            >
+                <x-slot:header>
+                    <h2 class="text-3xl font-semibold mb-4 text-primary">Nuestra Galería</h2>
+                    <p class="text-lg mb-8 text-muted">Descubre nuestro trabajo y el ambiente de nuestra barbería</p>
+                </x-slot:header>
+            </x-gallery.section>
+        @endif
 
-        {{-- Barberos grid using component --}}
         <section id="barberos" class="text-center py-12 bg-background">
             <div class="container mx-auto px-4 lg:px-8">
                 <h2 class="text-3xl font-semibold mb-4 text-secondary">Nuestros Barberos</h2>
@@ -55,6 +73,11 @@
             </div>
         </section>
     </main>
+
+    <!-- Gallery Lightbox -->
+    @if($galleryImages->isNotEmpty())
+        <x-gallery.lightbox :images="$galleryImages" />
+    @endif
 
     <x-usuario.footer />
 @endsection

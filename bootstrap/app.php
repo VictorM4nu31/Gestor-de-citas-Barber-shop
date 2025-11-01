@@ -16,8 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'active.barbero' => \App\Http\Middleware\CheckActiveBarbero::class,
+            'gallery.rate_limit' => \App\Http\Middleware\GalleryUploadRateLimit::class,
+            'gallery.security' => \App\Http\Middleware\GallerySecurityHeaders::class,
+            'gallery.image_headers' => \App\Http\Middleware\GalleryImageHeaders::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
     })->create();

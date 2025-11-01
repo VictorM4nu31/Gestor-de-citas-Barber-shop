@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Gallery Styles */
+@layer components {
+    .gallery-section {
+        @apply relative;
+    }
+    
+    .gallery-grid {
+        @apply w-full;
+    }
+    
+    .gallery-item {
+        @apply cursor-pointer transition-transform duration-200 hover:scale-[1.02];
+    }
+    
+    .gallery-lightbox {
+        backdrop-filter: blur(8px);
+    }
+    
+    /* Responsive gallery adjustments */
+    @media (max-width: 640px) {
+        .gallery-grid {
+            @apply gap-2;
+        }
+    }
+    
+    @media (min-width: 641px) and (max-width: 1024px) {
+        .gallery-grid {
+            @apply gap-3;
+        }
+    }
+    
+    @media (min-width: 1025px) {
+        .gallery-grid {
+            @apply gap-4;
+        }
+    }
+}

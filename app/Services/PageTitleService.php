@@ -36,14 +36,6 @@ class PageTitleService
     }
 
     /**
-     * Set a custom title for the current request
-     */
-    public static function setTitle(string $title): void
-    {
-        app()->instance('page.title', $title);
-    }
-
-    /**
      * Get custom title if set, otherwise get default title
      */
     public static function getCurrentTitle(): string

@@ -1,17 +1,14 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CitaController;
-use Illuminate\Support\Facades\Auth;
-
-
 use App\Http\Controllers\BarberoController;
 use App\Http\Controllers\ServicioController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\GalleryController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [BarberoController::class, 'welcome']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -25,7 +22,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-/*-------------------------rutas agregadas--------------------------------*/
 // Public barberos and servicios routes (accessible to all users)
 Route::get('barberos', [BarberoController::class, 'index'])->name('public.barberos.index');
 Route::get('barberos/{barbero}', [BarberoController::class, 'show'])->name('public.barberos.show');
@@ -33,43 +29,16 @@ Route::get('servicios', [ServicioController::class, 'index'])->name('public.serv
 Route::get('servicios/{servicio}', [ServicioController::class, 'show'])->name('public.servicios.show');
 
 Route::middleware('auth')->group(function () {
-    // Rutas para las citas (user functionality)
     Route::resource('citas', CitaController::class);
     Route::get('/citas/servicios-barbero/{barbero}', [CitaController::class, 'getServiciosByBarbero'])->name('citas.servicios_barbero');
     Route::post('/citas/check-availability', [CitaController::class, 'checkAvailability'])->name('citas.check_availability');
 });
 
-// Ruta para cerrar sesión
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/');
-})->name('logout');
-
-
-/* Route::resource('citas', CitaController::class); */
-/* Route::get('citas/horarios', [CitaController::class, 'getAvailableTimes']); */
-
-/* Route::get('/horas-disponibles', [CitaController::class, 'horasDisponibles']);
-
-/*Manejar la solicitud AJAX de horas disponibles
-Route::get('/citas/available-hours', [CitaController::class, 'availableHours'])->name('citas.availableHours'); */
-
-
-/* Route::post('/citas/horas-disponibles', [CitaController::class, 'availableHours'])->name('citas.availableHours'); */
-/* 
-
-Route::get('/citas/disponibilidad', [CitaController::class, 'obtenerDisponibilidad'])->name('citas.disponibilidad'); */
-// routes/web.php
-
-Route::get('/', [BarberoController::class, 'welcome']);
-
-// -------------- RUTAS PARA ADMIN (sólo usuarios con rol admin) --------------
-use App\Http\Controllers\AdminController;
-
+// Admin routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     
-    // Barberos CRUD (admin routes with admin. prefix)
+    // Barberos CRUD
     Route::get('/barberos', [AdminController::class, 'barberosIndex'])->name('barberos.index');
     Route::get('/barberos/create', [AdminController::class, 'barberosCreate'])->name('barberos.create');
     Route::post('/barberos', [AdminController::class, 'barberosStore'])->name('barberos.store');
@@ -99,29 +68,32 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/citas/{cita}', [AdminController::class, 'citasUpdate'])->name('citas.update');
     Route::delete('/citas/{cita}', [AdminController::class, 'citasDestroy'])->name('citas.destroy');
     Route::post('/citas/check-availability', [AdminController::class, 'citasCheckAvailability'])->name('citas.check_availability');
+    
+    // Gallery CRUD with security middleware
+    Route::middleware(['gallery.security'])->group(function () {
+        Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
+        Route::get('/gallery/create', [GalleryController::class, 'create'])->name('gallery.create');
+        Route::get('/gallery/{galleryImage}', [GalleryController::class, 'show'])->name('gallery.show');
+        Route::get('/gallery/{galleryImage}/edit', [GalleryController::class, 'edit'])->name('gallery.edit');
+        
+        // Upload routes with rate limiting
+        Route::middleware(['gallery.rate_limit'])->group(function () {
+            Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
+        });
+        
+        // Modification routes with CSRF protection (automatically applied by Laravel)
+        Route::put('/gallery/{galleryImage}', [GalleryController::class, 'update'])->name('gallery.update');
+        Route::delete('/gallery/{galleryImage}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+        Route::post('/gallery/reorder', [GalleryController::class, 'reorder'])->name('gallery.reorder');
+        Route::patch('/gallery/{galleryImage}/toggle-active', [GalleryController::class, 'toggleActive'])->name('gallery.toggle_active');
+        Route::delete('/gallery/bulk-delete', [GalleryController::class, 'bulkDelete'])->name('gallery.bulk_delete');
+    });
 });
 
-// -------------- RUTAS PARA BARBEROS (sólo usuarios con rol barbero) --------------
+// Barbero routes
 Route::middleware(['auth', 'role:barbero', 'active.barbero'])->prefix('barbero')->name('barbero.')->group(function () {
     Route::get('/dashboard', [BarberoController::class, 'dashboard'])->name('dashboard');
     Route::get('/citas', [BarberoController::class, 'citas'])->name('citas.index');
     Route::get('/citas/{cita}', [BarberoController::class, 'verCita'])->name('citas.show');
     Route::patch('/citas/{cita}/atender', [BarberoController::class, 'marcarAtendida'])->name('citas.atender');
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

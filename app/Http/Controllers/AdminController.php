@@ -6,6 +6,7 @@ use App\Models\Barbero;
 use App\Models\Servicio;
 use App\Models\Cita;
 use App\Models\User;
+use App\Models\GalleryImage;
 use App\Http\Requests\StoreBarberoRequest;
 use App\Http\Requests\UpdateBarberoRequest;
 use App\Services\BarberoValidationService;
@@ -23,14 +24,17 @@ class AdminController extends Controller
     {
         $this->barberoValidationService = $barberoValidationService;
     }
+
     public function dashboard()
     {
         $barberos = \App\Models\Barbero::all();
         $servicios = \App\Models\Servicio::all();
-        return view('admin.dashboard', compact('barberos', 'servicios'));
+        $galleryImages = GalleryImage::active()->get();
+        $citasHoy = Cita::whereDate('fecha', today())->count();
+        
+        return view('admin.dashboard', compact('barberos', 'servicios', 'galleryImages', 'citasHoy'));
     }
 
-    // ============ BARBEROS CRUD ============
     public function barberosIndex(Request $request)
     {
         $query = Barbero::query();
@@ -64,17 +68,14 @@ class AdminController extends Controller
 
         try {
             \DB::transaction(function () use ($validated, $request) {
-                // 1. Crear usuario en tabla users
                 $user = \App\Models\User::create([
                     'name' => $validated['nombre_completo'],
                     'email' => $validated['email'],
                     'password' => Hash::make($validated['password']),
                 ]);
 
-                // 2. Asignar rol "barbero" al usuario creado
                 $user->assignRole('barbero');
 
-                // 3. Preparar datos del barbero
                 $barberoData = [
                     'nombre_completo' => $validated['nombre_completo'],
                     'email' => $validated['email'],
@@ -85,15 +86,12 @@ class AdminController extends Controller
                     'activo' => true,
                 ];
 
-                // 4. Manejar foto si existe
                 if ($request->hasFile('foto')) {
                     $barberoData['foto'] = $request->file('foto')->store('barberos', 'public');
                 }
 
-                // 5. Crear barbero vinculado al usuario
                 $barbero = Barbero::create($barberoData);
                 
-                // 6. Sincronizar servicios seleccionados
                 if ($request->has('servicios')) {
                     $barbero->servicios()->sync($request->input('servicios', []));
                 }
@@ -101,7 +99,6 @@ class AdminController extends Controller
 
             return redirect()->route('admin.barberos.index')->with('success', 'Barbero creado exitosamente.');
         } catch (\Exception $e) {
-            // Manejar errores y rollback automático por la transacción
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['error' => 'Error al crear el barbero: ' . $e->getMessage()]);
@@ -131,7 +128,6 @@ class AdminController extends Controller
 
         try {
             DB::transaction(function () use ($validated, $request, $barbero) {
-                // 1. Manejar foto si existe
                 if ($request->hasFile('foto')) {
                     if ($barbero->foto) {
                         Storage::disk('public')->delete($barbero->foto);
@@ -139,7 +135,6 @@ class AdminController extends Controller
                     $validated['foto'] = $request->file('foto')->store('barberos', 'public');
                 }
 
-                // 2. Crear usuario automáticamente si no existe
                 if (!$barbero->user_id || !$barbero->user) {
                     $user = User::create([
                         'name' => $validated['nombre_completo'],
@@ -147,19 +142,16 @@ class AdminController extends Controller
                         'password' => Hash::make($validated['password'] ?? 'temporal123'),
                     ]);
                     
-                    // Asignar rol "barbero" al usuario creado
                     $user->assignRole('barbero');
                     
                     $barbero->user_id = $user->id;
                 } else {
-                    // 3. Sincronizar cambios con el usuario existente
                     $user = $barbero->user;
                     $userUpdateData = [
                         'name' => $validated['nombre_completo'],
                         'email' => $validated['email'],
                     ];
 
-                    // 4. Actualizar contraseña en tabla users si se proporciona
                     if ($request->filled('password')) {
                         $userUpdateData['password'] = Hash::make($validated['password']);
                     }
@@ -167,7 +159,6 @@ class AdminController extends Controller
                     $user->update($userUpdateData);
                 }
 
-                // 5. Actualizar datos del barbero (sin password ya que se maneja en users)
                 $barberoData = [
                     'nombre_completo' => $validated['nombre_completo'],
                     'email' => $validated['email'],
@@ -183,18 +174,15 @@ class AdminController extends Controller
 
                 $barbero->update($barberoData);
                 
-                // 6. Sincronizar servicios seleccionados
                 if ($request->has('servicios')) {
                     $barbero->servicios()->sync($request->input('servicios', []));
                 } else {
-                    // Si no se envían servicios, desasignar todos
                     $barbero->servicios()->sync([]);
                 }
             });
 
             return redirect()->route('admin.barberos.index')->with('success', 'Barbero actualizado exitosamente.');
         } catch (\Exception $e) {
-            // Manejar errores y rollback automático por la transacción
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['error' => 'Error al actualizar el barbero: ' . $e->getMessage()]);
@@ -204,23 +192,16 @@ class AdminController extends Controller
     public function barberosDarDeBaja(Barbero $barbero)
     {
         try {
-            // Validar que el barbero puede ser dado de baja
             $this->barberoValidationService->validateCanDeactivate($barbero);
             
             DB::transaction(function () use ($barbero) {
-                // 1. Marcar barbero como inactivo (activo = false)
                 $barbero->update([
                     'activo' => false,
                     'fecha_baja' => now(),
                 ]);
 
-                // 2. Desactivar usuario correspondiente si existe
                 if ($barbero->user) {
-                    // Remover rol de barbero para desactivar acceso
                     $barbero->user->removeRole('barbero');
-                    
-                    // Opcional: También podríamos desactivar completamente el usuario
-                    // pero mantenemos el usuario para preservar integridad referencial
                 }
             });
 
@@ -238,32 +219,25 @@ class AdminController extends Controller
     public function barberosReactivar(Barbero $barbero)
     {
         try {
-            // Validar que el barbero puede ser reactivado
             $this->barberoValidationService->validateCanReactivate($barbero);
             
             DB::transaction(function () use ($barbero) {
-                // 1. Marcar barbero como activo (activo = true)
                 $barbero->update([
                     'activo' => true,
                     'fecha_baja' => null,
                 ]);
 
-                // 2. Reactivar usuario correspondiente
                 if ($barbero->user) {
-                    // Asignar rol de barbero para reactivar acceso
                     $barbero->user->assignRole('barbero');
                 } else {
-                    // Si no existe usuario, crear uno automáticamente
                     $user = User::create([
                         'name' => $barbero->nombre_completo,
                         'email' => $barbero->email,
-                        'password' => Hash::make('temporal123'), // Contraseña temporal
+                        'password' => Hash::make('temporal123'),
                     ]);
                     
-                    // Asignar rol "barbero" al usuario creado
                     $user->assignRole('barbero');
                     
-                    // Vincular barbero con el usuario
                     $barbero->update(['user_id' => $user->id]);
                 }
             });
@@ -282,23 +256,17 @@ class AdminController extends Controller
     public function barberosEliminarPermanente(Barbero $barbero)
     {
         try {
-            // Validar que el barbero puede ser eliminado permanentemente
             $this->barberoValidationService->validateCanDelete($barbero);
             
             DB::transaction(function () use ($barbero) {
-
-                // 1. Eliminar foto si existe
                 if ($barbero->foto) {
                     Storage::disk('public')->delete($barbero->foto);
                 }
 
-                // 2. Eliminar usuario de tabla users (cascade eliminará barbero)
                 if ($barbero->user) {
-                    // Remover roles antes de eliminar
                     $barbero->user->roles()->detach();
                     $barbero->user->delete();
                 } else {
-                    // Si no hay usuario asociado, eliminar barbero directamente
                     $barbero->delete();
                 }
             });
@@ -324,7 +292,6 @@ class AdminController extends Controller
         return redirect()->route('admin.barberos.index')->with('success', 'Barbero eliminado exitosamente.');
     }
 
-    // ============ SERVICIOS CRUD ============
     public function serviciosIndex()
     {
         $servicios = Servicio::all();
@@ -403,7 +370,6 @@ class AdminController extends Controller
         return redirect()->route('admin.servicios.index')->with('success', 'Servicio eliminado exitosamente.');
     }
 
-    // ============ CITAS CRUD ============
     public function citasIndex()
     {
         $citas = Cita::with(['barbero', 'servicios'])->get();

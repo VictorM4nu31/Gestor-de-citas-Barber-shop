@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
-use App\Models\User;
 
 class Barbero extends Model
 {
@@ -74,7 +73,6 @@ class Barbero extends Model
         });
     }
 
-    // Quitar el hidden del password y mutador setPasswordAttribute
     public function citas()
     {
         return $this->hasMany(Cita::class, 'id_barbero');
@@ -98,7 +96,6 @@ class Barbero extends Model
                     ->orderBy('created_at', 'desc');
     }
 
-    // Scopes para filtrar barberos activos/inactivos
     public function scopeActivos($query)
     {
         return $query->where('activo', true);
@@ -176,23 +173,5 @@ class Barbero extends Model
         return $this->user->hasRole('barbero');
     }
 
-    /**
-     * Obtener el estado del barbero como texto
-     */
-    public function getEstadoTextoAttribute(): string
-    {
-        return $this->activo ? 'Activo' : 'Inactivo';
-    }
 
-    /**
-     * Obtener el tiempo desde la fecha de baja
-     */
-    public function getTiempoBajaAttribute(): ?string
-    {
-        if (!$this->fecha_baja) {
-            return null;
-        }
-
-        return $this->fecha_baja->diffForHumans();
-    }
 }

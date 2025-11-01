@@ -1,8 +1,6 @@
 <x-auth-layout>
     <div class="w-full min-h-screen flex items-center justify-center bg-secondary relative overflow-hidden">
-        <!-- Patrón de fondo animado -->
         <div class="absolute inset-0 bg-secondary/70"></div>
-        <!-- Círculos decorativos -->
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
         <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary rounded-full filter blur-3xl opacity-20 animate-pulse" style="animation-delay: 2s;"></div>
         <div class="relative z-10 w-full min-h-screen flex items-center justify-center">

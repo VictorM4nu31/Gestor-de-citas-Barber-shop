@@ -44,7 +44,7 @@ class CitaController extends Controller
         $cita->id_usuario = $user->id;
 
         $servicios = $datos['servicios'];
-        $cita->servicios = implode(',', $servicios); // Guarda los IDs, ejemplo: "1,5,9"
+        $cita->servicios = implode(',', $servicios);
         $cita->costo = \App\Models\Servicio::whereIn('id', $servicios)->sum('precio');
 
         $cita->save();
@@ -55,7 +55,6 @@ class CitaController extends Controller
     public function index()
     {
         $user = Auth::user();
-        // Eliminar citas pasadas
         Cita::where('id_usuario', $user->id)
             ->where('fecha', '<', Carbon::today())
             ->delete();

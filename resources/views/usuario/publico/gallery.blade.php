@@ -1,4 +1,3 @@
-<!-- Componente -->
 <div class="container mx-auto p-4 bg-background">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div class="grid gap-4">

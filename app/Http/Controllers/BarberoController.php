@@ -4,55 +4,44 @@ namespace App\Http\Controllers;
 
 use App\Models\Barbero;
 use App\Models\Cita;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Servicio;
-use Spatie\Permission\Models\Role;
-use App\Models\User;
-use App\Http\Requests\Barbero\StoreRequest;
-use App\Http\Requests\Barbero\UpdateRequest;
+use App\Models\GalleryImage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 
 class BarberoController extends Controller
 {
-    // Nota: los checks de rol se realizan en cada método para evitar dependencia en
-    // la clase base Controller que en este proyecto no define middleware().
     public function welcome()
     {
         $barberos = Barbero::all();
 
-        // Si el usuario autenticado es admin, mostrar todos los servicios (preview),
-        // en caso contrario sólo los publicados y ordenados.
         if (Auth::check() && Auth::user()->hasRole('admin')) {
             $servicios = Servicio::orderBy('orden', 'asc')->orderBy('created_at', 'desc')->get();
         } else {
             $servicios = Servicio::publicadosOrdenados()->get();
         }
 
-        // Añadir descripción truncada desde el controlador para mantener la vista limpia
         $servicios = $servicios->map(function ($s) {
             $s->descripcion_corta = Str::limit($s->descripcion, 120);
             return $s;
         });
 
-        return view('welcome', compact('barberos', 'servicios'));
+        // Load gallery images for welcome page
+        $galleryImages = GalleryImage::active()->ordered()->get();
+
+        return view('welcome', compact('barberos', 'servicios', 'galleryImages'));
     }
 
     public function dashboard()
     {
-        // El middleware ya verifica auth, role:barbero y active.barbero
-        // por lo que no necesitamos verificaciones adicionales aquí
         $user = Auth::user();
         $barbero = $user->barbero;
         
         if (!$barbero) {
-            // Esto no debería pasar si el middleware funciona correctamente
             abort(403, 'No se encontró el perfil de barbero asociado.');
         }
         
-        // Obtener citas del barbero para hoy y futuras
         $citasHoy = $barbero->citas()
             ->with('usuario')
             ->where('fecha', now()->toDateString())
@@ -79,7 +68,6 @@ class BarberoController extends Controller
             abort(403, 'No se encontró el perfil de barbero asociado.');
         }
         
-        // Obtener todas las citas del barbero
         $citas = $barbero->citas()
             ->with('usuario')
             ->orderBy('fecha', 'desc')
@@ -94,12 +82,10 @@ class BarberoController extends Controller
         $user = Auth::user();
         $barbero = $user->barbero;
         
-        // Verificar que la cita pertenece al barbero autenticado
         if ($cita->id_barbero !== $barbero->id) {
             abort(403, 'No tienes permiso para modificar esta cita.');
         }
         
-        // Verificar que la cita puede ser marcada como atendida
         if (!$cita->puedeSerAtendida()) {
             return redirect()->back()->with('error', 'Esta cita no puede ser marcada como atendida.');
         }
@@ -114,7 +100,6 @@ class BarberoController extends Controller
         $user = Auth::user();
         $barbero = $user->barbero;
         
-        // Verificar que la cita pertenece al barbero autenticado
         if ($cita->id_barbero !== $barbero->id) {
             abort(403, 'No tienes permiso para ver esta cita.');
         }
@@ -122,7 +107,6 @@ class BarberoController extends Controller
         return view('barbero.citas.show', compact('cita', 'barbero'));
     }
 
-    // Public methods for displaying barberos (no admin functionality)
     public function index()
     {
         $barberos = Barbero::all();

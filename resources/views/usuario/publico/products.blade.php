@@ -12,7 +12,6 @@
 <body class="bg-surface text-secondary">
     <div class="container mx-auto p-4 lg:h-screen flex items-center justify-center">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Producto 1: Máquina de Afeitar Eléctrica -->
             <div class="w-60 h-80 bg-light p-3 flex flex-col gap-1 rounded-2xl shadow-md border border-metal">
                 <div class="h-48 bg-secondary rounded-xl">
                     <img src="https://ejemplo.com/maquina-afeitar.jpg" alt="Máquina de Afeitar Eléctrica"
@@ -46,7 +45,6 @@
                 </div>
             </div>
 
-            <!-- Producto 2: Aceite para Barba -->
             <div class="w-60 h-80 bg-light p-3 flex flex-col gap-1 rounded-2xl shadow-md border border-metal">
                 <div class="h-48 bg-secondary rounded-xl">
                     <img src="https://ejemplo.com/aceite-barba.jpg" alt="Aceite para Barba"
@@ -80,7 +78,6 @@
                 </div>
             </div>
 
-            <!-- Producto 3: Brocha de Afeitar -->
             <div class="w-60 h-80 bg-light p-3 flex flex-col gap-1 rounded-2xl shadow-md border border-metal">
                 <div class="h-48 bg-secondary rounded-xl">
                     <img src="https://ejemplo.com/brocha-afeitar.jpg" alt="Brocha de Afeitar"
@@ -114,7 +111,6 @@
                 </div>
             </div>
 
-            <!-- Producto 4: Jabón de Afeitar -->
             <div class="w-60 h-80 bg-light p-3 flex flex-col gap-1 rounded-2xl shadow-md border border-metal">
                 <div class="h-48 bg-secondary rounded-xl">
                     <img src="https://ejemplo.com/jabon-afeitar.jpg" alt="Jabón de Afeitar"

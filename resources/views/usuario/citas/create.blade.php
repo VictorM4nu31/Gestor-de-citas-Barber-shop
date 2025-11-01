@@ -7,7 +7,6 @@
 
     <main class="container mx-auto px-4 py-8">
         <div class="bg-light p-8 rounded-lg shadow-lg w-full max-w-2xl flex flex-col md:flex-row">
-            <!-- Formulario para agendar la cita -->
             <div class="md:w-1/2 md:pr-4 mb-6 md:mb-0">
                 <h1 class="text-2xl font-bold mb-6 text-secondary">Agendar Cita</h1>
 
@@ -41,7 +40,6 @@
                             required 
                         />
 
-                        <!-- Servicios -->
                         <div>
                             <x-form.label>Servicios</x-form.label>
                             <div class="space-y-2">
@@ -106,18 +104,15 @@
                 </form>
             </div>
 
-            <!-- Apartado para visualizar las citas del barbero y día seleccionado -->
             <div class="md:w-1/2 md:pl-4">
                 <h2 class="text-xl font-bold mb-4 text-secondary">Disponibilidad</h2>
                 <div id="availability_result" class="bg-light p-6 rounded-lg shadow-lg">
-                    <!-- Las citas serán cargadas aquí -->
                 </div>
             </div>
         </div>
     </main>
 
     @push('styles')
-    <!-- Font Awesome (solo para esta vista) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     @endpush
 
@@ -131,11 +126,9 @@
             const totalServicios = document.getElementById('total_servicios');
             const costoTotal = document.getElementById('costo_total');
 
-            // Establecer la fecha mínima como hoy
             const today = new Date().toISOString().split('T')[0];
             fechaInput.setAttribute('min', today);
 
-            // Función para actualizar servicios disponibles según el barbero seleccionado
             function updateServiciosCheckboxes(serviciosDisponibles) {
                 serviciosCheckboxes.forEach(checkbox => {
                     const servicioId = parseInt(checkbox.value);
@@ -143,7 +136,7 @@
                     
                     checkbox.disabled = !disponible;
                     if (!disponible) {
-                        checkbox.checked = false; // Limpiar selecciones previas de servicios no disponibles
+                        checkbox.checked = false;
                     }
                     
                     const label = checkbox.nextElementSibling;
@@ -151,15 +144,13 @@
                     label.style.textDecoration = disponible ? 'none' : 'line-through';
                 });
                 
-                // Recalcular costo total después de filtrar servicios
                 updateCostoTotal();
             }
 
-            // Función para resetear todos los servicios como disponibles
             function resetServiciosCheckboxes() {
                 serviciosCheckboxes.forEach(checkbox => {
                     checkbox.disabled = false;
-                    checkbox.checked = false; // Limpiar todas las selecciones
+                    checkbox.checked = false;
                     
                     const label = checkbox.nextElementSibling;
                     label.style.opacity = '1';
@@ -169,7 +160,6 @@
                 updateCostoTotal();
             }
 
-            // Función para calcular y actualizar el costo total
             function updateCostoTotal() {
                 let total = 0;
                 document.querySelectorAll('input[name="servicios[]"]:checked:not(:disabled)').forEach(checked => {
@@ -180,7 +170,6 @@
                 costoTotal.textContent = `Total: $${total.toFixed(2)}`;
             }
 
-            // Listener para cambio de barbero - filtrar servicios
             barberoSelect.addEventListener('change', function() {
                 const barberoId = this.value;
                 
@@ -195,11 +184,9 @@
                             resetServiciosCheckboxes();
                         });
                 } else {
-                    // Si no hay barbero seleccionado, mostrar todos los servicios
                     resetServiciosCheckboxes();
                 }
                 
-                // También actualizar disponibilidad
                 fetchAvailability();
             });
 
@@ -226,7 +213,6 @@
                         if (data.length === 0) {
                             resultHtml += '<p class="text-success">Fecha totalmente libre.</p>';
                         } else {
-                            // Obtener el nombre del barbero seleccionado
                             const selectedBarbero = barberoSelect.options[barberoSelect.selectedIndex].text;
 
                             resultHtml += `<p class="text-lg font-bold mb-2">${selectedBarbero}</p><p class="text-muted mb-2">Ya tiene agendado los siguientes horarios:</p>`;
@@ -241,8 +227,6 @@
                             resultHtml += '</ul>';
                         }
                         availabilityResult.innerHTML = resultHtml;
-
-                        // Desplazarse hacia el área de disponibilidad
                         availabilityResult.scrollIntoView({ behavior: 'smooth' });
                     });
                 }
@@ -250,12 +234,10 @@
 
             fechaInput.addEventListener('change', fetchAvailability);
 
-            // Listener para cambios en servicios - actualizar costo total
             serviciosCheckboxes.forEach(servicio => {
                 servicio.addEventListener('change', updateCostoTotal);
             });
 
-            // Manejar el mensaje de error
             const errorMessage = document.getElementById('error-message');
             if (errorMessage) {
                 const inputs = document.querySelectorAll('input, select');

@@ -1,7 +1,4 @@
-<!-- component -->
-<link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
-<link rel="stylesheet"
-    href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+
 
 <footer id="footer" class="relative bg-secondary text-muted border-t border-accent pt-8 pb-6">
     <div class="container mx-auto px-4">

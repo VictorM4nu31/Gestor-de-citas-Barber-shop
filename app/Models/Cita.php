@@ -39,12 +39,11 @@ class Cita extends Model
         if (empty($this->servicios)) {
             return [];
         }
-        // Split by solo coma, sin espacios.
+        
         $serviciosIds = explode(',', $this->servicios);
         return Servicio::whereIn('id', $serviciosIds)->pluck('nombre')->toArray();
     }
 
-    // Opcional: para mostrar todos los nombres como texto
     public function getServiciosNombresTextoAttribute()
     {
         return implode(', ', $this->servicios_names);
@@ -65,7 +64,6 @@ class Cita extends Model
             ->exists();
     }
 
-    // Scopes para filtrar por estado
     public function scopePendientes($query)
     {
         return $query->where('estado', 'pendiente');
@@ -81,7 +79,6 @@ class Cita extends Model
         return $query->where('estado', 'cancelada');
     }
 
-    // Métodos para cambiar estado
     public function marcarComoAtendida()
     {
         $this->update([
@@ -97,14 +94,12 @@ class Cita extends Model
         ]);
     }
 
-    // Verificar si puede ser marcada como atendida
     public function puedeSerAtendida()
     {
         return $this->estado === 'pendiente' && 
                $this->fecha <= now()->toDateString();
     }
 
-    // Obtener el estado como texto
     public function getEstadoTextoAttribute()
     {
         return match($this->estado) {
