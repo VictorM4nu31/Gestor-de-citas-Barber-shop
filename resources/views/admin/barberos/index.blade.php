@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-white leading-tight">Lista de Barberos</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">{{ __('barberos.admin.titles.list') }}</h2>
             <a href="{{ route('admin.barberos.create') }}" class="bg-primary hover:bg-secondary text-light py-2 px-4 rounded flex items-center space-x-2">
                 <i class="fas fa-user-plus"></i>
-                <span>Crear Barbero</span>
+                <span>{{ __('barberos.admin.buttons.create_barber') }}</span>
             </a>
         </div>
     </x-slot>
@@ -22,19 +22,19 @@
             <div class="flex flex-wrap gap-2">
                 <a href="{{ route('admin.barberos.index') }}" 
                    class="px-4 py-2 rounded transition-colors {{ !request('estado') ? 'bg-primary text-white' : 'bg-surface text-secondary hover:bg-accent' }}">
-                    <i class="fas fa-users mr-1"></i>Todos
+                    <i class="fas fa-users mr-1"></i>{{ __('barberos.admin.filters.all') }}
                 </a>
                 <a href="{{ route('admin.barberos.index', ['estado' => 'activos']) }}" 
                    class="px-4 py-2 rounded transition-colors {{ request('estado') === 'activos' ? 'bg-success text-white' : 'bg-surface text-secondary hover:bg-accent' }}">
-                    <i class="fas fa-user-check mr-1"></i>Activos
+                    <i class="fas fa-user-check mr-1"></i>{{ __('barberos.admin.filters.active') }}
                 </a>
                 <a href="{{ route('admin.barberos.index', ['estado' => 'inactivos']) }}" 
                    class="px-4 py-2 rounded transition-colors {{ request('estado') === 'inactivos' ? 'bg-warning text-white' : 'bg-surface text-secondary hover:bg-accent' }}">
-                    <i class="fas fa-user-times mr-1"></i>Inactivos
+                    <i class="fas fa-user-times mr-1"></i>{{ __('barberos.admin.filters.inactive') }}
                 </a>
             </div>
             <div class="text-sm text-gray-600">
-                Mostrando {{ $barberos->count() }} barbero{{ $barberos->count() !== 1 ? 's' : '' }}
+                {{ trans_choice('barberos.admin.filters.showing_count', $barberos->count(), ['count' => $barberos->count()]) }}
                 @if(request('estado'))
                     ({{ request('estado') }})
                 @endif
@@ -45,15 +45,15 @@
             <table class="min-w-full bg-light border border-metal">
                 <thead class="bg-secondary text-light">
                     <tr>
-                        <th class="py-2 px-4 border-metal">ID</th>
-                        <th class="py-2 px-4 border-metal">Estado</th>
-                        <th class="py-2 px-4 border-metal">Nombre Completo</th>
-                        <th class="py-2 px-4 border-metal">Email</th>
-                        <th class="py-2 px-4 border-metal">Teléfono</th>
-                        <th class="py-2 px-4 border-metal">Especialidad</th>
-                        <th class="py-2 px-4 border-metal">Experiencia</th>
-                        <th class="py-2 px-4 border-metal">Foto</th>
-                        <th class="py-2 px-4 border-metal">Acciones</th>
+                        <th class="py-2 px-4 border-metal">{{ __('barberos.admin.table.id') }}</th>
+                        <th class="py-2 px-4 border-metal">{{ __('barberos.admin.table.status') }}</th>
+                        <th class="py-2 px-4 border-metal">{{ __('barberos.admin.table.full_name') }}</th>
+                        <th class="py-2 px-4 border-metal">{{ __('barberos.admin.table.email') }}</th>
+                        <th class="py-2 px-4 border-metal">{{ __('barberos.admin.table.phone') }}</th>
+                        <th class="py-2 px-4 border-metal">{{ __('barberos.admin.table.specialty') }}</th>
+                        <th class="py-2 px-4 border-metal">{{ __('barberos.admin.table.experience') }}</th>
+                        <th class="py-2 px-4 border-metal">{{ __('barberos.admin.table.photo') }}</th>
+                        <th class="py-2 px-4 border-metal">{{ __('barberos.admin.table.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="text-secondary">
@@ -64,16 +64,16 @@
                             @if($barbero->activo)
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">
                                     <i class="fas fa-check-circle mr-1"></i>
-                                    Activo
+                                    {{ __('barberos.admin.status.active') }}
                                 </span>
                             @else
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-danger/10 text-danger">
                                     <i class="fas fa-times-circle mr-1"></i>
-                                    Inactivo
+                                    {{ __('barberos.admin.status.inactive') }}
                                 </span>
                                 @if($barbero->fecha_baja)
                                     <div class="text-xs text-gray-500 mt-1">
-                                        Desde: {{ $barbero->fecha_baja->format('d/m/Y') }}
+                                        {{ __('barberos.admin.status.since') }}: {{ $barbero->fecha_baja->format('d/m/Y') }}
                                     </div>
                                 @endif
                             @endif
@@ -87,7 +87,7 @@
                             @if ($barbero->foto)
                                 <img src="{{ asset('storage/' . $barbero->foto) }}" alt="Foto de {{ $barbero->nombre_completo }}" class="w-16 h-16 object-cover rounded">
                             @else
-                                Sin foto
+                                {{ __('barberos.admin.table.no_photo') }}
                             @endif
                         </td>
                         <td class="py-2 px-4 border-metal">
@@ -95,7 +95,7 @@
                                 <!-- Botón Editar -->
                                 <a href="{{ route('admin.barberos.edit', $barbero->id) }}" 
                                    class="bg-primary hover:bg-secondary text-light py-1 px-3 rounded text-center text-sm transition-colors">
-                                    <i class="fas fa-edit mr-1"></i>Editar
+                                    <i class="fas fa-edit mr-1"></i>{{ __('barberos.admin.buttons.edit') }}
                                 </a>
                                 
                                 @if($barbero->activo)
@@ -105,8 +105,8 @@
                                         @method('PATCH')
                                         <button type="submit" 
                                                 class="bg-warning hover:bg-warning/90 text-white py-1 px-3 rounded w-full text-sm transition-colors"
-                                                onclick="return confirm('¿Estás seguro de que deseas dar de baja a este barbero?\n\nEl barbero:\n• No podrá acceder al sistema\n• Se mantendrá su historial de citas\n• Podrá ser reactivado más tarde')">
-                                            <i class="fas fa-user-times mr-1"></i>Dar de Baja
+                                                onclick="return confirm('{{ __('barberos.admin.confirmations.deactivate') }}')">
+                                            <i class="fas fa-user-times mr-1"></i>{{ __('barberos.admin.buttons.deactivate') }}
                                         </button>
                                     </form>
                                 @else
@@ -116,8 +116,8 @@
                                         @method('PATCH')
                                         <button type="submit" 
                                                 class="bg-success hover:bg-green-600 text-white py-1 px-3 rounded w-full text-sm transition-colors"
-                                                onclick="return confirm('¿Estás seguro de que deseas reactivar a este barbero?\n\nEl barbero podrá volver a acceder al sistema.')">
-                                            <i class="fas fa-user-check mr-1"></i>Reactivar
+                                                onclick="return confirm('{{ __('barberos.admin.confirmations.reactivate') }}')">
+                                            <i class="fas fa-user-check mr-1"></i>{{ __('barberos.admin.buttons.reactivate') }}
                                         </button>
                                     </form>
                                 @endif
@@ -128,8 +128,8 @@
                                     @method('DELETE')
                                     <button type="submit" 
                                             class="bg-danger hover:bg-red-700 text-white py-1 px-3 rounded w-full text-sm transition-colors"
-                                            onclick="return confirm('⚠️ ADVERTENCIA CRÍTICA ⚠️\n\nEsta acción eliminará PERMANENTEMENTE:\n• La cuenta de usuario del barbero\n• Su perfil completo\n• Todos sus datos personales\n\nSE MANTENDRÁN:\n• Las citas históricas (por integridad)\n\n❌ ESTA ACCIÓN NO SE PUEDE DESHACER ❌\n\n¿Estás COMPLETAMENTE seguro de continuar?')">
-                                            <i class="fas fa-trash-alt mr-1"></i>Eliminar
+                                            onclick="return confirm('{{ __('users.confirmations.delete_barbero_critical') }}')">
+                                            <i class="fas fa-trash-alt mr-1"></i>{{ __('barberos.admin.buttons.delete_permanent') }}
                                     </button>
                                 </form>
                             </div>
@@ -141,18 +141,18 @@
                             <div class="flex flex-col items-center">
                                 <i class="fas fa-users text-4xl mb-4 text-gray-300"></i>
                                 @if(request('estado') === 'activos')
-                                    <p class="text-lg font-medium">No hay barberos activos</p>
-                                    <p class="text-sm">Todos los barberos están dados de baja o no hay barberos registrados.</p>
+                                    <p class="text-lg font-medium">{{ __('barberos.admin.empty_states.no_active_barbers') }}</p>
+                                    <p class="text-sm">{{ __('barberos.admin.empty_states.no_active_description') }}</p>
                                 @elseif(request('estado') === 'inactivos')
-                                    <p class="text-lg font-medium">No hay barberos inactivos</p>
-                                    <p class="text-sm">Todos los barberos están activos.</p>
+                                    <p class="text-lg font-medium">{{ __('barberos.admin.empty_states.no_inactive_barbers') }}</p>
+                                    <p class="text-sm">{{ __('barberos.admin.empty_states.no_inactive_description') }}</p>
                                 @else
-                                    <p class="text-lg font-medium">No hay barberos registrados</p>
-                                    <p class="text-sm">Comienza creando tu primer barbero.</p>
+                                    <p class="text-lg font-medium">{{ __('barberos.admin.empty_states.no_barbers') }}</p>
+                                    <p class="text-sm">{{ __('barberos.admin.empty_states.no_barbers_description') }}</p>
                                 @endif
                                 <a href="{{ route('admin.barberos.create') }}" 
                                    class="mt-4 bg-primary hover:bg-secondary text-light py-2 px-4 rounded flex items-center">
-                                    <i class="fas fa-user-plus mr-2"></i>Crear Barbero
+                                    <i class="fas fa-user-plus mr-2"></i>{{ __('barberos.admin.buttons.create_barber') }}
                                 </a>
                             </div>
                         </td>

@@ -3,6 +3,7 @@
     'size' => 'md',
     'href' => null,
     'disabled' => false,
+    'submit' => false,
     'class' => ''
 ])
 
@@ -33,7 +34,7 @@
     </a>
 @else
     <button 
-        type="button" 
+        type="{{ $submit ? 'submit' : 'button' }}" 
         class="{{ $classes }}" 
         @if($disabled) disabled @endif
         {{ $attributes }}

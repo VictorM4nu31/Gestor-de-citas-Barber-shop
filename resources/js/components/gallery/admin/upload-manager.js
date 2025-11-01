@@ -141,7 +141,7 @@ class UploadManager {
 
         // Check total number of files
         if (files.length > this.options.maxFiles) {
-            errors.push(`Máximo ${this.options.maxFiles} archivos permitidos`);
+            errors.push(__('gallery.admin.upload.validation.max_files', { max: this.options.maxFiles }));
             files = files.slice(0, this.options.maxFiles);
         }
 
@@ -166,7 +166,7 @@ class UploadManager {
         if (!this.options.allowedTypes.includes(file.type)) {
             return {
                 valid: false,
-                error: 'Tipo de archivo no permitido. Use JPG, PNG o WEBP.'
+                error: __('gallery.admin.upload.validation.file_type')
             };
         }
 
@@ -175,7 +175,7 @@ class UploadManager {
             const maxSizeMB = this.options.maxFileSize / (1024 * 1024);
             return {
                 valid: false,
-                error: `Archivo muy grande. Máximo ${maxSizeMB}MB permitido.`
+                error: __('gallery.admin.upload.validation.file_size', { maxMB: maxSizeMB })
             };
         }
 
@@ -249,17 +249,17 @@ class UploadManager {
                         this.handleUploadSuccess(queueItem);
                     } else {
                         queueItem.status = 'error';
-                        queueItem.error = response.message || 'Error desconocido';
+                        queueItem.error = response.message || __('gallery.admin.upload.errors.unknown');
                         this.handleUploadError(queueItem);
                     }
                 } catch (e) {
                     queueItem.status = 'error';
-                    queueItem.error = 'Error al procesar respuesta del servidor';
+                    queueItem.error = __('gallery.admin.upload.errors.server');
                     this.handleUploadError(queueItem);
                 }
             } else {
                 queueItem.status = 'error';
-                queueItem.error = `Error del servidor: ${xhr.status}`;
+                queueItem.error = __('gallery.admin.upload.errors.server', { status: xhr.status });
                 this.handleUploadError(queueItem);
             }
 
@@ -274,9 +274,9 @@ class UploadManager {
             
             // Determine error type for better user feedback
             if (!navigator.onLine) {
-                queueItem.error = 'Sin conexión a internet';
+                queueItem.error = __('gallery.admin.upload.errors.offline');
             } else {
-                queueItem.error = 'Error de conexión con el servidor';
+                queueItem.error = __('gallery.admin.upload.errors.connection');
             }
             
             this.handleUploadError(queueItem);
@@ -346,7 +346,7 @@ class UploadManager {
                         <div class="w-full bg-gray-200 rounded-full h-2 progress-bar">
                             <div class="bg-blue-600 h-2 rounded-full progress-fill" style="width: 0%"></div>
                         </div>
-                        <div class="text-xs text-gray-500 mt-1 status-text">Preparando...</div>
+                        <div class="text-xs text-gray-500 mt-1 status-text">${__('gallery.admin.upload.status.preparing')}</div>
                     </div>
                 </div>
                 <div class="flex-shrink-0 ml-3 file-actions">
@@ -383,15 +383,15 @@ class UploadManager {
 
         switch (queueItem.status) {
             case 'pending':
-                statusText.textContent = 'En cola...';
+                statusText.textContent = __('gallery.admin.upload.status.pending');
                 statusText.className = 'text-xs text-gray-500 mt-1 status-text';
                 break;
             case 'uploading':
-                statusText.textContent = `Subiendo... ${queueItem.progress}%`;
+                statusText.textContent = __('gallery.admin.upload.status.uploading', { progress: queueItem.progress });
                 statusText.className = 'text-xs text-blue-600 mt-1 status-text';
                 break;
             case 'completed':
-                statusText.textContent = 'Completado';
+                statusText.textContent = __('gallery.admin.upload.status.completed');
                 statusText.className = 'text-xs text-green-600 mt-1 status-text';
                 progressFill.style.width = '100%';
                 progressFill.className = 'bg-green-600 h-2 rounded-full progress-fill';
@@ -402,7 +402,7 @@ class UploadManager {
                 `;
                 break;
             case 'error':
-                statusText.textContent = queueItem.error || 'Error al subir';
+                statusText.textContent = queueItem.error || __('gallery.admin.upload.status.error');
                 statusText.className = 'text-xs text-red-600 mt-1 status-text';
                 progressFill.className = 'bg-red-600 h-2 rounded-full progress-fill';
                 
@@ -435,7 +435,7 @@ class UploadManager {
         const statusText = element.querySelector('.status-text');
         
         progressFill.style.width = `${queueItem.progress}%`;
-        statusText.textContent = `Subiendo... ${queueItem.progress}%`;
+        statusText.textContent = __('gallery.admin.upload.status.uploading', { progress: queueItem.progress });
     }
 
     removeFilePreview(queueItem) {
@@ -487,7 +487,7 @@ class UploadManager {
             }, 5000);
         } else {
             // Fallback to alert
-            alert('Errores de validación:\n' + errors.join('\n'));
+            alert(__('forms.validation.errors_found') + '\n' + errors.join('\n'));
         }
     }
 

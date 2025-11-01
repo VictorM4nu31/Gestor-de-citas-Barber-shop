@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-white leading-tight">{{ $servicio->nombre }}</h2>
-            <a href="{{ route('public.servicios.index') }}" class="bg-primary hover:bg-secondary text-white py-2 px-4 rounded">Volver a Servicios</a>
+            <h2 class="font-semibold text-xl text-white leading-tight">{{ $servicio->getTranslatedName() }}</h2>
+            <a href="{{ route('public.servicios.index') }}" class="bg-primary hover:bg-secondary text-white py-2 px-4 rounded">{{ __('services.back_to_services') }}</a>
         </div>
     </x-slot>
 
@@ -11,33 +11,33 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 @if ($servicio->foto)
                     <div>
-                        <img src="{{ asset('storage/' . $servicio->foto) }}" alt="Foto de {{ $servicio->nombre }}" class="w-full h-64 object-cover rounded-lg">
+                        <img src="{{ asset('storage/' . $servicio->foto) }}" alt="{{ $servicio->getTranslatedName() }}" class="w-full h-64 object-cover rounded-lg">
                     </div>
                 @endif
                 
                 <div class="{{ $servicio->foto ? '' : 'lg:col-span-2' }}">
-                    <h1 class="text-3xl font-semibold text-secondary mb-4">{{ $servicio->nombre }}</h1>
+                    <h1 class="text-3xl font-semibold text-secondary mb-4">{{ $servicio->getTranslatedName() }}</h1>
                     
                     <div class="space-y-4">
                         <div>
-                            <strong class="text-secondary">Descripción:</strong>
-                            <p class="text-muted mt-2">{{ $servicio->descripcion }}</p>
+                            <strong class="text-secondary">{{ __('services.description') }}:</strong>
+                            <p class="text-muted mt-2">{{ $servicio->getTranslatedDescription() }}</p>
                         </div>
                         
                         <div class="flex justify-between items-center py-4 border-t border-accent">
                             <div>
-                                <strong class="text-secondary">Precio:</strong>
+                                <strong class="text-secondary">{{ __('services.price') }}:</strong>
                                 <span class="text-2xl font-bold text-primary ml-2">${{ $servicio->precio }}</span>
                             </div>
                             <div>
-                                <strong class="text-secondary">Duración:</strong>
-                                <span class="text-lg text-muted ml-2">{{ $servicio->duracion }} minutos</span>
+                                <strong class="text-secondary">{{ __('services.duration') }}:</strong>
+                                <span class="text-lg text-muted ml-2">{{ $servicio->duracion }} {{ __('services.minutes') }}</span>
                             </div>
                         </div>
                     </div>
                     
                     <div class="mt-8">
-                        <a href="{{ route('citas.create') }}" class="bg-success hover:bg-primary text-white py-3 px-6 rounded-lg text-lg inline-block">Agendar este Servicio</a>
+                        <a href="{{ route('citas.create') }}" class="bg-success hover:bg-primary text-white py-3 px-6 rounded-lg text-lg inline-block">{{ __('services.book_service') }}</a>
                     </div>
                 </div>
             </div>

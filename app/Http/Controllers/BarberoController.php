@@ -87,12 +87,12 @@ class BarberoController extends Controller
         }
         
         if (!$cita->puedeSerAtendida()) {
-            return redirect()->back()->with('error', 'Esta cita no puede ser marcada como atendida.');
+            return redirect()->back()->with('error', __('messages.appointment.cannot_attend'));
         }
         
         $cita->marcarComoAtendida();
         
-        return redirect()->back()->with('success', 'Cita marcada como atendida exitosamente.');
+        return redirect()->back()->with('success', __('messages.appointment.attended'));
     }
 
     public function verCita(Cita $cita)

@@ -1,0 +1,128 @@
+<?php
+
+return [
+    'validation' => [
+        'errors_found' => 'Errores encontrados:',
+        'required_field' => 'Este campo es obligatorio',
+        'invalid_format' => 'Formato inválido',
+        'invalid_email' => 'El email no tiene un formato válido',
+        'invalid_phone' => 'El número de teléfono no es válido',
+        'password_mismatch' => 'Las contraseñas no coinciden',
+        'password_too_short' => 'La contraseña debe tener al menos 8 caracteres',
+        'file_too_large' => 'El archivo es demasiado grande',
+        'invalid_file_type' => 'Tipo de archivo no permitido',
+        'max_length_exceeded' => 'Se ha excedido la longitud máxima permitida',
+        'min_length_required' => 'Se requiere una longitud mínima',
+        'invalid_date' => 'Fecha inválida',
+        'date_in_past' => 'La fecha debe ser futura',
+        'date_in_future' => 'La fecha debe ser pasada',
+        'numeric_only' => 'Solo se permiten números',
+        'already_exists' => 'Este valor ya existe en el sistema'
+    ],
+    
+    'placeholders' => [
+        'enter_name' => 'Ingresa el nombre',
+        'enter_first_name' => 'Ingresa el nombre',
+        'enter_last_name' => 'Ingresa el apellido',
+        'enter_email' => 'Ingresa el email',
+        'enter_phone' => 'Ingresa el teléfono',
+        'enter_password' => 'Ingresa la contraseña',
+        'confirm_password' => 'Confirma la contraseña',
+        'enter_description' => 'Ingresa la descripción',
+        'enter_address' => 'Ingresa la dirección',
+        'select_option' => 'Selecciona una opción',
+        'select_date' => 'Selecciona una fecha',
+        'select_time' => 'Selecciona una hora',
+        'enter_price' => 'Ingresa el precio',
+        'enter_duration' => 'Ingresa la duración',
+        'search' => 'Buscar...',
+        'enter_specialty' => 'Ingresa la especialidad',
+        'enter_experience' => 'Años de experiencia'
+    ],
+    
+    'labels' => [
+        'name' => 'Nombre',
+        'first_name' => 'Nombre',
+        'last_name' => 'Apellido',
+        'email' => 'Email',
+        'phone' => 'Teléfono',
+        'password' => 'Contraseña',
+        'confirm_password' => 'Confirmar Contraseña',
+        'current_password' => 'Contraseña Actual',
+        'new_password' => 'Nueva Contraseña',
+        'description' => 'Descripción',
+        'address' => 'Dirección',
+        'date' => 'Fecha',
+        'time' => 'Hora',
+        'price' => 'Precio',
+        'duration' => 'Duración',
+        'status' => 'Estado',
+        'active' => 'Activo',
+        'inactive' => 'Inactivo',
+        'specialty' => 'Especialidad',
+        'experience' => 'Experiencia',
+        'image' => 'Imagen',
+        'file' => 'Archivo',
+        'optional' => 'Opcional',
+        'required' => 'Obligatorio'
+    ],
+    
+    'buttons' => [
+        'submit' => 'Enviar',
+        'save' => 'Guardar',
+        'cancel' => 'Cancelar',
+        'delete' => 'Eliminar',
+        'edit' => 'Editar',
+        'update' => 'Actualizar',
+        'create' => 'Crear',
+        'add' => 'Agregar',
+        'remove' => 'Quitar',
+        'upload' => 'Subir',
+        'download' => 'Descargar',
+        'search' => 'Buscar',
+        'filter' => 'Filtrar',
+        'reset' => 'Restablecer',
+        'clear' => 'Limpiar',
+        'back' => 'Volver',
+        'next' => 'Siguiente',
+        'previous' => 'Anterior',
+        'finish' => 'Finalizar'
+    ],
+    
+    'confirmations' => [
+        'delete_confirm' => '¿Estás seguro de que deseas eliminar este elemento?',
+        'action_irreversible' => 'Esta acción no se puede deshacer.',
+        'unsaved_changes' => 'Tienes cambios sin guardar. ¿Deseas continuar?',
+        'form_will_reset' => 'El formulario se restablecerá y perderás los datos ingresados.',
+        'confirm_logout' => '¿Estás seguro de que deseas cerrar sesión?',
+        'confirm_deactivate' => '¿Estás seguro de que deseas desactivar este elemento?',
+        'confirm_activate' => '¿Estás seguro de que deseas activar este elemento?',
+        'data_will_be_lost' => 'Los datos se perderán permanentemente.'
+    ],
+    
+    'messages' => [
+        'form_saved' => 'Formulario guardado exitosamente',
+        'form_updated' => 'Formulario actualizado exitosamente',
+        'form_deleted' => 'Elemento eliminado exitosamente',
+        'form_error' => 'Error al procesar el formulario',
+        'please_correct_errors' => 'Por favor corrige los errores indicados',
+        'all_fields_required' => 'Todos los campos marcados con * son obligatorios',
+        'changes_saved' => 'Cambios guardados exitosamente',
+        'no_changes_detected' => 'No se detectaron cambios',
+        'processing' => 'Procesando...',
+        'loading' => 'Cargando...',
+        'uploading' => 'Subiendo archivo...',
+        'upload_complete' => 'Subida completada',
+        'upload_failed' => 'Error al subir el archivo'
+    ],
+    
+    'help' => [
+        'password_requirements' => 'La contraseña debe tener al menos 8 caracteres',
+        'email_format' => 'Ingresa un email válido (ejemplo@dominio.com)',
+        'phone_format' => 'Ingresa un número de teléfono válido',
+        'file_size_limit' => 'Tamaño máximo de archivo: 10MB',
+        'supported_formats' => 'Formatos soportados: JPG, PNG, GIF, WEBP',
+        'required_fields' => 'Los campos marcados con * son obligatorios',
+        'optional_fields' => 'Los campos sin * son opcionales'
+    ]
+];

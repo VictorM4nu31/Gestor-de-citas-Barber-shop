@@ -107,11 +107,166 @@ return [
     'uuid'                 => 'El campo :attribute debe ser un UUID válido.',
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        // Validaciones específicas de barberos
+        'nombre_completo' => [
+            'required' => 'El nombre completo es obligatorio.',
+            'regex' => 'El nombre completo solo puede contener letras y espacios.',
+            'max' => 'El nombre completo no puede exceder :max caracteres.',
+        ],
+        'email' => [
+            'required' => 'El correo electrónico es obligatorio.',
+            'email' => 'El correo electrónico debe tener un formato válido.',
+            'unique' => 'Este correo electrónico ya está registrado en el sistema.',
+            'unique_across_tables' => 'Este correo electrónico ya está registrado por otro usuario en el sistema.',
+        ],
+        'password' => [
+            'required' => 'La contraseña es obligatoria.',
+            'confirmed' => 'La confirmación de contraseña no coincide.',
+            'min' => 'La contraseña debe tener al menos :min caracteres.',
+        ],
+        'telefono' => [
+            'regex' => 'El formato del teléfono no es válido.',
+            'max' => 'El teléfono no puede exceder :max caracteres.',
+        ],
+        'especialidad' => [
+            'required' => 'La especialidad es obligatoria.',
+            'max' => 'La especialidad no puede exceder :max caracteres.',
+        ],
+        'experiencia' => [
+            'required' => 'La experiencia es obligatoria.',
+            'max' => 'La experiencia no puede exceder :max caracteres.',
+        ],
+        'foto' => [
+            'image' => 'El archivo debe ser una imagen.',
+            'mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg o webp.',
+            'max' => 'La imagen no puede ser mayor a :max KB.',
+            'dimensions' => 'La imagen debe tener entre 100x100 y 2000x2000 píxeles.',
+        ],
+        
+        // Validaciones específicas de galería
+        'images' => [
+            'required' => 'Debe seleccionar al menos una imagen.',
+            'array' => 'El formato de las imágenes no es válido.',
+            'min' => 'Debe seleccionar al menos :min imagen.',
+            'max' => 'No puede subir más de :max imágenes a la vez.',
+        ],
+        'images.*' => [
+            'required' => 'Cada archivo debe ser una imagen válida.',
+            'image' => 'Cada archivo debe ser una imagen.',
+            'mimes' => 'Las imágenes deben ser de tipo: jpeg, png o webp.',
+            'max' => 'Cada imagen no puede ser mayor a :max KB.',
+            'dimensions' => 'Cada imagen debe tener entre 50x50 y 10000x10000 píxeles.',
+        ],
+        'alt_texts' => [
+            'array' => 'El formato de los textos alternativos no es válido.',
+        ],
+        'alt_texts.*' => [
+            'string' => 'Cada texto alternativo debe ser una cadena de texto.',
+            'max' => 'Cada texto alternativo no puede exceder :max caracteres.',
+            'regex' => 'El texto alternativo contiene caracteres no permitidos.',
+        ],
+        
+        // Validaciones específicas de idioma
+        'locale' => [
+            'required' => 'El idioma es obligatorio.',
+            'string' => 'El idioma debe ser una cadena de texto.',
+            'max' => 'El código de idioma no puede exceder :max caracteres.',
+            'regex' => 'El formato del código de idioma no es válido.',
+            'in' => 'El idioma seleccionado no es válido.',
+        ],
+        
+        // Validaciones específicas de servicios
+        'nombre' => [
+            'required' => 'El nombre es obligatorio.',
+            'string' => 'El nombre debe ser una cadena de texto.',
+            'max' => 'El nombre no puede exceder :max caracteres.',
+        ],
+        'descripcion' => [
+            'required' => 'La descripción es obligatoria.',
+            'string' => 'La descripción debe ser una cadena de texto.',
+        ],
+        'precio' => [
+            'required' => 'El precio es obligatorio.',
+            'numeric' => 'El precio debe ser un número.',
+            'min' => 'El precio debe ser mayor a :min.',
+        ],
+        'duracion' => [
+            'required' => 'La duración es obligatoria.',
+            'integer' => 'La duración debe ser un número entero.',
+            'min' => 'La duración debe ser de al menos :min minutos.',
+        ],
+        
+        // Validaciones específicas de citas
+        'nombre_completo' => [
+            'required' => 'El nombre completo es obligatorio.',
+            'string' => 'El nombre completo debe ser una cadena de texto.',
+            'max' => 'El nombre completo no puede exceder :max caracteres.',
+        ],
+        'numero_telefono' => [
+            'required' => 'El número de teléfono es obligatorio.',
+            'string' => 'El número de teléfono debe ser una cadena de texto.',
+            'max' => 'El número de teléfono no puede exceder :max caracteres.',
+        ],
+        'fecha' => [
+            'required' => 'La fecha es obligatoria.',
+            'date' => 'La fecha debe ser una fecha válida.',
+            'after_or_equal' => 'La fecha debe ser igual o posterior a hoy.',
+        ],
+        'hora' => [
+            'required' => 'La hora es obligatoria.',
+            'date_format' => 'La hora debe tener el formato H:i.',
+        ],
+        'barbero_id' => [
+            'required' => 'Debe seleccionar un barbero.',
+            'exists' => 'El barbero seleccionado no existe.',
+        ],
+        'servicios' => [
+            'required' => 'Debe seleccionar al menos un servicio.',
+            'array' => 'Los servicios deben ser un arreglo.',
+            'min' => 'Debe seleccionar al menos :min servicio.',
+        ],
+        'servicios.*' => [
+            'exists' => 'Uno de los servicios seleccionados no existe.',
         ],
     ],
 
-    'attributes' => [],
+    // Mensajes de validación personalizados para reglas específicas
+    'custom_rules' => [
+        'unique_email_across_tables' => 'Este correo electrónico ya está registrado por otro barbero.',
+        'unique_email_across_users' => 'Este correo electrónico ya está registrado por otro usuario en el sistema.',
+        'invalid_image_content' => 'El archivo no es una imagen válida.',
+        'executable_content_detected' => 'El archivo contiene contenido ejecutable no permitido.',
+        'invalid_file' => 'El archivo no es válido.',
+        'image_type_not_allowed' => 'El tipo de imagen no está permitido.',
+        'barber_not_available' => 'El barbero no está disponible en el horario seleccionado.',
+        'appointment_limit_exceeded' => 'Ya tienes el máximo de citas permitidas.',
+        'past_date_not_allowed' => 'No puedes seleccionar una fecha en el pasado.',
+        'duplicate_appointment' => 'Ya tienes una cita agendada para esta fecha y hora.',
+    ],
+
+    'attributes' => [
+        'nombre_completo' => 'nombre completo',
+        'email' => 'correo electrónico',
+        'password' => 'contraseña',
+        'password_confirmation' => 'confirmación de contraseña',
+        'telefono' => 'teléfono',
+        'numero_telefono' => 'número de teléfono',
+        'especialidad' => 'especialidad',
+        'experiencia' => 'experiencia',
+        'foto' => 'foto',
+        'images' => 'imágenes',
+        'alt_texts' => 'textos alternativos',
+        'locale' => 'idioma',
+        'nombre' => 'nombre',
+        'descripcion' => 'descripción',
+        'precio' => 'precio',
+        'duracion' => 'duración',
+        'fecha' => 'fecha',
+        'hora' => 'hora',
+        'barbero_id' => 'barbero',
+        'servicios' => 'servicios',
+        'current_password' => 'contraseña actual',
+        'new_password' => 'nueva contraseña',
+    ],
 ];
 

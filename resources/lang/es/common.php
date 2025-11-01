@@ -1,0 +1,84 @@
+<?php
+
+return [
+    'navigation' => [
+        'home' => 'Inicio',
+        'services' => 'Servicios',
+        'barberos' => 'Barberos',
+        'gallery' => 'Galería',
+        'contact' => 'Contacto',
+        'book_appointment' => 'Reservar Cita',
+        'login' => 'Iniciar Sesión',
+        'admin' => 'Admin',
+        'employees' => 'Empleados',
+        'admin_dashboard' => 'Panel Admin',
+        'barber_panel' => 'Panel Barbero',
+        'schedule' => 'Agendar',
+        'my_appointments' => 'Mis Citas'
+    ],
+    'buttons' => [
+        'learn_more' => 'Saber Más',
+        'book_now' => 'Reservar Ahora',
+        'view_all' => 'Ver Todos',
+        'contact_us' => 'Contáctanos',
+        'book' => 'Reservar',
+        'close' => 'Cerrar',
+        'previous' => 'Anterior',
+        'next' => 'Siguiente'
+    ],
+    'ui' => [
+        'close' => 'Cerrar',
+        'dismiss' => 'Descartar',
+        'loading' => 'Cargando...',
+        'save' => 'Guardar',
+        'cancel' => 'Cancelar',
+        'confirm' => 'Confirmar',
+        'delete' => 'Eliminar',
+        'edit' => 'Editar',
+        'view' => 'Ver',
+        'back' => 'Volver',
+        'submit' => 'Enviar',
+        'reset' => 'Restablecer'
+    ],
+    'language' => [
+        'spanish' => 'Español',
+        'english' => 'English',
+        'switch_to' => 'Cambiar a'
+    ],
+    'messages' => [
+        'language_switched_successfully' => 'Idioma cambiado exitosamente.'
+    ],
+    'company' => [
+        'name' => 'MASTER CUT BARBER SHOP',
+        'tagline' => 'Estilo y precisión en cada corte'
+    ],
+    'common' => [
+        'duration' => 'Duración',
+        'price' => 'Precio',
+        'minutes' => 'min',
+        'years' => 'años',
+        'experience' => 'Experiencia',
+        'specialties' => 'Especialidades'
+    ],
+    'footer' => [
+        'find_us' => 'Encuéntranos',
+        'contact_us' => 'Contáctanos',
+        'hours' => 'Horarios',
+        'address_line1' => '123 Avenida del Estilo, Centro Urbano',
+        'address_line2' => 'Ciudad, CP 12345',
+        'phone' => '📞 (555) 123-4567',
+        'email' => '✉️ hola@mastercutbarber.com',
+        'hours_weekdays' => 'Lun-Vie: 7:00 AM - 8:00 PM',
+        'hours_saturday' => 'Sáb: 8:00 AM - 6:00 PM',
+        'hours_sunday' => 'Dom: 9:00 AM - 2:00 PM',
+        'book_online' => 'Reserva en línea:',
+        'website' => 'www.mastercutbarber.com/reservas',
+        'copyright' => '© 2024 Master Cut Barber Shop | Todos los derechos reservados.'
+    ],
+    'errors' => [
+        'localization_error' => 'Ocurrió un error con el idioma. Se ha restaurado el idioma predeterminado.',
+        'invalid_locale' => 'El idioma seleccionado no es válido.',
+        'translation_missing' => 'Traducción no disponible.',
+        'too_many_language_switches' => 'Demasiados cambios de idioma. Intenta de nuevo en :seconds segundos.'
+    ]
+];

@@ -14,20 +14,20 @@
      x-transition:leave="transition ease-in duration-200"
      x-transition:leave-start="opacity-100"
      x-transition:leave-end="opacity-0"
-     @open-lightbox.window="openLightbox($event.detail.index)"
-     @keydown.escape.window="closeLightbox()"
-     @keydown.arrow-left.window="previousImage()"
-     @keydown.arrow-right.window="nextImage()"
+    x-on:open-lightbox.window="openLightbox($event.detail.index)"
+    x-on:keydown.escape.window="closeLightbox()"
+    x-on:keydown.arrow-left.window="previousImage()"
+    x-on:keydown.arrow-right.window="nextImage()"
      style="display: none;"
      class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
     
     <!-- Close button -->
-    <button @click="closeLightbox()" 
+    <button x-on:click="closeLightbox()" 
             class="absolute top-4 right-4 z-10 p-2 text-white hover:text-gray-300 transition-colors">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
         </svg>
-        <span class="sr-only">Cerrar</span>
+        <span class="sr-only">{{ __('common.ui.close') }}</span>
     </button>
     
     @if($showCounter)
@@ -40,16 +40,16 @@
     
     <!-- Main image container -->
     <div class="relative max-w-full max-h-full p-4"
-         @click.away="closeLightbox()"
-         @touchstart="handleTouchStart($event)"
-         @touchmove="handleTouchMove($event)"
-         @touchend="handleTouchEnd($event)">
+        x-on:click.away="closeLightbox()"
+        x-on:touchstart="handleTouchStart($event)"
+        x-on:touchmove="handleTouchMove($event)"
+        x-on:touchend="handleTouchEnd($event)">
         
-        <img :src="currentImage?.image_url" 
-             :alt="currentImage?.alt_text || currentImage?.original_name || 'Imagen de galería'"
-             class="max-w-full max-h-[90vh] object-contain"
-             @load="imageLoaded = true"
-             @error="imageError = true">
+       <img :src="currentImage?.image_url" 
+           :alt="currentImage?.alt_text || currentImage?.original_name || 'Imagen de galería'"
+           class="max-w-full max-h-[90vh] object-contain"
+           x-on:load="imageLoaded = true"
+           x-on:error="imageError = true">
         
         <!-- Loading indicator -->
         <div x-show="!imageLoaded && !imageError" 
@@ -66,7 +66,7 @@
                           d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z">
                     </path>
                 </svg>
-                <p>Error al cargar la imagen</p>
+                <p>{{ __('gallery.errors.load_failed') }}</p>
             </div>
         </div>
     </div>
@@ -76,23 +76,23 @@
         <template x-if="images.length > 1">
             <div>
                 <!-- Previous button -->
-                <button @click="previousImage()" 
+        <button x-on:click="previousImage()" 
                         class="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 text-white hover:text-gray-300 transition-colors"
                         :disabled="currentIndex === 0">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                     </svg>
-                    <span class="sr-only">Imagen anterior</span>
+                    <span class="sr-only">{{ __('gallery.previous') }}</span>
                 </button>
                 
                 <!-- Next button -->
-                <button @click="nextImage()" 
+        <button x-on:click="nextImage()" 
                         class="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 text-white hover:text-gray-300 transition-colors"
                         :disabled="currentIndex === images.length - 1">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
-                    <span class="sr-only">Imagen siguiente</span>
+                    <span class="sr-only">{{ __('gallery.next') }}</span>
                 </button>
             </div>
         </template>

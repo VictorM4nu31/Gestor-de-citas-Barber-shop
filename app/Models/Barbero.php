@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
+use App\Helpers\TranslationHelper;
 
 class Barbero extends Model
 {
@@ -20,6 +21,8 @@ class Barbero extends Model
         'user_id',
         'activo',
         'fecha_baja',
+        'especialidad_en',
+        'experiencia_en',
     ];
 
     protected $casts = [
@@ -171,6 +174,47 @@ class Barbero extends Model
 
         // Verificar que el usuario tenga el rol de barbero
         return $this->user->hasRole('barbero');
+    }
+
+    /**
+     * Get translated specialty for the barbero
+     * 
+     * @param string|null $locale
+     * @return string
+     */
+    public function getTranslatedEspecialidad(?string $locale = null): string
+    {
+        return TranslationHelper::getTranslatedAttribute($this, 'especialidad', $locale);
+    }
+
+    /**
+     * Get translated experience for the barbero
+     * 
+     * @param string|null $locale
+     * @return string
+     */
+    public function getTranslatedExperiencia(?string $locale = null): string
+    {
+        return TranslationHelper::getTranslatedAttribute($this, 'experiencia', $locale);
+    }
+
+    /**
+     * Get all translated attributes for the barbero
+     * 
+     * @param string|null $locale
+     * @return array
+     */
+    public function getTranslatedAttributes(?string $locale = null): array
+    {
+        return [
+            'nombre_completo' => $this->nombre_completo,
+            'email' => $this->email,
+            'telefono' => $this->telefono,
+            'especialidad' => $this->getTranslatedEspecialidad($locale),
+            'experiencia' => $this->getTranslatedExperiencia($locale),
+            'foto' => $this->foto,
+            'activo' => $this->activo,
+        ];
     }
 
 

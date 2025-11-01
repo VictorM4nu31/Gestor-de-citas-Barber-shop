@@ -3,108 +3,134 @@
 ])
 
 <div 
-    class="upload-modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+    id="upload-modal" 
+    class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"
     x-data="uploadModal()"
-    x-show="isOpen"
+    x-show="showModal"
     x-transition
-    @open-upload-modal.window="openModal()"
-    @close-upload-modal.window="closeModal()"
-    @upload-completed.window="handleUploadCompleted()"
-    @keydown.escape.window="closeModal()"
+    @open-upload-modal.window="showModal = true"
 >
-    <!-- Modal Container -->
-    <div 
-        class="bg-light rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
-        @click.stop
-        x-show="isOpen"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 transform scale-95"
-        x-transition:enter-end="opacity-100 transform scale-100"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100 transform scale-100"
-        x-transition:leave-end="opacity-0 transform scale-95"
-    >
-        <!-- Modal Header -->
-        <div class="bg-secondary text-light p-6 border-b border-accent">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-2xl font-semibold">Subir Imágenes a la Galería</h2>
-                    <p class="text-gray-300 mt-1">Selecciona o arrastra las imágenes que deseas agregar</p>
-                </div>
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-light rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-6 border-b border-accent">
+                <h3 class="text-lg font-semibold text-secondary">{{ __('gallery.admin.modals.upload.title') }}</h3>
                 <button 
                     @click="closeModal()"
-                    class="text-gray-300 hover:text-light transition-colors p-2"
-                    title="Cerrar modal"
+                    class="text-metal hover:text-secondary transition-colors"
                 >
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-        </div>
 
-        <!-- Modal Body -->
-        <div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
-            <!-- Upload Instructions -->
-            <div class="bg-primary bg-opacity-10 border border-primary rounded-lg p-4 mb-6">
-                <div class="flex items-start space-x-3">
-                    <i class="fas fa-info-circle text-primary mt-1"></i>
-                    <div>
-                        <h3 class="font-medium text-secondary mb-2">Instrucciones de Subida</h3>
-                        <ul class="text-sm text-metal space-y-1">
-                            <li>• Formatos soportados: JPG, PNG, WEBP</li>
-                            <li>• Tamaño máximo por imagen: 5MB</li>
-                            <li>• Máximo 10 imágenes por vez</li>
-                            <li>• Las imágenes se redimensionarán automáticamente</li>
-                            <li>• Se generarán miniaturas para optimizar la carga</li>
-                        </ul>
+            <!-- Modal Body -->
+            <div class="p-6">
+                <form @submit.prevent="uploadImages()" enctype="multipart/form-data">
+                    @csrf
+                    
+                    <!-- File Upload Area -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-secondary mb-2">
+                            {{ __('gallery.admin.modals.upload.select_images') }}
+                        </label>
+                        <div 
+                            class="border-2 border-dashed border-accent rounded-lg p-8 text-center hover:border-primary transition-colors"
+                            @dragover.prevent
+                            @drop.prevent="handleDrop($event)"
+                        >
+                            <div class="mb-4">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-accent"></i>
+                            </div>
+                            <p class="text-metal mb-2">
+                                {{ __('gallery.admin.modals.upload.drag_drop_hint') }} 
+                                <button type="button" @click="$refs.fileInput.click()" class="text-primary hover:underline">
+                                    {{ __('gallery.admin.modals.upload.click_to_select') }}
+                                </button>
+                            </p>
+                            <p class="text-xs text-metal">
+                                {{ __('gallery.admin.modals.upload.supported_formats') }}
+                            </p>
+                            
+                            <input 
+                                type="file" 
+                                x-ref="fileInput"
+                                @change="handleFileSelect($event)"
+                                multiple 
+                                accept="image/*"
+                                class="hidden"
+                            >
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Upload Zone Component -->
-            <x-admin.gallery.upload-zone :upload-route="$uploadRoute" />
-
-            <!-- Upload Tips -->
-            <div class="mt-6 bg-surface border border-accent rounded-lg p-4">
-                <h4 class="font-medium text-secondary mb-3 flex items-center">
-                    <i class="fas fa-lightbulb text-warning mr-2"></i>
-                    Consejos para mejores resultados
-                </h4>
-                <div class="grid md:grid-cols-2 gap-4 text-sm text-metal">
-                    <div>
-                        <h5 class="font-medium text-secondary mb-2">Calidad de imagen</h5>
-                        <ul class="space-y-1">
-                            <li>• Usa imágenes de alta resolución</li>
-                            <li>• Evita imágenes borrosas o pixeladas</li>
-                            <li>• Prefiere formato JPG para fotos</li>
-                            <li>• Usa PNG para imágenes con transparencia</li>
-                        </ul>
+                    <!-- Selected Files Preview -->
+                    <div x-show="selectedFiles.length > 0" class="mb-6">
+                        <h4 class="text-sm font-medium text-secondary mb-3">
+                            {{ __('gallery.admin.modals.upload.selected_images') }} (<span x-text="selectedFiles.length"></span>)
+                        </h4>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-h-60 overflow-y-auto">
+                            <template x-for="(file, index) in selectedFiles" :key="index">
+                                <div class="relative bg-surface rounded-lg overflow-hidden">
+                                    <img 
+                                        :src="file.preview" 
+                                        :alt="file.name"
+                                        class="w-full h-20 object-cover"
+                                    >
+                                    <button 
+                                        type="button"
+                                        @click="removeFile(index)"
+                                        class="absolute top-1 right-1 bg-danger text-light rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-700 transition-colors"
+                                    >
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <div class="p-2">
+                                        <p class="text-xs text-secondary truncate" :title="file.name" x-text="file.name"></p>
+                                        <p class="text-xs text-metal" x-text="formatFileSize(file.size)"></p>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
                     </div>
-                    <div>
-                        <h5 class="font-medium text-secondary mb-2">Accesibilidad</h5>
-                        <ul class="space-y-1">
-                            <li>• Agrega texto alternativo descriptivo</li>
-                            <li>• Describe el contenido de la imagen</li>
-                            <li>• Evita texto redundante como "imagen de..."</li>
-                            <li>• Sé específico y conciso</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Modal Footer -->
-        <div class="bg-surface border-t border-accent p-6">
-            <div class="flex justify-between items-center">
-                <div class="text-sm text-metal">
-                    <i class="fas fa-shield-alt text-success mr-1"></i>
-                    Las imágenes se procesan de forma segura en el servidor
-                </div>
-                <button 
-                    @click="closeModal()"
-                    class="bg-accent hover:bg-gray-600 text-light py-2 px-6 rounded transition-colors"
-                >
-                    Cerrar
-                </button>
+                    <!-- Upload Progress -->
+                    <div x-show="uploading" class="mb-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-secondary">{{ __('gallery.admin.modals.upload.uploading') }}</span>
+                            <span class="text-sm text-metal" x-text="`${uploadProgress}%`"></span>
+                        </div>
+                        <div class="w-full bg-surface rounded-full h-2">
+                            <div 
+                                class="bg-primary h-2 rounded-full transition-all duration-300"
+                                :style="`width: ${uploadProgress}%`"
+                            ></div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="flex items-center justify-end space-x-3 pt-4 border-t border-accent">
+                        <button 
+                            type="button"
+                            @click="closeModal()"
+                            class="px-4 py-2 text-metal hover:text-secondary transition-colors"
+                            :disabled="uploading"
+                        >
+                            {{ __('gallery.admin.modals.upload.cancel') }}
+                        </button>
+                        <button 
+                            type="submit"
+                            class="bg-primary hover:bg-secondary text-light px-6 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            :disabled="selectedFiles.length === 0 || uploading"
+                        >
+                            <span x-show="!uploading">
+                                <i class="fas fa-upload mr-2"></i>
+                                {{ __('gallery.admin.modals.upload.upload_button') }}
+                            </span>
+                            <span x-show="uploading">
+                                <i class="fas fa-spinner fa-spin mr-2"></i>
+                                {{ __('gallery.admin.modals.upload.uploading_button') }}
+                            </span>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -114,30 +140,99 @@
 <script>
 function uploadModal() {
     return {
-        isOpen: false,
-
-        openModal() {
-            this.isOpen = true;
-            document.body.style.overflow = 'hidden';
-        },
+        showModal: false,
+        selectedFiles: [],
+        uploading: false,
+        uploadProgress: 0,
 
         closeModal() {
-            this.isOpen = false;
-            document.body.style.overflow = '';
+            if (!this.uploading) {
+                this.showModal = false;
+                this.selectedFiles = [];
+                this.uploadProgress = 0;
+            }
         },
 
-        handleUploadCompleted() {
-            // Show success message
-            this.$dispatch('show-success', { 
-                message: 'Imágenes subidas correctamente' 
+        handleFileSelect(event) {
+            this.processFiles(event.target.files);
+        },
+
+        handleDrop(event) {
+            this.processFiles(event.dataTransfer.files);
+        },
+
+        processFiles(files) {
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/') && file.size <= 10 * 1024 * 1024) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.selectedFiles.push({
+                            file: file,
+                            name: file.name,
+                            size: file.size,
+                            preview: e.target.result
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                }
             });
-            
-            // Close modal after a short delay
-            setTimeout(() => {
-                this.closeModal();
-                // Refresh the page to show new images
-                window.location.reload();
-            }, 1500);
+        },
+
+        removeFile(index) {
+            this.selectedFiles.splice(index, 1);
+        },
+
+        formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        },
+
+        async uploadImages() {
+            if (this.selectedFiles.length === 0) return;
+
+            this.uploading = true;
+            this.uploadProgress = 0;
+
+            const formData = new FormData();
+            this.selectedFiles.forEach((fileObj, index) => {
+                formData.append(`images[${index}]`, fileObj.file);
+            });
+
+            try {
+                const response = await fetch('{{ $uploadRoute }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    this.$dispatch('show-success', { 
+                        message: `${data.uploaded_count} imagen${data.uploaded_count === 1 ? '' : 'es'} subida${data.uploaded_count === 1 ? '' : 's'} correctamente` 
+                    });
+                    this.closeModal();
+                    // Reload the page to show new images
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    this.$dispatch('show-error', { 
+                        message: data.message || 'Error al subir las imágenes' 
+                    });
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                this.$dispatch('show-error', { 
+                    message: 'Error al subir las imágenes' 
+                });
+            } finally {
+                this.uploading = false;
+                this.uploadProgress = 0;
+            }
         }
     }
 }

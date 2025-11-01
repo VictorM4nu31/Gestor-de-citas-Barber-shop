@@ -7,9 +7,9 @@
         <div class="bg-light rounded-lg shadow-xl overflow-hidden flex w-full h-screen md:h-auto max-w-6xl mx-auto">
             <!-- Lado izquierdo: Formulario de registro -->
             <div class="w-full md:w-1/2 p-8">
-                <h2 class="text-2xl font-bold text-primary mb-2">BIENVENIDO A</h2>
-                <h1 class="text-4xl font-bold text-primary mb-4">MASTER CUT BARBER SHOP</h1>
-                <p class="text-muted mb-8 text-sm">Regístrate para obtener actualizaciones al momento sobre las cosas que te interesan.</p>
+                <h2 class="text-2xl font-bold text-primary mb-2">{{ __('auth.welcome_to') }}</h2>
+                <h1 class="text-4xl font-bold text-primary mb-4">{{ __('auth.company_name') }}</h1>
+                <p class="text-muted mb-8 text-sm">{{ __('auth.register_description') }}</p>
 
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
@@ -19,7 +19,7 @@
                             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                                 <svg class="h-5 w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                             </span>
-                            <input id="name" type="text" name="name" placeholder="Nombre"
+                            <input id="name" type="text" name="name" placeholder="{{ __('auth.name_placeholder') }}"
                                    class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                                    :value="old('name')" required autofocus autocomplete="name">
                         </div>
@@ -32,7 +32,7 @@
                             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                                 <svg class="h-5 w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                             </span>
-                            <input id="email" type="email" name="email" placeholder="Correo electrónico"
+                            <input id="email" type="email" name="email" placeholder="{{ __('auth.email_placeholder') }}"
                                    class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                                    :value="old('email')" required autocomplete="username">
                         </div>
@@ -45,7 +45,7 @@
                             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                                 <svg class="h-5 w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             </span>
-                            <input id="password" type="password" name="password" placeholder="Contraseña"
+                            <input id="password" type="password" name="password" placeholder="{{ __('auth.password_placeholder') }}"
                                    class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                                    required autocomplete="new-password">
                         </div>
@@ -58,7 +58,7 @@
                             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                                 <svg class="h-5 w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             </span>
-                            <input id="password_confirmation" type="password" name="password_confirmation" placeholder="Confirmar Contraseña"
+                            <input id="password_confirmation" type="password" name="password_confirmation" placeholder="{{ __('auth.confirm_password_placeholder') }}"
                                    class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                                    required autocomplete="new-password">
                         </div>
@@ -66,13 +66,13 @@
                     </div>
 
                     <button type="submit" class="w-full bg-primary text-light py-2 rounded-md hover:bg-secondary transition duration-300">
-                        REGISTRARSE
+                        {{ __('auth.register_button') }}
                     </button>
                 </form>
 
                 <p class="mt-4 text-sm text-muted">
-                    ¿Ya tienes una cuenta?
-                    <a href="{{ route('login') }}" class="text-primary hover:underline">Inicia sesión</a>
+                    {{ __('auth.already_have_account') }}
+                    <a href="{{ route('login') }}" class="text-primary hover:underline">{{ __('auth.login_now') }}</a>
                 </p>
                 
                 <div class="mt-4 pt-4 border-t border-metal">
@@ -80,7 +80,7 @@
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
-                        Volver a la página principal
+                        {{ __('auth.back_to_home') }}
                     </a>
                 </div>
             </div>
@@ -89,8 +89,8 @@
             <div class="hidden md:block w-1/2 bg-cover bg-center" style="background-image: url('{{ asset('img/login.jpg') }}');">
                 <div class="h-full w-full bg-primary bg-opacity-75 flex items-center justify-center p-8">
                     <div class="text-center">
-                        <h1 class="text-4xl font-bold text-white mb-2">MASTER CUT BARBER SHOP</h1>
-                        <p class="text-white text-sm">Experimenta el mejor estilo para tu cabello.</p>
+                        <h1 class="text-4xl font-bold text-white mb-2">{{ __('auth.company_name') }}</h1>
+                        <p class="text-white text-sm">{{ __('auth.tagline') }}</p>
                     </div>
                 </div>
             </div>

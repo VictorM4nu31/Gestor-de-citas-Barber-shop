@@ -51,6 +51,7 @@ class GalleryController extends Controller
         }
 
         $images = $query->ordered()->paginate(20);
+        $totalCount = $images->total();
 
         if ($request->ajax()) {
             return response()->json([
@@ -60,7 +61,7 @@ class GalleryController extends Controller
             ]);
         }
 
-        return view('admin.gallery.index', compact('images'));
+        return view('admin.gallery.index', compact('images', 'totalCount'));
     }
 
     /**
@@ -79,7 +80,7 @@ class GalleryController extends Controller
         $validated = $request->validated();
 
         // Security logging
-        \Log::info('Gallery upload attempt', [
+        \Illuminate\Support\Facades\Log::info('Gallery upload attempt', [
             'user_id' => auth()->id(),
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
@@ -112,10 +113,10 @@ class GalleryController extends Controller
             });
 
             // Log successful upload
-            \Log::info('Gallery upload successful', [
+            \Illuminate\Support\Facades\Log::info('Gallery upload successful', [
                 'user_id' => auth()->id(),
                 'uploaded_count' => count($uploadedImages),
-                'total_size' => array_sum(array_column($uploadedImages->toArray(), 'size')),
+                'total_size' => array_sum(array_column($uploadedImages, 'size')),
             ]);
 
             if ($request->ajax()) {
@@ -123,7 +124,7 @@ class GalleryController extends Controller
                     'success' => true,
                     'message' => 'Imágenes subidas exitosamente.',
                     'data' => $uploadedImages,
-                    'count' => count($uploadedImages)
+                    'uploaded_count' => count($uploadedImages)
                 ]);
             }
 
@@ -132,7 +133,7 @@ class GalleryController extends Controller
 
         } catch (\Exception $e) {
             // Log upload failure
-            \Log::error('Gallery upload failed', [
+            \Illuminate\Support\Facades\Log::error('Gallery upload failed', [
                 'user_id' => auth()->id(),
                 'ip' => $request->ip(),
                 'error' => $e->getMessage(),

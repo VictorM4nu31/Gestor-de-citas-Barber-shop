@@ -30,7 +30,7 @@ class UniqueEmailAcrossTables implements ValidationRule
         }
 
         if ($barberoQuery->exists()) {
-            $fail('Este correo electrónico ya está registrado por otro barbero.');
+            $fail(__('validation.custom_rules.unique_email_across_tables'));
             return;
         }
 
@@ -41,7 +41,7 @@ class UniqueEmailAcrossTables implements ValidationRule
         }
 
         if ($userQuery->exists()) {
-            $fail('Este correo electrónico ya está registrado por otro usuario en el sistema.');
+            $fail(__('validation.custom_rules.unique_email_across_users'));
             return;
         }
     }

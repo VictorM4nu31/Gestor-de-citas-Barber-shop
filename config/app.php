@@ -78,9 +78,34 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    'locale' => env('APP_LOCALE', 'es'),
 
-    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'es'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Available Locales
+    |--------------------------------------------------------------------------
+    |
+    | List of locales supported by the application for internationalization.
+    | These locales will be used by the localization middleware and language
+    | switching functionality.
+    |
+    */
+
+    'available_locales' => ['es', 'en'],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Translation Fallback Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configure how the application handles missing translations.
+    | When enabled, missing translations will be logged in development.
+    |
+    */
+
+    'log_missing_translations' => env('LOG_MISSING_TRANSLATIONS', true),
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 

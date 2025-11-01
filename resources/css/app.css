@@ -2,6 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom Color Classes */
+@layer utilities {
+    .bg-success {
+        @apply bg-green-600;
+    }
+    .bg-danger {
+        @apply bg-red-600;
+    }
+    .bg-warning {
+        @apply bg-yellow-500;
+    }
+    .bg-info {
+        @apply bg-blue-600;
+    }
+    .bg-primary {
+        @apply bg-red-800;
+    }
+    .bg-secondary {
+        @apply bg-gray-800;
+    }
+    .bg-accent {
+        @apply bg-gray-400;
+    }
+    .bg-surface {
+        @apply bg-gray-200;
+    }
+    .bg-metal {
+        @apply bg-gray-500;
+    }
+    .bg-light {
+        @apply bg-white;
+    }
+    .bg-dark {
+        @apply bg-black;
+    }
+    
+    .text-success {
+        @apply text-green-600;
+    }
+    .text-danger {
+        @apply text-red-600;
+    }
+    .text-warning {
+        @apply text-yellow-500;
+    }
+    .text-info {
+        @apply text-blue-600;
+    }
+    .text-primary {
+        @apply text-red-800;
+    }
+    .text-secondary {
+        @apply text-gray-800;
+    }
+    .text-accent {
+        @apply text-gray-400;
+    }
+    .text-metal {
+        @apply text-gray-500;
+    }
+    .text-light {
+        @apply text-white;
+    }
+    .text-dark {
+        @apply text-black;
+    }
+}
+
 /* Gallery Styles */
 @layer components {
     .gallery-section {
@@ -18,6 +86,14 @@
     
     .gallery-lightbox {
         backdrop-filter: blur(8px);
+    }
+    
+    .gallery-admin-index {
+        @apply block;
+    }
+    
+    .gallery-image-card {
+        @apply relative;
     }
     
     /* Responsive gallery adjustments */

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Helpers\TranslationHelper;
 
 class GalleryImage extends Model
 {
@@ -21,7 +22,8 @@ class GalleryImage extends Model
         'mime_type',
         'alt_text',
         'display_order',
-        'is_active'
+        'is_active',
+        'alt_text_en'
     ];
 
     /**
@@ -115,5 +117,37 @@ class GalleryImage extends Model
     public static function getNextDisplayOrder(): int
     {
         return static::max('display_order') + 1;
+    }
+
+    /**
+     * Get translated alt text for the image
+     * 
+     * @param string|null $locale
+     * @return string
+     */
+    public function getTranslatedAltText(?string $locale = null): string
+    {
+        return TranslationHelper::getTranslatedAttribute($this, 'alt_text', $locale);
+    }
+
+    /**
+     * Get all translated attributes for the gallery image
+     * 
+     * @param string|null $locale
+     * @return array
+     */
+    public function getTranslatedAttributes(?string $locale = null): array
+    {
+        return [
+            'filename' => $this->filename,
+            'original_name' => $this->original_name,
+            'path' => $this->path,
+            'thumbnail_path' => $this->thumbnail_path,
+            'size' => $this->size,
+            'mime_type' => $this->mime_type,
+            'alt_text' => $this->getTranslatedAltText($locale),
+            'display_order' => $this->display_order,
+            'is_active' => $this->is_active,
+        ];
     }
 }

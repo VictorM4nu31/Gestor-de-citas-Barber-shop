@@ -42,11 +42,11 @@ class UpdateGalleryImageRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'alt_text.string' => 'El texto alternativo debe ser una cadena de texto.',
-            'alt_text.max' => 'El texto alternativo no puede exceder 255 caracteres.',
-            'display_order.integer' => 'El orden de visualización debe ser un número entero.',
-            'display_order.min' => 'El orden de visualización debe ser mayor o igual a 0.',
-            'is_active.boolean' => 'El estado activo debe ser verdadero o falso.',
+            'alt_text.string' => __('validation.string'),
+            'alt_text.max' => __('validation.max.string'),
+            'display_order.integer' => __('validation.integer'),
+            'display_order.min' => __('validation.min.numeric'),
+            'is_active.boolean' => __('validation.boolean'),
         ];
     }
 

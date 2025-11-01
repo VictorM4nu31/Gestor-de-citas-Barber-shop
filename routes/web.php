@@ -6,9 +6,13 @@ use App\Http\Controllers\BarberoController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [BarberoController::class, 'welcome']);
+// Language switching route
+Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
+
+Route::get('/', [BarberoController::class, 'welcome'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -37,6 +41,13 @@ Route::middleware('auth')->group(function () {
 // Admin routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    
+    // Translation metrics routes (admin only)
+    Route::prefix('translation-metrics')->name('translation_metrics.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\TranslationMetricsController::class, 'index'])->name('index');
+        Route::get('/missing', [\App\Http\Controllers\TranslationMetricsController::class, 'missing'])->name('missing');
+        Route::delete('/clear', [\App\Http\Controllers\TranslationMetricsController::class, 'clear'])->name('clear');
+    });
     
     // Barberos CRUD
     Route::get('/barberos', [AdminController::class, 'barberosIndex'])->name('barberos.index');

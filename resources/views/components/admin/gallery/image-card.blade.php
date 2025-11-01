@@ -31,11 +31,11 @@
     <div class="absolute top-2 right-2 z-10">
         @if($image->is_active)
             <span class="bg-success text-light px-2 py-1 rounded-full text-xs font-medium">
-                <i class="fas fa-eye mr-1"></i>Activa
+                <i class="fas fa-eye mr-1"></i>{{ __('gallery.admin.active') }}
             </span>
         @else
             <span class="bg-metal text-light px-2 py-1 rounded-full text-xs font-medium">
-                <i class="fas fa-eye-slash mr-1"></i>Inactiva
+                <i class="fas fa-eye-slash mr-1"></i>{{ __('gallery.admin.inactive') }}
             </span>
         @endif
     </div>
@@ -60,14 +60,14 @@
                 <button 
                     @click.stop="openPreview()"
                     class="bg-light text-secondary p-2 rounded-full shadow-lg hover:bg-gray-100 transition-colors mr-2"
-                    title="Ver imagen completa"
+                    title="{{ __('gallery.view_image') }}"
                 >
                     <i class="fas fa-search-plus"></i>
                 </button>
                 <button 
                     @click.stop="openEditModal()"
                     class="bg-primary text-light p-2 rounded-full shadow-lg hover:bg-secondary transition-colors"
-                    title="Editar imagen"
+                    title="{{ __('admin.buttons.edit') }}"
                 >
                     <i class="fas fa-edit"></i>
                 </button>
@@ -91,7 +91,7 @@
                 
                 <div class="flex items-center justify-between mt-2 text-xs text-metal">
                     <span>{{ number_format($image->size / 1024, 1) }} KB</span>
-                    <span>Orden: {{ $image->display_order }}</span>
+                    <span>{{ __('gallery.admin.display_order') }}: {{ $image->display_order }}</span>
                 </div>
             </div>
         </div>
@@ -103,7 +103,7 @@
                     @click="toggleActive()"
                     :class="imageData.is_active ? 'bg-success hover:bg-green-600' : 'bg-metal hover:bg-gray-500'"
                     class="text-light p-1 rounded text-xs transition-colors"
-                    :title="imageData.is_active ? 'Desactivar imagen' : 'Activar imagen'"
+                    :title="imageData.is_active ? '{{ __('admin.buttons.deactivate') }}' : '{{ __('admin.buttons.activate') }}'"
                 >
                     <i :class="imageData.is_active ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
                 </button>
@@ -111,7 +111,7 @@
                 <button 
                     @click="openEditModal()"
                     class="bg-primary hover:bg-secondary text-light p-1 rounded text-xs transition-colors"
-                    title="Editar imagen"
+                    title="{{ __('admin.buttons.edit') }}"
                 >
                     <i class="fas fa-edit"></i>
                 </button>
@@ -119,7 +119,7 @@
                 <button 
                     @click="deleteImage()"
                     class="bg-danger hover:bg-red-600 text-light p-1 rounded text-xs transition-colors"
-                    title="Eliminar imagen"
+                    title="{{ __('admin.buttons.delete') }}"
                 >
                     <i class="fas fa-trash"></i>
                 </button>
@@ -183,12 +183,12 @@ function imageCard(imageId) {
             })
             .catch(error => {
                 console.error('Error toggling image status:', error);
-                alert('Error al cambiar el estado de la imagen');
+                alert('{{ __('admin.notifications.error_message') }}');
             });
         },
 
         deleteImage() {
-            if (confirm('¿Estás seguro de que deseas eliminar esta imagen? Esta acción no se puede deshacer.')) {
+            if (confirm('{{ __('admin.messages.confirm_delete') }} {{ __('admin.messages.action_irreversible') }}')) {
                 fetch(`/admin/gallery/${this.imageId}`, {
                     method: 'DELETE',
                     headers: {
@@ -203,12 +203,12 @@ function imageCard(imageId) {
                         // Remove the card from DOM
                         this.$el.remove();
                     } else {
-                        alert(data.message || 'Error al eliminar la imagen');
+                        alert(data.message || '{{ __('admin.notifications.error_message') }}');
                     }
                 })
                 .catch(error => {
                     console.error('Error deleting image:', error);
-                    alert('Error al eliminar la imagen');
+                    alert('{{ __('admin.notifications.error_message') }}');
                 });
             }
         }

@@ -11,7 +11,7 @@
 @php
     $imageUrl = $image->image_url ?? '';
     $thumbnailUrl = $image->thumbnail_url ?? $imageUrl;
-    $altText = $image->alt_text ?? $image->original_name ?? 'Imagen de galería';
+    $altText = $image->getTranslatedAltText() ?? $image->original_name ?? __('gallery.image_alt_default');
     
     $aspectRatioClass = match($aspectRatio) {
         'square' => 'aspect-square',
@@ -70,7 +70,7 @@
     
     @if($clickable)
         <!-- Click indicator for accessibility -->
-        <span class="sr-only">Hacer clic para ver imagen en tamaño completo</span>
+        <span class="sr-only">{{ __('gallery.view_image') }}</span>
     @endif
 </div>
 

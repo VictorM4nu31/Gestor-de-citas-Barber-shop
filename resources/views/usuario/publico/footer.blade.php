@@ -4,9 +4,9 @@
     <div class="container mx-auto px-4">
         <div class="flex flex-wrap text-left lg:text-left">
             <div class="w-full lg:w-6/12 px-4">
-                <h4 class="text-3xl font-semibold text-primary">MASTER CUT BARBER SHOP</h4>
+                <h4 class="text-3xl font-semibold text-primary">{{ __('common.company.name') }}</h4>
                 <h5 class="text-lg mt-0 mb-2 text-muted">
-                    Estilo y precisión en cada corte
+                    {{ __('common.company.tagline') }}
                 </h5>
                 <div class="mt-6 lg:mb-0 mb-6">
                     <button
@@ -24,41 +24,38 @@
             <div class="w-full lg:w-6/12 px-4">
                 <div class="flex flex-wrap items-top mb-6">
                     <div class="w-full lg:w-4/12 px-4 ml-auto">
-                        <span class="block uppercase text-white text-sm font-semibold mb-2">Encuéntranos</span>
+                        <span class="block uppercase text-white text-sm font-semibold mb-2">{{ __('common.footer.find_us') }}</span>
                         <ul class="list-unstyled">
                             <li>
-                                <p class="text-muted font-semibold block pb-2 text-sm">123 Avenida del Estilo,
-                                    Centro Urbano</p>
+                                <p class="text-muted font-semibold block pb-2 text-sm">{{ __('common.footer.address_line1') }}</p>
                             </li>
                             <li>
-                                <p class="text-muted font-semibold block pb-2 text-sm">Ciudad, CP 12345</p>
+                                <p class="text-muted font-semibold block pb-2 text-sm">{{ __('common.footer.address_line2') }}</p>
                             </li>
                         </ul>
                     </div>
                     <div class="w-full lg:w-4/12 px-4">
-                        <span class="block uppercase text-white text-sm font-semibold mb-2">Contáctanos</span>
+                        <span class="block uppercase text-white text-sm font-semibold mb-2">{{ __('common.footer.contact_us') }}</span>
                         <ul class="list-unstyled">
                             <li>
-                                <p class="text-muted font-semibold block pb-2 text-sm">📞 (555) 123-4567</p>
+                                <p class="text-muted font-semibold block pb-2 text-sm">{{ __('common.footer.phone') }}</p>
                             </li>
                             <li>
-                                <p class="text-muted font-semibold block pb-2 text-sm">✉️
-                                    hola@mastercutbarber.com</p>
+                                <p class="text-muted font-semibold block pb-2 text-sm">{{ __('common.footer.email') }}</p>
                             </li>
                         </ul>
                     </div>
                     <div class="w-full lg:w-4/12 px-4">
-                        <span class="block uppercase text-white text-sm font-semibold mb-2">Horarios</span>
+                        <span class="block uppercase text-white text-sm font-semibold mb-2">{{ __('common.footer.hours') }}</span>
                         <ul class="list-unstyled">
                             <li>
-                                <p class="text-muted font-semibold block pb-2 text-sm">Lun-Vie: 7:00 AM - 8:00 PM
-                                </p>
+                                <p class="text-muted font-semibold block pb-2 text-sm">{{ __('common.footer.hours_weekdays') }}</p>
                             </li>
                             <li>
-                                <p class="text-muted font-semibold block pb-2 text-sm">Sáb: 8:00 AM - 6:00 PM</p>
+                                <p class="text-muted font-semibold block pb-2 text-sm">{{ __('common.footer.hours_saturday') }}</p>
                             </li>
                             <li>
-                                <p class="text-muted font-semibold block pb-2 text-sm">Dom: 9:00 AM - 2:00 PM</p>
+                                <p class="text-muted font-semibold block pb-2 text-sm">{{ __('common.footer.hours_sunday') }}</p>
                             </li>
                         </ul>
                     </div>
@@ -69,10 +66,10 @@
         <div class="flex flex-wrap items-center md:justify-between justify-center">
             <div class="w-full md:w-4/12 px-4 mx-auto text-center">
                 <div class="text-sm text-muted font-semibold py-1">
-                    Reserva en línea: <a href="https://www.mastercutbarber.com/reservas"
-                        class="text-light hover:text-primary">www.mastercutbarber.com/reservas</a>
+                    {{ __('common.footer.book_online') }} <a href="https://www.mastercutbarber.com/reservas"
+                        class="text-light hover:text-primary">{{ __('common.footer.website') }}</a>
                     <br>
-                    © 2024 Master Cut Barber Shop | Todos los derechos reservados.
+                    {{ __('common.footer.copyright') }}
                 </div>
             </div>
         </div>

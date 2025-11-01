@@ -9,7 +9,7 @@
 
 @php
     $checkboxId = $id ?? $name . '_' . $value;
-    $checkboxClasses = 'h-4 w-4 text-primary border-accent rounded focus:ring-primary focus:ring-2 ' . $class;
+    $checkboxClasses = 'h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary focus:ring-2 ' . $class;
     $isChecked = old($name) ? in_array($value, (array) old($name)) : $checked;
 @endphp
 

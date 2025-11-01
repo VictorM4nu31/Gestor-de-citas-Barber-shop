@@ -322,7 +322,7 @@ class ImageReorder {
         this.placeholder.className = 'reorder-placeholder';
         this.placeholder.innerHTML = `
             <div class="border-2 border-dashed border-blue-300 bg-blue-50 rounded-lg p-4 text-center">
-                <div class="text-blue-600 text-sm">Soltar aquí</div>
+                <div class="text-blue-600 text-sm">${__('gallery.admin.reorder.drop_here')}</div>
             </div>
         `;
         
@@ -422,7 +422,7 @@ class ImageReorder {
         this.hideReorderControls();
         
         // Show feedback
-        this.showNotification('Cambios cancelados', 'info');
+        this.showNotification(__('gallery.admin.reorder.changes_cancelled'), 'info');
     }
 
     resetOrder() {
@@ -451,7 +451,7 @@ class ImageReorder {
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Guardando...
+                ${__('gallery.admin.reorder.saving')}
             `;
         }
     }
@@ -460,7 +460,7 @@ class ImageReorder {
         const saveBtn = document.querySelector('[data-save-order]');
         if (saveBtn) {
             saveBtn.disabled = false;
-            saveBtn.innerHTML = 'Guardar Orden';
+            saveBtn.innerHTML = __('gallery.admin.reorder.save_order');
         }
     }
 
@@ -470,7 +470,7 @@ class ImageReorder {
         this.hideReorderControls();
         
         // Show success notification
-        this.showNotification('Orden guardado correctamente', 'success');
+        this.showNotification(__('gallery.admin.reorder.order_saved'), 'success');
         
         // Emit custom event
         const event = new CustomEvent('orderSaved', {

@@ -41,12 +41,8 @@ class UpdateBarberoRequest extends FormRequest
             'password' => [
                 'nullable',
                 'confirmed',
-                Password::min(8)
-                    ->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised(),
+                'min:6', // Reducido de 8 a 6 caracteres
+                'max:255',
             ],
             'telefono' => [
                 'nullable',
@@ -80,21 +76,21 @@ class UpdateBarberoRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'nombre_completo.required' => 'El nombre completo es obligatorio.',
-            'nombre_completo.regex' => 'El nombre completo solo puede contener letras y espacios.',
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.email' => 'El correo electrónico debe tener un formato válido.',
-            'email.unique' => 'Este correo electrónico ya está registrado en el sistema.',
-            'password.confirmed' => 'La confirmación de contraseña no coincide.',
-            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
-            'telefono.regex' => 'El formato del teléfono no es válido.',
-            'especialidad.required' => 'La especialidad es obligatoria.',
-            'experiencia.required' => 'La experiencia es obligatoria.',
-            'experiencia.max' => 'La experiencia no puede exceder 1000 caracteres.',
-            'foto.image' => 'El archivo debe ser una imagen.',
-            'foto.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg o webp.',
-            'foto.max' => 'La imagen no puede ser mayor a 2MB.',
-            'foto.dimensions' => 'La imagen debe tener entre 100x100 y 2000x2000 píxeles.',
+            'nombre_completo.required' => __('validation.custom.nombre_completo.required'),
+            'nombre_completo.regex' => __('validation.custom.nombre_completo.regex'),
+            'email.required' => __('validation.custom.email.required'),
+            'email.email' => __('validation.custom.email.email'),
+            'email.unique' => __('validation.custom.email.unique'),
+            'password.confirmed' => __('validation.custom.password.confirmed'),
+            'password.min' => __('validation.custom.password.min'),
+            'telefono.regex' => __('validation.custom.telefono.regex'),
+            'especialidad.required' => __('validation.custom.especialidad.required'),
+            'experiencia.required' => __('validation.custom.experiencia.required'),
+            'experiencia.max' => __('validation.custom.experiencia.max'),
+            'foto.image' => __('validation.custom.foto.image'),
+            'foto.mimes' => __('validation.custom.foto.mimes'),
+            'foto.max' => __('validation.custom.foto.max'),
+            'foto.dimensions' => __('validation.custom.foto.dimensions'),
         ];
     }
 

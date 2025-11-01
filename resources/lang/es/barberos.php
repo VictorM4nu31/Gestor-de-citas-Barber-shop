@@ -1,0 +1,103 @@
+<?php
+
+return [
+    'title' => 'Nuestros Barberos',
+    'description' => 'Conoce a nuestros talentosos barberos que están listos para atenderte.',
+    'specialties' => 'Especialidades',
+    'experience' => 'Experiencia',
+    'years' => 'años',
+    'book_with' => 'Reservar con :name',
+    'no_barberos' => 'No hay barberos disponibles por el momento.',
+    'profile_of' => 'Perfil de',
+    'back_to_list' => 'Volver a la Lista',
+    'email' => 'Email',
+    'phone' => 'Teléfono',
+    'specialty' => 'Especialidad',
+    'book_appointment_with' => 'Agendar Cita con',
+    
+    // Sección administrativa
+    'admin' => [
+        'titles' => [
+            'create' => 'Crear Barbero',
+            'edit' => 'Editar Barbero',
+            'show' => 'Ver Barbero',
+            'list' => 'Lista de Barberos',
+            'management_actions' => 'Acciones de Gestión'
+        ],
+        'buttons' => [
+            'create_barber' => 'Crear Barbero',
+            'edit_barber' => 'Editar Barbero',
+            'save' => 'Guardar',
+            'back_to_list' => 'Volver a la Lista',
+            'back_to_index' => 'Volver a la lista',
+            'edit' => 'Editar',
+            'deactivate' => 'Dar de Baja',
+            'reactivate' => 'Reactivar',
+            'reactivate_barber' => 'Reactivar Barbero',
+            'delete_permanent' => 'Eliminar Permanentemente'
+        ],
+        'labels' => [
+            'full_name' => 'Nombre Completo',
+            'email' => 'Email',
+            'password' => 'Contraseña',
+            'password_confirmation' => 'Confirmar Contraseña',
+            'password_keep_current' => 'Contraseña (dejar en blanco para mantener la actual)',
+            'phone' => 'Teléfono',
+            'specialty' => 'Especialidad',
+            'experience' => 'Experiencia',
+            'photo' => 'Foto',
+            'services_offered' => 'Servicios que ofrece',
+            'status' => 'Estado',
+            'deactivation_date' => 'Fecha de Baja',
+            'current_services' => 'Servicios Actuales'
+        ],
+        'status' => [
+            'active' => 'Activo',
+            'inactive' => 'Inactivo',
+            'all' => 'Todos',
+            'actives' => 'Activos',
+            'inactives' => 'Inactivos',
+            'since' => 'Desde',
+            'deactivated_on' => 'Dado de baja el'
+        ],
+        'filters' => [
+            'all' => 'Todos',
+            'active' => 'Activos',
+            'inactive' => 'Inactivos',
+            'showing_count' => 'Mostrando :count barbero|Mostrando :count barberos'
+        ],
+        'table' => [
+            'id' => 'ID',
+            'status' => 'Estado',
+            'full_name' => 'Nombre Completo',
+            'email' => 'Email',
+            'phone' => 'Teléfono',
+            'specialty' => 'Especialidad',
+            'experience' => 'Experiencia',
+            'photo' => 'Foto',
+            'actions' => 'Acciones',
+            'no_photo' => 'Sin foto'
+        ],
+        'messages' => [
+            'file_requirements' => 'Tamaño máximo: 2MB. Formatos permitidos: jpeg, png, jpg.',
+            'services_help' => 'Selecciona los servicios que este barbero puede ofrecer. Solo se mostrarán servicios publicados.',
+            'no_services_available' => 'No hay servicios publicados disponibles.',
+            'services_assigned' => 'Servicios actuales: :count asignados. Modifica la selección para cambiar los servicios que este barbero puede ofrecer.',
+            'price_duration_format' => ':price • :duration min'
+        ],
+        'confirmations' => [
+            'deactivate' => '¿Estás seguro de que deseas dar de baja a este barbero?\n\nEl barbero:\n• No podrá acceder al sistema\n• Se mantendrá su historial de citas\n• Podrá ser reactivado más tarde',
+            'reactivate' => '¿Estás seguro de que deseas reactivar a este barbero?\n\nEl barbero podrá volver a acceder al sistema.',
+            'deactivate_simple' => '¿Estás seguro de que deseas dar de baja a este barbero? No podrá acceder al sistema pero se mantendrá su historial.',
+            'reactivate_simple' => '¿Estás seguro de que deseas reactivar a este barbero?'
+        ],
+        'empty_states' => [
+            'no_barbers' => 'No hay barberos registrados',
+            'no_active_barbers' => 'No hay barberos activos',
+            'no_inactive_barbers' => 'No hay barberos inactivos',
+            'no_barbers_description' => 'Comienza creando tu primer barbero.',
+            'no_active_description' => 'Todos los barberos están dados de baja o no hay barberos registrados.',
+            'no_inactive_description' => 'Todos los barberos están activos.'
+        ]
+    ]
+];

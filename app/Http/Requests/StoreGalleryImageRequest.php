@@ -31,32 +31,39 @@ class StoreGalleryImageRequest extends FormRequest
                 'image',
                 'mimes:jpeg,jpg,png,webp',
                 'max:5120', // 5MB máximo
-                'dimensions:min_width=100,min_height=100,max_width=8000,max_height=8000',
+                'dimensions:min_width=50,min_height=50,max_width=10000,max_height=10000',
                 function ($attribute, $value, $fail) {
                     // Additional security validation
                     if (!$value->isValid()) {
-                        $fail('El archivo no es válido.');
-                        return;
-                    }
-
-                    // Check for suspicious file content
-                    $content = file_get_contents($value->getPathname());
-                    if (strpos($content, '<?php') !== false || strpos($content, '<?=') !== false) {
-                        $fail('El archivo contiene contenido no permitido.');
+                        $fail(__('validation.custom_rules.invalid_file'));
                         return;
                     }
 
                     // Verify actual image content
                     $imageInfo = getimagesize($value->getPathname());
                     if (!$imageInfo) {
-                        $fail('El archivo no es una imagen válida.');
+                        $fail(__('validation.custom_rules.invalid_image_content'));
                         return;
                     }
 
-                    // Check MIME type consistency
-                    if ($imageInfo['mime'] !== $value->getMimeType()) {
-                        $fail('El tipo de archivo no coincide con su contenido.');
+                    // Check MIME type consistency (relaxed - allow common variations)
+                    $allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+                    if (!in_array($imageInfo['mime'], $allowedMimes)) {
+                        $fail(__('validation.custom_rules.image_type_not_allowed'));
                         return;
+                    }
+
+                    // Basic security check - only scan first 1KB for obvious executable content
+                    $handle = fopen($value->getPathname(), 'rb');
+                    if ($handle) {
+                        $firstKB = fread($handle, 1024);
+                        fclose($handle);
+                        
+                        // Only check for obvious executable patterns at the beginning of file
+                        if (preg_match('/^<\?php|^<\?=|^#!/', $firstKB)) {
+                            $fail(__('validation.custom_rules.executable_content_detected'));
+                            return;
+                        }
                     }
                 },
             ],
@@ -79,18 +86,18 @@ class StoreGalleryImageRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'images.required' => 'Debe seleccionar al menos una imagen.',
-            'images.array' => 'El formato de las imágenes no es válido.',
-            'images.min' => 'Debe seleccionar al menos una imagen.',
-            'images.max' => 'No puede subir más de 10 imágenes a la vez.',
-            'images.*.required' => 'Cada archivo debe ser una imagen válida.',
-            'images.*.image' => 'Cada archivo debe ser una imagen.',
-            'images.*.mimes' => 'Las imágenes deben ser de tipo: jpeg, png o webp.',
-            'images.*.max' => 'Cada imagen no puede ser mayor a 5MB.',
-            'images.*.dimensions' => 'Cada imagen debe tener entre 100x100 y 4000x4000 píxeles.',
-            'alt_texts.array' => 'El formato de los textos alternativos no es válido.',
-            'alt_texts.*.string' => 'Cada texto alternativo debe ser una cadena de texto.',
-            'alt_texts.*.max' => 'Cada texto alternativo no puede exceder 255 caracteres.',
+            'images.required' => __('validation.custom.images.required'),
+            'images.array' => __('validation.custom.images.array'),
+            'images.min' => __('validation.custom.images.min'),
+            'images.max' => __('validation.custom.images.max'),
+            'images.*.required' => __('validation.custom.images.*.required'),
+            'images.*.image' => __('validation.custom.images.*.image'),
+            'images.*.mimes' => __('validation.custom.images.*.mimes'),
+            'images.*.max' => __('validation.custom.images.*.max'),
+            'images.*.dimensions' => __('validation.custom.images.*.dimensions'),
+            'alt_texts.array' => __('validation.custom.alt_texts.array'),
+            'alt_texts.*.string' => __('validation.custom.alt_texts.*.string'),
+            'alt_texts.*.max' => __('validation.custom.alt_texts.*.max'),
         ];
     }
 

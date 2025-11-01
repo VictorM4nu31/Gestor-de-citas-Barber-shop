@@ -85,8 +85,8 @@
                                                     @csrf
                                                     @method('PATCH')
                                                     <x-ui.button type="success" size="sm" 
-                                                            onclick="return confirm('¿Confirmas que has atendido a este cliente?')">
-                                                        Marcar Atendida
+                                                            onclick="return confirm('{{ __('dashboard.barber.confirm_attended') }}')">
+                                                        {{ __('dashboard.barber.mark_attended') }}
                                                     </x-ui.button>
                                                 </form>
                                             @endif

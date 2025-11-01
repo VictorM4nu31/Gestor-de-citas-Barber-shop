@@ -7,5 +7,5 @@
         <img class="rounded-full h-36 w-36 object-cover" src="https://via.placeholder.com/150" alt="{{ $barbero->nombre_completo }}">
     @endif
     <h3 class="text-secondary mt-4 text-lg font-medium">{{ $barbero->nombre_completo }}</h3>
-    <p class="text-muted">{{ $barbero->especialidad }}</p>
+    <p class="text-muted">{{ $barbero->getTranslatedEspecialidad() }}</p>
 </div>

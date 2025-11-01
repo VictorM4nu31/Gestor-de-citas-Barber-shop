@@ -1,75 +1,81 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-white leading-tight">Crear Barbero</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">{{ __('barberos.admin.titles.create') }}</h2>
             <x-ui.button href="{{ route('admin.barberos.index') }}">
-                Volver a la Lista
+                {{ __('barberos.admin.buttons.back_to_list') }}
             </x-ui.button>
         </div>
     </x-slot>
 
     <main class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-semibold mb-6 text-secondary">Crear Barbero</h1>
+        <!-- Mostrar errores generales (p. ej. excepciones del controlador) -->
+        @if($errors->has('error'))
+            <div class="bg-danger/10 text-danger p-4 rounded mb-4">
+                {{ $errors->first('error') }}
+            </div>
+        @endif
+        <h1 class="text-3xl font-semibold mb-6 text-secondary">{{ __('barberos.admin.titles.create') }}</h1>
         <form action="{{ route('admin.barberos.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
             <x-form.input 
                 name="nombre_completo" 
                 type="text" 
-                label="Nombre Completo" 
+                label="{{ __('barberos.admin.labels.full_name') }}" 
                 required 
             />
             
             <x-form.input 
                 name="email" 
                 type="email" 
-                label="Email" 
+                label="{{ __('barberos.admin.labels.email') }}" 
                 required 
             />
             
             <x-form.input 
                 name="password" 
                 type="password" 
-                label="Contraseña" 
+                label="{{ __('barberos.admin.labels.password') }}" 
                 required 
             />
             
             <x-form.input 
                 name="password_confirmation" 
                 type="password" 
-                label="Confirmar Contraseña" 
+                label="{{ __('barberos.admin.labels.password_confirmation') }}" 
                 required 
             />
             
             <x-form.input 
                 name="telefono" 
                 type="text" 
-                label="Teléfono" 
+                label="{{ __('barberos.admin.labels.phone') }}" 
             />
             
             <x-form.input 
                 name="especialidad" 
                 type="text" 
-                label="Especialidad" 
+                label="{{ __('barberos.admin.labels.specialty') }}" 
                 required 
             />
             
             <x-form.textarea 
                 name="experiencia" 
-                label="Experiencia" 
+                label="{{ __('barberos.admin.labels.experience') }}" 
                 required 
             />
             
             <div class="mb-4">
-                <x-form.label for="foto">Foto</x-form.label>
+                <x-form.label for="foto">{{ __('barberos.admin.labels.photo') }}</x-form.label>
                 <input type="file" id="foto" name="foto" class="w-full px-3 py-2 border border-accent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-200">
-                <p class="mt-2 text-sm text-muted">Tamaño máximo: 2MB. Formatos permitidos: jpeg, png, jpg.</p>
+                <p class="mt-2 text-sm text-muted">{{ __('barberos.admin.messages.file_requirements') }}</p>
                 <x-form.error field="foto" />
             </div>
             
             <!-- Sección de servicios -->
             <div class="mb-4">
-                <label class="block text-sm font-medium text-secondary mb-3">Servicios que ofrece</label>
+                <label class="block text-sm font-medium text-secondary mb-3">{{ __('barberos.admin.labels.services_offered') }}</label>
                 <div class="space-y-3 max-h-64 overflow-y-auto border border-graymuted rounded-md p-4">
                     @if($servicios->count() > 0)
                         @foreach($servicios as $servicio)
@@ -95,17 +101,17 @@
                             </div>
                         @endforeach
                     @else
-                        <p class="text-sm text-gray-500 italic">No hay servicios publicados disponibles.</p>
+                        <p class="text-sm text-gray-500 italic">{{ __('barberos.admin.messages.no_services_available') }}</p>
                     @endif
                 </div>
                 @if ($errors->has('servicios'))
                     <p class="mt-2 text-sm text-danger">{{ $errors->first('servicios') }}</p>
                 @endif
-                <p class="mt-2 text-xs text-gray-500">Selecciona los servicios que este barbero puede ofrecer. Solo se mostrarán servicios publicados.</p>
+                <p class="mt-2 text-xs text-gray-500">{{ __('barberos.admin.messages.services_help') }}</p>
             </div>
             <div class="mb-4">
                 <x-ui.button type="submit">
-                    Guardar
+                    {{ __('barberos.admin.buttons.save') }}
                 </x-ui.button>
             </div>
         </form>

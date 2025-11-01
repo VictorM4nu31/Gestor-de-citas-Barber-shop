@@ -28,10 +28,10 @@ class CitaController extends Controller
         $barberoId = $datos['id_barbero'];
 
         if (Cita::usuarioTieneMaximasFuturas($user->id)) {
-            return redirect()->back()->with('error', 'Ya existen 2 citas pendientes, no puedes agendar una tercera cita.');
+            return redirect()->back()->with('error', __('messages.appointment.max_appointments'));
         }
         if (Cita::barberoNoDisponible($barberoId, $fecha, $hora)) {
-            return redirect()->back()->with('error', 'Sin disponibilidad, asegurate de haber elegido alguno de los horarios disponibles');
+            return redirect()->back()->with('error', __('messages.appointment.no_availability'));
         }
 
         $cita = new Cita();
@@ -49,7 +49,7 @@ class CitaController extends Controller
 
         $cita->save();
 
-        return redirect()->route('citas.index')->with('success', 'Cita agendada exitosamente.');
+        return redirect()->route('citas.index')->with('success', __('messages.appointment.created'));
     }
 
     public function index()
@@ -81,7 +81,7 @@ class CitaController extends Controller
         $cita = Cita::findOrFail($id);
         $cita->delete();
 
-        return redirect()->route('citas.index')->with('success', 'Cita cancelada exitosamente.');
+        return redirect()->route('citas.index')->with('success', __('messages.appointment.cancelled'));
     } 
     
     public function checkAvailability(Request $request)
@@ -103,7 +103,7 @@ class CitaController extends Controller
             ->first();
 
         if (!$barbero) {
-            return response()->json(['error' => 'Barbero no encontrado o inactivo'], 404);
+            return response()->json(['error' => __('messages.barber.not_found')], 404);
         }
 
         $servicios = $barbero->serviciosPublicados()->get();

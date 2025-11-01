@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class AdminController extends Controller
@@ -67,7 +68,7 @@ class AdminController extends Controller
         $validated = $request->validated();
 
         try {
-            \DB::transaction(function () use ($validated, $request) {
+            DB::transaction(function () use ($validated, $request) {
                 $user = \App\Models\User::create([
                     'name' => $validated['nombre_completo'],
                     'email' => $validated['email'],
@@ -95,13 +96,25 @@ class AdminController extends Controller
                 if ($request->has('servicios')) {
                     $barbero->servicios()->sync($request->input('servicios', []));
                 }
+
+                // Log successful creation for debugging/tracing
+                Log::info('Barbero creado', [
+                    'barbero_id' => $barbero->id ?? null,
+                    'email' => $barbero->email ?? ($validated['email'] ?? null),
+                ]);
             });
 
-            return redirect()->route('admin.barberos.index')->with('success', 'Barbero creado exitosamente.');
+            return redirect()->route('admin.barberos.index')->with('success', __('messages.barber.created'));
         } catch (\Exception $e) {
+            // Log the exception for inspection
+            Log::error('Error al crear barbero', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
             return redirect()->back()
                 ->withInput()
-                ->withErrors(['error' => 'Error al crear el barbero: ' . $e->getMessage()]);
+                ->withErrors(['error' => __('messages.barber.create_error', ['error' => $e->getMessage()])]);
         }
     }
 
@@ -181,11 +194,11 @@ class AdminController extends Controller
                 }
             });
 
-            return redirect()->route('admin.barberos.index')->with('success', 'Barbero actualizado exitosamente.');
+            return redirect()->route('admin.barberos.index')->with('success', __('messages.barber.updated'));
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->withErrors(['error' => 'Error al actualizar el barbero: ' . $e->getMessage()]);
+                ->withErrors(['error' => __('messages.barber.update_error', ['error' => $e->getMessage()])]);
         }
     }
 
@@ -206,13 +219,13 @@ class AdminController extends Controller
             });
 
             return redirect()->route('admin.barberos.index')
-                ->with('success', 'Barbero dado de baja exitosamente.');
+                ->with('success', __('messages.barber.deactivated'));
         } catch (ValidationException $e) {
             return redirect()->back()
                 ->withErrors($e->errors());
         } catch (\Exception $e) {
             return redirect()->back()
-                ->withErrors(['error' => 'Error al dar de baja el barbero: ' . $e->getMessage()]);
+                ->withErrors(['error' => __('messages.barber.deactivate_error', ['error' => $e->getMessage()])]);
         }
     }
 
@@ -243,13 +256,13 @@ class AdminController extends Controller
             });
 
             return redirect()->route('admin.barberos.index')
-                ->with('success', 'Barbero reactivado exitosamente.');
+                ->with('success', __('messages.barber.reactivated'));
         } catch (ValidationException $e) {
             return redirect()->back()
                 ->withErrors($e->errors());
         } catch (\Exception $e) {
             return redirect()->back()
-                ->withErrors(['error' => 'Error al reactivar el barbero: ' . $e->getMessage()]);
+                ->withErrors(['error' => __('messages.barber.reactivate_error', ['error' => $e->getMessage()])]);
         }
     }
 
@@ -272,7 +285,7 @@ class AdminController extends Controller
             });
 
             return redirect()->route('admin.barberos.index')
-                ->with('success', 'Barbero eliminado permanentemente del sistema.');
+                ->with('success', __('messages.barber.permanently_deleted'));
         } catch (ValidationException $e) {
             return redirect()->back()
                 ->withErrors($e->errors());
@@ -289,7 +302,7 @@ class AdminController extends Controller
         }
         $barbero->delete();
 
-        return redirect()->route('admin.barberos.index')->with('success', 'Barbero eliminado exitosamente.');
+        return redirect()->route('admin.barberos.index')->with('success', __('messages.barber.deleted'));
     }
 
     public function serviciosIndex()
@@ -322,7 +335,7 @@ class AdminController extends Controller
         $validated['publicado'] = $request->has('publicado');
         Servicio::create($validated);
 
-        return redirect()->route('admin.servicios.index')->with('success', 'Servicio creado exitosamente.');
+        return redirect()->route('admin.servicios.index')->with('success', __('messages.service.created'));
     }
 
     public function serviciosShow(Servicio $servicio)
@@ -357,7 +370,7 @@ class AdminController extends Controller
         $validated['publicado'] = $request->has('publicado');
         $servicio->update($validated);
 
-        return redirect()->route('admin.servicios.index')->with('success', 'Servicio actualizado exitosamente.');
+        return redirect()->route('admin.servicios.index')->with('success', __('messages.service.updated'));
     }
 
     public function serviciosDestroy(Servicio $servicio)
@@ -367,7 +380,7 @@ class AdminController extends Controller
         }
         $servicio->delete();
 
-        return redirect()->route('admin.servicios.index')->with('success', 'Servicio eliminado exitosamente.');
+        return redirect()->route('admin.servicios.index')->with('success', __('messages.service.deleted'));
     }
 
     public function citasIndex()
@@ -409,7 +422,7 @@ class AdminController extends Controller
 
         $cita->servicios()->attach($validated['servicios']);
 
-        return redirect()->route('admin.citas.index')->with('success', 'Cita agendada exitosamente.');
+        return redirect()->route('admin.citas.index')->with('success', __('messages.appointment.created'));
     }
 
     public function citasShow(Cita $cita)
@@ -452,13 +465,13 @@ class AdminController extends Controller
 
         $cita->servicios()->sync($validated['servicios']);
 
-        return redirect()->route('admin.citas.index')->with('success', 'Cita actualizada exitosamente.');
+        return redirect()->route('admin.citas.index')->with('success', __('messages.appointment.updated'));
     }
 
     public function citasDestroy(Cita $cita)
     {
         $cita->delete();
-        return redirect()->route('admin.citas.index')->with('success', 'Cita eliminada exitosamente.');
+        return redirect()->route('admin.citas.index')->with('success', __('messages.appointment.deleted'));
     }
 
     public function citasCheckAvailability(Request $request)

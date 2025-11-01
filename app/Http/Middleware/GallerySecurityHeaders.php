@@ -27,12 +27,31 @@ class GallerySecurityHeaders
         if ($request->is('admin/gallery*')) {
             $csp = "default-src 'self'; " .
                    "img-src 'self' data: blob:; " .
-                   "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " .
-                   "style-src 'self' 'unsafe-inline'; " .
-                   "font-src 'self'; " .
+                   "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; " .
+                   "style-src 'self' 'unsafe-inline' https://fonts.bunny.net https://cdnjs.cloudflare.com; " .
+                   "font-src 'self' https://fonts.bunny.net https://cdnjs.cloudflare.com; " .
                    "connect-src 'self'; " .
                    "form-action 'self'; " .
                    "frame-ancestors 'none';";
+            
+            // Add Vite development server support
+            if (app()->environment('local')) {
+                $csp = str_replace(
+                    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net;",
+                    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net http://localhost:5173 http://[::1]:5173;",
+                    $csp
+                );
+                $csp = str_replace(
+                    "style-src 'self' 'unsafe-inline' https://fonts.bunny.net https://cdnjs.cloudflare.com;",
+                    "style-src 'self' 'unsafe-inline' https://fonts.bunny.net https://cdnjs.cloudflare.com http://localhost:5173 http://[::1]:5173;",
+                    $csp
+                );
+                $csp = str_replace(
+                    "connect-src 'self';",
+                    "connect-src 'self' ws://localhost:5173 ws://[::1]:5173 http://localhost:5173 http://[::1]:5173;",
+                    $csp
+                );
+            }
             
             $response->headers->set('Content-Security-Policy', $csp);
         }

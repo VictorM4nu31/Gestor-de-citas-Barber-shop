@@ -41,7 +41,7 @@
                         </div>
                     @else
                         <div class="text-center py-8">
-                            <p class="text-muted mb-4">No tienes citas programadas.</p>
+                            <p class="text-muted mb-4">{{ __('dashboard.barber.no_appointments_today') }}</p>
                             <a href="{{ route('citas.create') }}" 
                                class="bg-info hover:bg-info/90 text-white font-bold py-2 px-4 rounded">
                                 Agendar Nueva Cita

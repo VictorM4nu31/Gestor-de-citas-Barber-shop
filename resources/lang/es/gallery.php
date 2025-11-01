@@ -1,0 +1,143 @@
+<?php
+
+return [
+    'title' => 'Nuestra Galería',
+    'description' => 'Descubre nuestro trabajo y el ambiente de nuestra barbería',
+    'view_image' => 'Ver imagen',
+    'close' => 'Cerrar',
+    'previous' => 'Anterior',
+    'next' => 'Siguiente',
+    'image_of' => 'Imagen :current de :total',
+    'no_images' => 'No hay imágenes disponibles en la galería.',
+    'image_alt_default' => 'Imagen de galería',
+    'errors' => [
+        'load_failed' => 'Error al cargar la imagen'
+    ],
+    
+    'admin' => [
+        'basic_info' => 'Información Básica',
+        'technical_info' => 'Información Técnica',
+        'original_name' => 'Nombre Original',
+        'alt_text' => 'Texto Alternativo',
+        'not_specified' => 'No especificado',
+        'status' => 'Estado',
+        'active' => 'Activa',
+        'inactive' => 'Inactiva',
+        'file_size' => 'Tamaño del Archivo',
+        'mime_type' => 'Tipo MIME',
+        'display_order' => 'Orden de Visualización',
+        'upload_date' => 'Fecha de Subida',
+        'last_modified' => 'Última Modificación',
+        'access_urls' => 'URLs de Acceso',
+        'image_url' => 'URL de la Imagen',
+        'thumbnail_url' => 'URL de la Miniatura',
+        'copy_url' => 'Copiar URL',
+        'url_copied' => 'URL copiada al portapapeles',
+        'actions' => [
+            'edit_image' => 'Editar Imagen',
+            'delete_image' => 'Eliminar Imagen',
+            'set_as_featured' => 'Marcar como Destacada',
+            'change_order' => 'Cambiar Orden',
+            'view_details' => 'Ver Detalles',
+            'download' => 'Descargar'
+        ],
+        'upload' => [
+            'title' => 'Subir Nuevas Imágenes',
+            'select_files' => 'Seleccionar Archivos',
+            'drag_drop' => 'Arrastra y suelta las imágenes aquí',
+            'or' => 'o',
+            'click_to_browse' => 'haz clic para explorar',
+            'max_file_size' => 'Tamaño máximo: 10MB por archivo',
+            'allowed_formats' => 'Formatos permitidos: JPG, PNG, GIF, WEBP',
+            'uploading' => 'Subiendo...',
+            'upload_success' => 'Imágenes subidas exitosamente',
+            'upload_error' => 'Error al subir las imágenes'
+        ],
+        'management' => [
+            'total_images' => '{0} imágenes|{1} imagen|[2,*] imágenes',
+            'active_images' => 'Imágenes Activas',
+            'inactive_images' => 'Imágenes Inactivas',
+            'storage_used' => 'Almacenamiento Usado',
+            'last_upload' => 'Última Subida',
+            'bulk_actions' => 'Acciones en Lote',
+            'select_all' => 'Seleccionar Todo',
+            'deselect_all' => 'Deseleccionar Todo',
+            'activate_selected' => 'Activar Seleccionadas',
+            'deactivate_selected' => 'Desactivar Seleccionadas',
+            'delete_selected' => 'Eliminar Seleccionadas',
+            'search_images' => 'Buscar imágenes',
+            'search_placeholder' => 'Buscar por nombre o texto alternativo...',
+            'status_filter' => 'Estado',
+            'all_status' => 'Todos',
+            'active_status' => 'Activas',
+            'inactive_status' => 'Inactivas',
+            'selected_count' => '{0} imágenes seleccionadas|{1} imagen seleccionada|[2,*] imágenes seleccionadas',
+            'change_status' => 'Cambiar Estado',
+            'reorder_images' => 'Reordenar',
+            'cancel_order' => 'Cancelar Orden',
+            'drag_to_reorder' => 'Arrastra las imágenes para cambiar su orden de visualización',
+            'save_order' => 'Guardar Orden',
+            'order_saved' => 'Orden guardado correctamente',
+            'order_error' => 'Error al guardar el orden'
+        ],
+        'modals' => [
+            'upload' => [
+                'title' => 'Subir Imágenes',
+                'select_images' => 'Seleccionar Imágenes',
+                'drag_drop_hint' => 'Arrastra las imágenes aquí o',
+                'click_to_select' => 'haz clic para seleccionar',
+                'supported_formats' => 'Formatos soportados: JPG, PNG, GIF, WEBP (máx. 10MB cada una)',
+                'selected_images' => 'Imágenes seleccionadas',
+                'uploading' => 'Subiendo imágenes...',
+                'upload_button' => 'Subir Imágenes',
+                'uploading_button' => 'Subiendo...',
+                'cancel' => 'Cancelar'
+            ],
+            'edit' => [
+                'title' => 'Editar Imagen',
+                'alt_text_label' => 'Texto Alternativo',
+                'alt_text_placeholder' => 'Describe la imagen para accesibilidad...',
+                'alt_text_help' => 'Ayuda a los lectores de pantalla y mejora el SEO',
+                'active_checkbox' => 'Imagen activa (visible en la galería)',
+                'image_info_title' => 'Información de la imagen',
+                'name_label' => 'Nombre:',
+                'size_label' => 'Tamaño:',
+                'order_label' => 'Orden:',
+                'uploaded_label' => 'Subida:',
+                'save_changes' => 'Guardar Cambios',
+                'saving' => 'Guardando...',
+                'cancel' => 'Cancelar'
+            ]
+        ],
+        'upload' => [
+            'validation' => [
+                'max_files' => 'Máximo :max archivos permitidos',
+                'file_type' => 'Tipo de archivo no permitido. Use JPG, PNG o WEBP.',
+                'file_size' => 'Archivo muy grande. Máximo :maxMB permitido.'
+            ],
+            'status' => [
+                'pending' => 'En cola...',
+                'uploading' => 'Subiendo... :progress%',
+                'completed' => 'Completado',
+                'error' => 'Error al subir',
+                'preparing' => 'Preparando...',
+                'queue' => 'En cola...'
+            ],
+            'errors' => [
+                'connection' => 'Error de conexión con el servidor',
+                'offline' => 'Sin conexión a internet',
+                'server' => 'Error del servidor: :status',
+                'unknown' => 'Error desconocido'
+            ]
+        ],
+        'reorder' => [
+            'drop_here' => 'Soltar aquí',
+            'save_order' => 'Guardar Orden',
+            'saving' => 'Guardando...',
+            'cancel_order' => 'Cancelar',
+            'changes_cancelled' => 'Cambios cancelados',
+            'order_saved' => 'Orden guardado correctamente',
+            'save_error' => 'Error al guardar el orden'
+        ]
+    ]
+];

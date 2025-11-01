@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 class="text-2xl font-semibold text-white">Panel de Control - {{ $barbero->nombre_completo }}</h1>
+        <h1 class="text-2xl font-semibold text-white">{{ __('dashboard.barber.control_panel') }} - {{ $barbero->nombre_completo }}</h1>
     </x-slot>
 
     <div id="view" class="h-full w-screen flex flex-row">
@@ -21,13 +21,13 @@
             <!-- Navegación rápida -->
             <div class="mb-6">
                 <x-ui.button type="info" href="{{ route('barbero.citas.index') }}">
-                    Ver Todas las Citas
+                    {{ __('dashboard.barber.view_all_appointments') }}
                 </x-ui.button>
             </div>
 
             <!-- Citas de Hoy -->
             <div class="mb-8">
-                <h2 class="text-xl font-semibold mb-4">Citas de Hoy ({{ now()->format('d/m/Y') }})</h2>
+                <h2 class="text-xl font-semibold mb-4">{{ __('dashboard.barber.todays_appointments') }} ({{ now()->format('d/m/Y') }})</h2>
                 
                 @if($citasHoy->count() > 0)
                     <x-ui.card class="overflow-hidden">
@@ -65,22 +65,22 @@
                                                 </div>
                                                 <div class="mt-2 flex items-center text-sm text-muted sm:mt-0">
                                                     <p class="text-sm text-secondary">
-                                                        Servicios: {{ $cita->servicios_nombres_texto }}
+                                                        {{ __('dashboard.barber.services_label') }} {{ $cita->servicios_nombres_texto }}
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="ml-4 flex-shrink-0 flex space-x-2">
                                             <x-ui.button type="info" size="sm" href="{{ route('barbero.citas.show', $cita) }}">
-                                                Ver
+                                                {{ __('dashboard.barber.view_details') }}
                                             </x-ui.button>
                                             @if($cita->puedeSerAtendida())
                                                 <form action="{{ route('barbero.citas.atender', $cita) }}" method="POST" class="inline">
                                                     @csrf
                                                     @method('PATCH')
                                                     <x-ui.button type="success" size="sm" 
-                                                            onclick="return confirm('¿Confirmas que has atendido a este cliente?')">
-                                                        Marcar Atendida
+                                                            onclick="return confirm('{{ __('dashboard.barber.confirm_attended') }}')">
+                                                        {{ __('dashboard.barber.mark_attended') }}
                                                     </x-ui.button>
                                                 </form>
                                             @endif
@@ -91,13 +91,13 @@
                         </ul>
                     </x-ui.card>
                 @else
-                    <p class="text-muted">No tienes citas programadas para hoy.</p>
+                    <p class="text-muted">{{ __('dashboard.barber.no_appointments_today') }}</p>
                 @endif
             </div>
 
             <!-- Próximas Citas -->
             <div>
-                <h2 class="text-xl font-semibold mb-4">Próximas Citas</h2>
+                <h2 class="text-xl font-semibold mb-4">{{ __('dashboard.barber.upcoming_appointments') }}</h2>
                 
                 @if($citasFuturas->count() > 0)
                     <x-ui.card class="overflow-hidden">
@@ -127,14 +127,14 @@
                                                 </div>
                                                 <div class="mt-2 flex items-center text-sm text-muted sm:mt-0">
                                                     <p class="text-sm text-secondary">
-                                                        Servicios: {{ $cita->servicios_nombres_texto }}
+                                                        {{ __('dashboard.barber.services_label') }} {{ $cita->servicios_nombres_texto }}
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="ml-4 flex-shrink-0">
                                             <x-ui.button type="info" size="sm" href="{{ route('barbero.citas.show', $cita) }}">
-                                                Ver Detalles
+                                                {{ __('dashboard.barber.view_details') }}
                                             </x-ui.button>
                                         </div>
                                     </div>
@@ -143,7 +143,7 @@
                         </ul>
                     </x-ui.card>
                 @else
-                    <p class="text-muted">No tienes citas futuras programadas.</p>
+                    <p class="text-muted">{{ __('dashboard.barber.no_upcoming_appointments') }}</p>
                 @endif
             </div>
         </div>

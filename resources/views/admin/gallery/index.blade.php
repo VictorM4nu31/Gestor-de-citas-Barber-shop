@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-white leading-tight">Gestión de Galería</h2>
+            <h2 class="font-semibold text-xl text-white leading-tight">{{ __('admin.titles.gallery_management') }}</h2>
             <div class="flex space-x-3">
                 <a href="{{ route('admin.dashboard') }}" class="bg-accent hover:bg-gray-600 text-light py-2 px-4 rounded inline-flex items-center space-x-2">
                     <i class="fas fa-arrow-left"></i>
-                    <span>Volver al Panel</span>
+                    <span>{{ __('admin.buttons.back_to_panel') }}</span>
                 </a>
             </div>
         </div>
@@ -49,8 +49,10 @@
     <!-- Image Preview Modal -->
     <div 
         id="image-preview-modal" 
-        class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden"
+        class="fixed inset-0 bg-black bg-opacity-75 z-50"
+        :class="showPreview ? 'flex items-center justify-center' : 'hidden'"
         @click="closePreview()"
+        x-data="{ showPreview: false }"
     >
         <div class="relative max-w-4xl max-h-[90vh] p-4">
             <button 
@@ -113,13 +115,17 @@
             
             image.src = imageUrl;
             image.alt = altText;
-            modal.classList.remove('hidden');
+            
+            // Use Alpine.js to show the modal
+            modal.__x.$data.showPreview = true;
             document.body.style.overflow = 'hidden';
         }
 
         function closePreview() {
             const modal = document.getElementById('image-preview-modal');
-            modal.classList.add('hidden');
+            
+            // Use Alpine.js to hide the modal
+            modal.__x.$data.showPreview = false;
             document.body.style.overflow = '';
         }
 
@@ -146,6 +152,16 @@
                 }
             }, 5000);
         }
+
+        // Translation helper for JavaScript
+        const translations = {
+            success_message: @json(__('admin.notifications.success_message')),
+            error_message: @json(__('admin.notifications.error_message')),
+            upload_success: @json(__('admin.notifications.upload_success')),
+            upload_error: @json(__('admin.notifications.upload_error')),
+            delete_success: @json(__('admin.notifications.delete_success')),
+            update_success: @json(__('admin.notifications.update_success'))
+        };
 
         function enterReorderMode() {
             const galleryIndex = document.querySelector('.gallery-admin-index');

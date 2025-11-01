@@ -1,6 +1,7 @@
 @extends('layouts.welcome')
 
-@section('title', 'Barbería')
+@section('title', __('welcome.meta.title'))
+@section('description', __('welcome.meta.description'))
 
 @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -16,20 +17,20 @@
     <x-usuario.navbar />
 
     <main class="min-h-screen">
-        <x-usuario.hero :title="'Crafted to Perfection'" :subtitle="'Experience the art of traditional barbering combined with modern techniques. Our master barbers deliver precision cuts and grooming services that define excellence.'" :primary_cta="'Book Appointment'" :secondary_cta="'Learn More'" :image="asset('img/hero.jpg')" />
+        <x-usuario.hero :title="__('welcome.hero.title')" :subtitle="__('welcome.hero.subtitle')" :primary_cta="__('welcome.hero.primary_cta')" :secondary_cta="__('welcome.hero.secondary_cta')" :image="asset('img/hero.jpg')" />
         <section id="about" class="text-center py-12 bg-secondary">
             <div class="container mx-auto px-4 lg:px-8 flex flex-col md:flex-row items-center">
                 <div class="w-full md:w-1/2">
-                    <h2 class="text-3xl font-semibold mb-4 text-primary">Sobre Nosotros</h2>
-                    <p class="text-lg mb-8 text-muted">Conoce al equipo de profesionales que te atenderá con el mejor servicio en nuestra barbería.</p>
-                    <h3 class="text-2xl font-semibold mb-4 text-primary">Ubicación</h3>
+                    <h2 class="text-3xl font-semibold mb-4 text-primary">{{ __('welcome.about.title') }}</h2>
+                    <p class="text-lg mb-8 text-muted">{{ __('welcome.about.description') }}</p>
+                    <h3 class="text-2xl font-semibold mb-4 text-primary">{{ __('welcome.about.location_title') }}</h3>
                     <div id="mi_mapa" class="h-96 w-full rounded-lg overflow-hidden"></div>
                 </div>
                 <div class="w-full md:w-1/2 md:pl-8 mt-8 md:mt-0">
-                    <h2 class="text-3xl font-semibold mb-4 text-primary">Información de la Barbería</h2>
-                    <p class="text-lg mb-4 text-muted">Dirección: Calle Ejemplo 123, Ciudad</p>
-                    <p class="text-lg mb-4 text-muted">Teléfono: (123) 456-7890</p>
-                    <p class="text-lg text-muted">Horario: Lunes a Sábado - 9:00 AM a 7:00 PM</p>
+                    <h2 class="text-3xl font-semibold mb-4 text-primary">{{ __('welcome.about.info_title') }}</h2>
+                    <p class="text-lg mb-4 text-muted">{{ __('welcome.about.address') }}</p>
+                    <p class="text-lg mb-4 text-muted">{{ __('welcome.about.phone') }}</p>
+                    <p class="text-lg text-muted">{{ __('welcome.about.schedule') }}</p>
                 </div>
             </div>
         </section>
@@ -39,7 +40,7 @@
         <!-- Gallery Section -->
         @if($galleryImages->isNotEmpty())
             <x-gallery.section 
-                title="Nuestra Galería"
+                :title="__('welcome.gallery.title')"
                 :images="$galleryImages"
                 :columns="['mobile' => 1, 'tablet' => 2, 'desktop' => 3]"
                 :lazy-load="true"
@@ -48,16 +49,16 @@
                 id="gallery"
             >
                 <x-slot:header>
-                    <h2 class="text-3xl font-semibold mb-4 text-primary">Nuestra Galería</h2>
-                    <p class="text-lg mb-8 text-muted">Descubre nuestro trabajo y el ambiente de nuestra barbería</p>
+                    <h2 class="text-3xl font-semibold mb-4 text-primary">{{ __('welcome.gallery.title') }}</h2>
+                    <p class="text-lg mb-8 text-muted">{{ __('welcome.gallery.description') }}</p>
                 </x-slot:header>
             </x-gallery.section>
         @endif
 
         <section id="barberos" class="text-center py-12 bg-background">
             <div class="container mx-auto px-4 lg:px-8">
-                <h2 class="text-3xl font-semibold mb-4 text-secondary">Nuestros Barberos</h2>
-                <p class="text-lg mb-8 text-muted">Conoce a nuestros talentosos barberos que están listos para atenderte.</p>
+                <h2 class="text-3xl font-semibold mb-4 text-secondary">{{ __('welcome.barberos.title') }}</h2>
+                <p class="text-lg mb-8 text-muted">{{ __('welcome.barberos.description') }}</p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                     @foreach($barberos as $barbero)
                         <x-usuario.barbero-card :barbero="$barbero" />
@@ -68,8 +69,8 @@
 
         <section id="contact" class="text-center py-12 bg-background">
             <div class="container mx-auto">
-                <h2 class="text-3xl font-semibold mb-4 text-secondary">Contacto</h2>
-                <p class="text-lg mb-8 text-muted">Estamos aquí para ayudarte. ¡Envíanos un mensaje o reserva una cita!</p>
+                <h2 class="text-3xl font-semibold mb-4 text-secondary">{{ __('welcome.contact.title') }}</h2>
+                <p class="text-lg mb-8 text-muted">{{ __('welcome.contact.description') }}</p>
             </div>
         </section>
     </main>

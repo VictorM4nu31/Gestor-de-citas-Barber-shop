@@ -7,16 +7,19 @@
             <ul class="flex font-semibold justify-between">
                 <!-- Active Link = text-primary
                 Inactive Link = hover:text-primary -->
-                <li class="md:px-4 md:py-2 text-primary"><a href="#">Inicio</a></li>
-                <li class="md:px-4 md:py-2 hover:text-primary"><a href="#footer">Contacto</a></li>
+                <li class="md:px-4 md:py-2 text-primary"><a href="#">{{ __('common.navigation.home') }}</a></li>
+                <li class="md:px-4 md:py-2 hover:text-primary"><a href="#footer">{{ __('common.navigation.contact') }}</a></li>
             </ul>
         </div>
-        <div class="order-2 md:order-3">
+        <div class="order-2 md:order-3 flex items-center space-x-4">
+            {{-- Language Switcher --}}
+            <x-shared.language-switcher />
+            
             <a href="{{ route('login') }}" class="px-4 py-2 bg-primary hover:bg-secondary text-white rounded-xl flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
-                <span>Login</span>
+                <span>{{ __('common.navigation.login') }}</span>
             </a>
         </div>
     </div>
