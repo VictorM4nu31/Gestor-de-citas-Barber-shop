@@ -25,32 +25,32 @@ class GallerySecurityHeaders
         
         // Add Content Security Policy for image uploads
         if ($request->is('admin/gallery*')) {
-            $csp = "default-src 'self'; " .
-                   "img-src 'self' data: blob:; " .
-                   "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; " .
-                   "style-src 'self' 'unsafe-inline' https://fonts.bunny.net https://cdnjs.cloudflare.com; " .
-                   "font-src 'self' https://fonts.bunny.net https://cdnjs.cloudflare.com; " .
-                   "connect-src 'self'; " .
-                   "form-action 'self'; " .
-                   "frame-ancestors 'none';";
+            $isLocal = app()->environment('local');
             
-            // Add Vite development server support
-            if (app()->environment('local')) {
-                $csp = str_replace(
-                    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net;",
-                    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net http://localhost:5173 http://[::1]:5173;",
-                    $csp
-                );
-                $csp = str_replace(
-                    "style-src 'self' 'unsafe-inline' https://fonts.bunny.net https://cdnjs.cloudflare.com;",
-                    "style-src 'self' 'unsafe-inline' https://fonts.bunny.net https://cdnjs.cloudflare.com http://localhost:5173 http://[::1]:5173;",
-                    $csp
-                );
-                $csp = str_replace(
-                    "connect-src 'self';",
-                    "connect-src 'self' ws://localhost:5173 ws://[::1]:5173 http://localhost:5173 http://[::1]:5173;",
-                    $csp
-                );
+            if ($isLocal) {
+                // Development: More permissive CSP for easier debugging
+                $csp = "default-src 'self'; " .
+                       "img-src 'self' data: blob: https: http:; " .
+                       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http:; " .
+                       "style-src 'self' 'unsafe-inline' https: http:; " .
+                       "font-src 'self' data: https: http:; " .
+                       "connect-src 'self' ws: wss: https: http:; " .
+                       "form-action 'self'; " .
+                       "frame-ancestors 'none'; " .
+                       "base-uri 'self'; " .
+                       "object-src 'none';";
+            } else {
+                // Production: Strict CSP with only trusted sources
+                $csp = "default-src 'self'; " .
+                       "img-src 'self' data: blob: https:; " .
+                       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; " .
+                       "style-src 'self' 'unsafe-inline' https://fonts.bunny.net https://fonts.googleapis.com https://cdnjs.cloudflare.com; " .
+                       "font-src 'self' data: https://fonts.bunny.net https://fonts.gstatic.com https://cdnjs.cloudflare.com; " .
+                       "connect-src 'self'; " .
+                       "form-action 'self'; " .
+                       "frame-ancestors 'none'; " .
+                       "base-uri 'self'; " .
+                       "object-src 'none';";
             }
             
             $response->headers->set('Content-Security-Policy', $csp);

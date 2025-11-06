@@ -32,14 +32,14 @@ class AdminController extends Controller
         $servicios = \App\Models\Servicio::all();
         $galleryImages = GalleryImage::active()->get();
         $citasHoy = Cita::whereDate('fecha', today())->count();
-        
+
         return view('admin.dashboard', compact('barberos', 'servicios', 'galleryImages', 'citasHoy'));
     }
 
     public function barberosIndex(Request $request)
     {
         $query = Barbero::query();
-        
+
         // Filtrar por estado si se especifica
         if ($request->has('estado')) {
             switch ($request->get('estado')) {
@@ -52,7 +52,7 @@ class AdminController extends Controller
                 // 'todos' o cualquier otro valor muestra todos
             }
         }
-        
+
         $barberos = $query->get();
         return view('admin.barberos.index', compact('barberos'));
     }
@@ -92,7 +92,7 @@ class AdminController extends Controller
                 }
 
                 $barbero = Barbero::create($barberoData);
-                
+
                 if ($request->has('servicios')) {
                     $barbero->servicios()->sync($request->input('servicios', []));
                 }
@@ -133,7 +133,7 @@ class AdminController extends Controller
     public function barberosUpdate(UpdateBarberoRequest $request, Barbero $barbero)
     {
         $validated = $request->validated();
-        
+
         // Validar integridad de datos si el barbero está activo
         if ($barbero->activo) {
             $this->barberoValidationService->validateIsActive($barbero);
@@ -154,9 +154,9 @@ class AdminController extends Controller
                         'email' => $validated['email'],
                         'password' => Hash::make($validated['password'] ?? 'temporal123'),
                     ]);
-                    
+
                     $user->assignRole('barbero');
-                    
+
                     $barbero->user_id = $user->id;
                 } else {
                     $user = $barbero->user;
@@ -186,7 +186,7 @@ class AdminController extends Controller
                 }
 
                 $barbero->update($barberoData);
-                
+
                 if ($request->has('servicios')) {
                     $barbero->servicios()->sync($request->input('servicios', []));
                 } else {
@@ -206,7 +206,7 @@ class AdminController extends Controller
     {
         try {
             $this->barberoValidationService->validateCanDeactivate($barbero);
-            
+
             DB::transaction(function () use ($barbero) {
                 $barbero->update([
                     'activo' => false,
@@ -233,7 +233,7 @@ class AdminController extends Controller
     {
         try {
             $this->barberoValidationService->validateCanReactivate($barbero);
-            
+
             DB::transaction(function () use ($barbero) {
                 $barbero->update([
                     'activo' => true,
@@ -248,9 +248,9 @@ class AdminController extends Controller
                         'email' => $barbero->email,
                         'password' => Hash::make('temporal123'),
                     ]);
-                    
+
                     $user->assignRole('barbero');
-                    
+
                     $barbero->update(['user_id' => $user->id]);
                 }
             });
@@ -270,7 +270,7 @@ class AdminController extends Controller
     {
         try {
             $this->barberoValidationService->validateCanDelete($barbero);
-            
+
             DB::transaction(function () use ($barbero) {
                 if ($barbero->foto) {
                     Storage::disk('public')->delete($barbero->foto);

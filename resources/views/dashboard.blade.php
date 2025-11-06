@@ -9,7 +9,7 @@
 
     <div class="relative min-h-screen bg-cover bg-center" style="background-image: url('/img/imagen de fondo.jpg');">
         <div class="py-12 flex justify-center">
-            
+
         </div>
     </div>
 </x-app-layout>

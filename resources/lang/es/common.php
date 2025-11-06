@@ -13,8 +13,17 @@ return [
         'employees' => 'Empleados',
         'admin_dashboard' => 'Panel Admin',
         'barber_panel' => 'Panel Barbero',
+        'dashboard' => 'Dashboard',
         'schedule' => 'Agendar',
-        'my_appointments' => 'Mis Citas'
+        'my_appointments' => 'Mis Citas',
+        'profile' => 'Perfil',
+        'logout' => 'Cerrar Sesión'
+    ],
+    'profile' => [
+        'title' => 'Perfil',
+        'update_profile' => 'Actualizar Perfil',
+        'update_password' => 'Actualizar Contraseña',
+        'delete_account' => 'Eliminar Cuenta'
     ],
     'buttons' => [
         'learn_more' => 'Saber Más',

@@ -21,35 +21,46 @@ class CitaController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $user = Auth::user();
-        $datos = $request->validated();
-        $fecha = $datos['fecha'];
-        $hora = $datos['hora'];
-        $barberoId = $datos['id_barbero'];
+        try {
+            $user = Auth::user();
+            $datos = $request->validated();
+            $fecha = $datos['fecha'];
+            $hora = $datos['hora'];
+            $barberoId = $datos['id_barbero'];
 
-        if (Cita::usuarioTieneMaximasFuturas($user->id)) {
-            return redirect()->back()->with('error', __('messages.appointment.max_appointments'));
+            // Verificar límite de citas
+            if (Cita::usuarioTieneMaximasFuturas($user->id)) {
+                return redirect()->back()->with('error', __('messages.appointment.max_appointments'));
+            }
+
+            // Verificar disponibilidad del barbero
+            if (Cita::barberoNoDisponible($barberoId, $fecha, $hora)) {
+                return redirect()->back()->with('error', __('messages.appointment.no_availability'));
+            }
+
+            // Crear la cita
+            $cita = new Cita();
+            $cita->nombre_completo = $datos['nombre_completo'];
+            $cita->numero_telefono = $datos['numero_telefono'];
+            $cita->correo_electronico = $datos['correo_electronico'];
+            $cita->fecha = $fecha;
+            $cita->hora = $hora;
+            $cita->id_barbero = $barberoId;
+            $cita->id_usuario = $user->id;
+            $cita->estado = 'pendiente'; // Agregar estado por defecto
+
+            $servicios = $datos['servicios'];
+            $cita->servicios = implode(',', $servicios);
+            $cita->costo = \App\Models\Servicio::whereIn('id', $servicios)->sum('precio');
+
+            $cita->save();
+
+            return redirect()->route('citas.index')->with('success', __('messages.appointment.created'));
+
+        } catch (\Exception $e) {
+            \Log::error('Error al crear cita: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error al crear la cita: ' . $e->getMessage());
         }
-        if (Cita::barberoNoDisponible($barberoId, $fecha, $hora)) {
-            return redirect()->back()->with('error', __('messages.appointment.no_availability'));
-        }
-
-        $cita = new Cita();
-        $cita->nombre_completo = $datos['nombre_completo'];
-        $cita->numero_telefono = $datos['numero_telefono'];
-        $cita->correo_electronico = $datos['correo_electronico'];
-        $cita->fecha = $fecha;
-        $cita->hora = $hora;
-        $cita->id_barbero = $barberoId;
-        $cita->id_usuario = $user->id;
-
-        $servicios = $datos['servicios'];
-        $cita->servicios = implode(',', $servicios);
-        $cita->costo = \App\Models\Servicio::whereIn('id', $servicios)->sum('precio');
-
-        $cita->save();
-
-        return redirect()->route('citas.index')->with('success', __('messages.appointment.created'));
     }
 
     public function index()
@@ -82,8 +93,8 @@ class CitaController extends Controller
         $cita->delete();
 
         return redirect()->route('citas.index')->with('success', __('messages.appointment.cancelled'));
-    } 
-    
+    }
+
     public function checkAvailability(Request $request)
     {
         $barberoId = $request->input('barbero_id');

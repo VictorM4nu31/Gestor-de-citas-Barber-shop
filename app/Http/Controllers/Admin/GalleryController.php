@@ -11,6 +11,7 @@ use App\Http\Requests\ReorderGalleryImagesRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class GalleryController extends Controller
 {
@@ -81,7 +82,7 @@ class GalleryController extends Controller
 
         // Security logging
         \Illuminate\Support\Facades\Log::info('Gallery upload attempt', [
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
             'file_count' => count($validated['images']),
@@ -114,7 +115,7 @@ class GalleryController extends Controller
 
             // Log successful upload
             \Illuminate\Support\Facades\Log::info('Gallery upload successful', [
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
                 'uploaded_count' => count($uploadedImages),
                 'total_size' => array_sum(array_column($uploadedImages, 'size')),
             ]);
@@ -134,7 +135,7 @@ class GalleryController extends Controller
         } catch (\Exception $e) {
             // Log upload failure
             \Illuminate\Support\Facades\Log::error('Gallery upload failed', [
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
                 'ip' => $request->ip(),
                 'error' => $e->getMessage(),
                 'file_count' => count($validated['images']),

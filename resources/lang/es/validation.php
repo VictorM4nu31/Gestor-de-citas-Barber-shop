@@ -142,7 +142,7 @@ return [
             'max' => 'La imagen no puede ser mayor a :max KB.',
             'dimensions' => 'La imagen debe tener entre 100x100 y 2000x2000 píxeles.',
         ],
-        
+
         // Validaciones específicas de galería
         'images' => [
             'required' => 'Debe seleccionar al menos una imagen.',
@@ -165,7 +165,7 @@ return [
             'max' => 'Cada texto alternativo no puede exceder :max caracteres.',
             'regex' => 'El texto alternativo contiene caracteres no permitidos.',
         ],
-        
+
         // Validaciones específicas de idioma
         'locale' => [
             'required' => 'El idioma es obligatorio.',
@@ -174,7 +174,7 @@ return [
             'regex' => 'El formato del código de idioma no es válido.',
             'in' => 'El idioma seleccionado no es válido.',
         ],
-        
+
         // Validaciones específicas de servicios
         'nombre' => [
             'required' => 'El nombre es obligatorio.',
@@ -195,12 +195,39 @@ return [
             'integer' => 'La duración debe ser un número entero.',
             'min' => 'La duración debe ser de al menos :min minutos.',
         ],
-        
+
         // Validaciones específicas de citas
         'nombre_completo' => [
             'required' => 'El nombre completo es obligatorio.',
             'string' => 'El nombre completo debe ser una cadena de texto.',
             'max' => 'El nombre completo no puede exceder :max caracteres.',
+            'regex' => 'El nombre completo solo puede contener letras y espacios.',
+        ],
+        'email' => [
+            'required' => 'El correo electrónico es obligatorio.',
+            'email' => 'El correo electrónico debe ser una dirección válida.',
+            'unique' => 'Este correo electrónico ya está en uso.',
+        ],
+        'password' => [
+            'required' => 'La contraseña es obligatoria.',
+            'confirmed' => 'La confirmación de contraseña no coincide.',
+            'min' => 'La contraseña debe tener al menos :min caracteres.',
+        ],
+        'telefono' => [
+            'regex' => 'El formato del teléfono no es válido.',
+        ],
+        'especialidad' => [
+            'required' => 'La especialidad es obligatoria.',
+        ],
+        'experiencia' => [
+            'required' => 'La experiencia es obligatoria.',
+            'max' => 'La experiencia no puede exceder :max caracteres.',
+        ],
+        'foto' => [
+            'image' => 'El archivo debe ser una imagen.',
+            'mimes' => 'La imagen debe ser de tipo: :values.',
+            'max' => 'La imagen no puede ser mayor a :max kilobytes.',
+            'dimensions' => 'Las dimensiones de la imagen no son válidas.',
         ],
         'numero_telefono' => [
             'required' => 'El número de teléfono es obligatorio.',

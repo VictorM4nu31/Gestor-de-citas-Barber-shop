@@ -13,8 +13,17 @@ return [
         'employees' => 'Employees',
         'admin_dashboard' => 'Admin Dashboard',
         'barber_panel' => 'Barber Panel',
+        'dashboard' => 'Dashboard',
         'schedule' => 'Schedule',
-        'my_appointments' => 'My Appointments'
+        'my_appointments' => 'My Appointments',
+        'profile' => 'Profile',
+        'logout' => 'Log Out'
+    ],
+    'profile' => [
+        'title' => 'Profile',
+        'update_profile' => 'Update Profile',
+        'update_password' => 'Update Password',
+        'delete_account' => 'Delete Account'
     ],
     'buttons' => [
         'learn_more' => 'Learn More',

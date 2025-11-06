@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-secondary">
-            {{ __('Profile Information') }}
+            {{ __('profile.Profile Information') }}
         </h2>
 
         <p class="mt-1 text-sm text-muted">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("profile.Update your account's profile information and email address.") }}
         </p>
     </header>
 
@@ -18,29 +18,29 @@
         @method('patch')
 
         <div>
-            <x-shared.input-label for="name" :value="__('Name')" />
+            <x-shared.input-label for="name" :value="__('profile.Name')" />
             <x-shared.text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-shared.input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div>
-            <x-shared.input-label for="email" :value="__('Email')" />
+            <x-shared.input-label for="email" :value="__('profile.Email')" />
             <x-shared.text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
             <x-shared.input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
                     <p class="text-sm mt-2 text-secondary">
-                        {{ __('Your email address is unverified.') }}
+                        {{ __('profile.Your email address is unverified.') }}
 
                         <button form="send-verification" class="underline text-sm text-muted hover:text-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                            {{ __('Click here to re-send the verification email.') }}
+                            {{ __('profile.Click here to re-send the verification email.') }}
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
                         <p class="mt-2 font-medium text-sm bg-success text-light p-2 rounded">
-                            {{ __('A new verification link has been sent to your email address.') }}
+                            {{ __('profile.A new verification link has been sent to your email address.') }}
                         </p>
                     @endif
                 </div>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-shared.primary-button>{{ __('Save') }}</x-shared.primary-button>
+            <x-shared.primary-button>{{ __('profile.Save') }}</x-shared.primary-button>
 
             @if (session('status') === 'profile-updated')
                 <p
@@ -57,7 +57,7 @@
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
                     class="text-sm text-muted"
-                >{{ __('Saved.') }}</p>
+                >{{ __('profile.Saved.') }}</p>
             @endif
         </div>
     </form>

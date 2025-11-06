@@ -7,33 +7,46 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    @if(auth()->check() && auth()->user()->hasRole('admin'))
-                        <x-shared.nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
-                            {{ __('common.navigation.admin') }}
-                        </x-shared.nav-link>
-                        <x-shared.nav-link :href="route('admin.barberos.index')" :active="request()->routeIs('admin.barberos.*')">
-                            {{ __('common.navigation.employees') }}
-                        </x-shared.nav-link>
-                        <x-shared.nav-link :href="route('admin.servicios.index')" :active="request()->routeIs('admin.servicios.*')">
-                            {{ __('common.navigation.services') }}
-                        </x-shared.nav-link>
-                        <x-shared.nav-link :href="route('admin.gallery.index')" :active="request()->routeIs('admin.gallery.*')">
-                            {{ __('common.navigation.gallery') }}
-                        </x-shared.nav-link>
-                    @elseif(auth()->check() && auth()->user()->hasRole('barbero'))
-                        <x-shared.nav-link :href="route('barbero.dashboard')" :active="request()->routeIs('barbero.*')">
-                            {{ __('common.navigation.barber_panel') }}
-                        </x-shared.nav-link>
-                    @else
-                        <x-shared.nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
-                        </x-shared.nav-link>
-                        <x-shared.nav-link :href="route('citas.create')" :active="request()->routeIs('citas.create')">
-                            {{ __('common.navigation.schedule') }}
-                        </x-shared.nav-link>
-                        <x-shared.nav-link :href="route('citas.index')" :active="request()->routeIs('citas.index')">
-                            {{ __('common.navigation.my_appointments') }}
-                        </x-shared.nav-link>
+                    @if(auth()->check() && auth()->user())
+                        @php
+                            $userHasAdminRole = false;
+                            $userHasBarberoRole = false;
+                            try {
+                                $userHasAdminRole = auth()->user()->hasRole('admin');
+                                $userHasBarberoRole = auth()->user()->hasRole('barbero');
+                            } catch (\Exception $e) {
+                                // Handle role check errors gracefully
+                            }
+                        @endphp
+
+                        @if($userHasAdminRole)
+                            <x-shared.nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                                Admin
+                            </x-shared.nav-link>
+                            <x-shared.nav-link :href="route('admin.barberos.index')" :active="request()->routeIs('admin.barberos.*')">
+                                Empleados
+                            </x-shared.nav-link>
+                            <x-shared.nav-link :href="route('admin.servicios.index')" :active="request()->routeIs('admin.servicios.*')">
+                                Servicios
+                            </x-shared.nav-link>
+                            <x-shared.nav-link :href="route('admin.gallery.index')" :active="request()->routeIs('admin.gallery.*')">
+                                Galería
+                            </x-shared.nav-link>
+                        @elseif($userHasBarberoRole)
+                            <x-shared.nav-link :href="route('barbero.dashboard')" :active="request()->routeIs('barbero.*')">
+                                Panel Barbero
+                            </x-shared.nav-link>
+                        @else
+                            <x-shared.nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                {{ __('common.navigation.dashboard') }}
+                            </x-shared.nav-link>
+                            <x-shared.nav-link :href="route('citas.create')" :active="request()->routeIs('citas.create')">
+                                {{ __('common.navigation.schedule') }}
+                            </x-shared.nav-link>
+                            <x-shared.nav-link :href="route('citas.index')" :active="request()->routeIs('citas.index')">
+                                {{ __('common.navigation.my_appointments') }}
+                            </x-shared.nav-link>
+                        @endif
                     @endif
                 </div>
             </div>
@@ -41,7 +54,7 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
                 {{-- Language Switcher --}}
                 <x-shared.language-switcher />
-                
+
                 @auth
                 <x-shared.dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -58,7 +71,7 @@
 
                     <x-slot name="content">
                         <x-shared.dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('common.navigation.profile') }}
                         </x-shared.dropdown-link>
 
                         <form method="POST" action="{{ route('logout') }}">
@@ -67,7 +80,7 @@
                             <x-shared.dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('common.navigation.logout') }}
                             </x-shared.dropdown-link>
                         </form>
                     </x-slot>
@@ -88,33 +101,46 @@
 
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-secondary text-white">
         <div class="pt-2 pb-3 space-y-1">
-            @if(auth()->check() && auth()->user()->hasRole('admin'))
-                <x-shared.responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
-                    {{ __('common.navigation.admin_dashboard') }}
-                </x-shared.responsive-nav-link>
-                <x-shared.responsive-nav-link :href="route('admin.barberos.index')" :active="request()->routeIs('admin.barberos.*')">
-                    {{ __('common.navigation.employees') }}
-                </x-shared.responsive-nav-link>
-                <x-shared.responsive-nav-link :href="route('admin.servicios.index')" :active="request()->routeIs('admin.servicios.*')">
-                    {{ __('common.navigation.services') }}
-                </x-shared.responsive-nav-link>
-                <x-shared.responsive-nav-link :href="route('admin.gallery.index')" :active="request()->routeIs('admin.gallery.*')">
-                    {{ __('common.navigation.gallery') }}
-                </x-shared.responsive-nav-link>
-            @elseif(auth()->check() && auth()->user()->hasRole('barbero'))
-                <x-shared.responsive-nav-link :href="route('barbero.dashboard')" :active="request()->routeIs('barbero.*')">
-                    {{ __('common.navigation.barber_panel') }}
-                </x-shared.responsive-nav-link>
-            @else
-                <x-shared.responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
-                </x-shared.responsive-nav-link>
-                <x-shared.responsive-nav-link :href="route('citas.create')" :active="request()->routeIs('citas.create')">
-                    {{ __('common.navigation.schedule') }}
-                </x-shared.responsive-nav-link>
-                <x-shared.responsive-nav-link :href="route('citas.index')" :active="request()->routeIs('citas.index')">
-                    {{ __('common.navigation.my_appointments') }}
-                </x-shared.responsive-nav-link>
+            @if(auth()->check() && auth()->user())
+                @php
+                    $userHasAdminRole = false;
+                    $userHasBarberoRole = false;
+                    try {
+                        $userHasAdminRole = auth()->user()->hasRole('admin');
+                        $userHasBarberoRole = auth()->user()->hasRole('barbero');
+                    } catch (\Exception $e) {
+                        // Handle role check errors gracefully
+                    }
+                @endphp
+
+                @if($userHasAdminRole)
+                    <x-shared.responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                        Panel Admin
+                    </x-shared.responsive-nav-link>
+                    <x-shared.responsive-nav-link :href="route('admin.barberos.index')" :active="request()->routeIs('admin.barberos.*')">
+                        Empleados
+                    </x-shared.responsive-nav-link>
+                    <x-shared.responsive-nav-link :href="route('admin.servicios.index')" :active="request()->routeIs('admin.servicios.*')">
+                        Servicios
+                    </x-shared.responsive-nav-link>
+                    <x-shared.responsive-nav-link :href="route('admin.gallery.index')" :active="request()->routeIs('admin.gallery.*')">
+                        Galería
+                    </x-shared.responsive-nav-link>
+                @elseif($userHasBarberoRole)
+                    <x-shared.responsive-nav-link :href="route('barbero.dashboard')" :active="request()->routeIs('barbero.*')">
+                        Panel Barbero
+                    </x-shared.responsive-nav-link>
+                @else
+                    <x-shared.responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('common.navigation.dashboard') }}
+                    </x-shared.responsive-nav-link>
+                    <x-shared.responsive-nav-link :href="route('citas.create')" :active="request()->routeIs('citas.create')">
+                        {{ __('common.navigation.schedule') }}
+                    </x-shared.responsive-nav-link>
+                    <x-shared.responsive-nav-link :href="route('citas.index')" :active="request()->routeIs('citas.index')">
+                        {{ __('common.navigation.my_appointments') }}
+                    </x-shared.responsive-nav-link>
+                @endif
             @endif
         </div>
 
@@ -124,14 +150,14 @@
                 <div class="font-medium text-base text-white mb-3">{{ __('common.language.switch_to') }}</div>
                 <div class="flex space-x-4">
                     @if(app()->getLocale() !== 'es')
-                        <a href="{{ route('language.switch', 'es') }}" 
+                        <a href="{{ route('language.switch', 'es') }}"
                            class="flex items-center space-x-2 px-3 py-2 text-sm text-white hover:text-primary transition-colors duration-150">
                             <span class="text-lg" role="img" aria-label="{{ __('common.language.spanish') }}">🇪🇸</span>
                             <span>{{ __('common.language.spanish') }}</span>
                         </a>
                     @endif
                     @if(app()->getLocale() !== 'en')
-                        <a href="{{ route('language.switch', 'en') }}" 
+                        <a href="{{ route('language.switch', 'en') }}"
                            class="flex items-center space-x-2 px-3 py-2 text-sm text-white hover:text-primary transition-colors duration-150">
                             <span class="text-lg" role="img" aria-label="{{ __('common.language.english') }}">🇺🇸</span>
                             <span>{{ __('common.language.english') }}</span>
@@ -150,7 +176,7 @@
 
             <div class="mt-3 space-y-1">
                 <x-shared.responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('common.navigation.profile') }}
                 </x-shared.responsive-nav-link>
 
                 <form method="POST" action="{{ route('logout') }}">
@@ -159,7 +185,7 @@
                     <x-shared.responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('common.navigation.logout') }}
                     </x-shared.responsive-nav-link>
                 </form>
             </div>

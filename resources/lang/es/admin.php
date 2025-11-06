@@ -8,17 +8,22 @@ return [
         'user_management' => 'Gestión de Usuarios',
         'barber_management' => 'Gestión de Barberos',
         'service_management' => 'Gestión de Servicios',
+        'service_list' => 'Lista de Servicios',
+        'create_service' => 'Crear Servicio',
+        'edit_service' => 'Editar Servicio',
         'settings' => 'Configuraciones',
         'reports' => 'Reportes',
         'statistics' => 'Estadísticas'
     ],
-    
+
     'buttons' => [
         'back_to_panel' => 'Volver al Panel',
         'back_to_gallery' => 'Volver a la Galería',
         'back_to_dashboard' => 'Volver al Dashboard',
+        'back_to_list' => 'Volver a la Lista',
         'upload_images' => 'Subir Imágenes',
         'add_new' => 'Agregar Nuevo',
+        'create_service' => 'Crear Servicio',
         'edit' => 'Editar',
         'delete' => 'Eliminar',
         'activate' => 'Activar',
@@ -29,7 +34,7 @@ return [
         'manage' => 'Gestionar',
         'configure' => 'Configurar'
     ],
-    
+
     'labels' => [
         'select_images' => 'Seleccionar Imágenes',
         'drag_drop_hint' => 'Arrastra las imágenes aquí o',
@@ -51,6 +56,17 @@ return [
         'display_order_help' => 'Número menor = aparece primero en la galería',
         'image_info' => 'Información de la imagen',
         'name' => 'Nombre',
+        'description' => 'Descripción',
+        'duration' => 'Duración (min)',
+        'price' => 'Precio',
+        'photo' => 'Foto',
+        'actions' => 'Acciones',
+        'no_photo' => 'Sin foto',
+        'published' => 'Publicar este servicio',
+        'order' => 'Orden (prioridad)',
+        'order_help' => 'Valores más bajos aparecen primero (0 = prioridad normal)',
+        'max_size' => 'Tamaño máximo: 2MB. Formatos permitidos: jpeg, png, jpg.',
+        'current_photo' => 'Foto actual',
         'size' => 'Tamaño',
         'type' => 'Tipo',
         'uploaded' => 'Subida',
@@ -60,7 +76,7 @@ return [
         'thumbnail' => 'Miniatura',
         'copy' => 'Copiar'
     ],
-    
+
     'navigation' => [
         'dashboard' => 'Dashboard',
         'users' => 'Usuarios',
@@ -71,7 +87,7 @@ return [
         'settings' => 'Configuraciones',
         'logout' => 'Cerrar Sesión'
     ],
-    
+
     'status' => [
         'active' => 'Activo',
         'inactive' => 'Inactivo',
@@ -81,7 +97,7 @@ return [
         'online' => 'En línea',
         'offline' => 'Desconectado'
     ],
-    
+
     'messages' => [
         'welcome' => 'Bienvenido al Panel de Administración',
         'no_data' => 'No hay datos disponibles',
@@ -93,7 +109,7 @@ return [
         'confirm_delete' => '¿Estás seguro de que deseas eliminar este elemento?',
         'action_irreversible' => 'Esta acción no se puede deshacer'
     ],
-    
+
     'notifications' => [
         'success_message' => 'Operación completada exitosamente',
         'error_message' => 'Ha ocurrido un error durante la operación',

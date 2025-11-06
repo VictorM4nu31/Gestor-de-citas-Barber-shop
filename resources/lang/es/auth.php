@@ -21,5 +21,13 @@ return [
     'forgot_password' => '¿Olvidaste tu contraseña?',
     'reset_password' => 'Restablecer Contraseña',
     'send_reset_link' => 'Enviar enlace de restablecimiento',
-    'remember_password' => '¿Recordaste tu contraseña?'
+    'remember_password' => '¿Recordaste tu contraseña?',
+
+    // Mensajes de recuperación de contraseña
+    'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.' => '¿Olvidaste tu contraseña? No hay problema. Solo déjanos saber tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña que te permitirá elegir una nueva.',
+    'Email Password Reset Link' => 'Enviar Enlace de Restablecimiento',
+    'Email' => 'Correo Electrónico',
+    'Password' => 'Contraseña',
+    'Confirm Password' => 'Confirmar Contraseña',
+    'Reset Password' => 'Restablecer Contraseña'
 ];

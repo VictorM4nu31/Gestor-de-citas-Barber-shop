@@ -6,7 +6,7 @@
 @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link href="https://cdn.jsdelivr.net/npm/flowbite@1.5.0/dist/flowbite.min.css" rel="stylesheet">
-    
+
     <!-- Preload first gallery image for better performance -->
     @if($galleryImages->isNotEmpty())
         <link rel="preload" as="image" href="{{ $galleryImages->first()->thumbnail_url }}">
@@ -17,7 +17,7 @@
     <x-usuario.navbar />
 
     <main class="min-h-screen">
-        <x-usuario.hero :title="__('welcome.hero.title')" :subtitle="__('welcome.hero.subtitle')" :primary_cta="__('welcome.hero.primary_cta')" :secondary_cta="__('welcome.hero.secondary_cta')" :image="asset('img/hero.jpg')" />
+        <x-usuario.hero :title="__('welcome.hero.title')" :subtitle="__('welcome.hero.subtitle')" :primary_cta="__('welcome.hero.primary_cta')" :secondary_cta="__('welcome.hero.secondary_cta')" />
         <section id="about" class="text-center py-12 bg-secondary">
             <div class="container mx-auto px-4 lg:px-8 flex flex-col md:flex-row items-center">
                 <div class="w-full md:w-1/2">
@@ -36,10 +36,10 @@
         </section>
 
         <x-usuario.services :servicios="$servicios" />
-        
+
         <!-- Gallery Section -->
         @if($galleryImages->isNotEmpty())
-            <x-gallery.section 
+            <x-gallery.section
                 :title="__('welcome.gallery.title')"
                 :images="$galleryImages"
                 :columns="['mobile' => 1, 'tablet' => 2, 'desktop' => 3]"

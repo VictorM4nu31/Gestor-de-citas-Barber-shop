@@ -142,7 +142,7 @@ return [
             'max' => 'The image cannot be larger than :max KB.',
             'dimensions' => 'The image must be between 100x100 and 2000x2000 pixels.',
         ],
-        
+
         // Gallery-specific validations
         'images' => [
             'required' => 'You must select at least one image.',
@@ -165,7 +165,7 @@ return [
             'max' => 'Each alt text cannot exceed :max characters.',
             'regex' => 'The alt text contains characters that are not allowed.',
         ],
-        
+
         // Language-specific validations
         'locale' => [
             'required' => 'The language is required.',
@@ -174,7 +174,7 @@ return [
             'regex' => 'The language code format is not valid.',
             'in' => 'The selected language is not valid.',
         ],
-        
+
         // Service-specific validations
         'nombre' => [
             'required' => 'The name is required.',
@@ -195,12 +195,39 @@ return [
             'integer' => 'The duration must be an integer.',
             'min' => 'The duration must be at least :min minutes.',
         ],
-        
+
         // Appointment-specific validations
         'nombre_completo' => [
             'required' => 'The full name is required.',
             'string' => 'The full name must be a text string.',
             'max' => 'The full name cannot exceed :max characters.',
+            'regex' => 'The full name can only contain letters and spaces.',
+        ],
+        'email' => [
+            'required' => 'The email address is required.',
+            'email' => 'The email address must be a valid address.',
+            'unique' => 'This email address is already in use.',
+        ],
+        'password' => [
+            'required' => 'The password is required.',
+            'confirmed' => 'The password confirmation does not match.',
+            'min' => 'The password must be at least :min characters.',
+        ],
+        'telefono' => [
+            'regex' => 'The phone format is not valid.',
+        ],
+        'especialidad' => [
+            'required' => 'The specialty is required.',
+        ],
+        'experiencia' => [
+            'required' => 'The experience is required.',
+            'max' => 'The experience cannot exceed :max characters.',
+        ],
+        'foto' => [
+            'image' => 'The file must be an image.',
+            'mimes' => 'The image must be of type: :values.',
+            'max' => 'The image cannot be larger than :max kilobytes.',
+            'dimensions' => 'The image dimensions are not valid.',
         ],
         'numero_telefono' => [
             'required' => 'The phone number is required.',

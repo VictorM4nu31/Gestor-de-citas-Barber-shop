@@ -21,5 +21,13 @@ return [
     'forgot_password' => 'Forgot your password?',
     'reset_password' => 'Reset Password',
     'send_reset_link' => 'Send reset link',
-    'remember_password' => 'Remember your password?'
+    'remember_password' => 'Remember your password?',
+
+    // Mensajes de recuperación de contraseña
+    'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.' => 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.',
+    'Email Password Reset Link' => 'Email Password Reset Link',
+    'Email' => 'Email',
+    'Password' => 'Password',
+    'Confirm Password' => 'Confirm Password',
+    'Reset Password' => 'Reset Password'
 ];

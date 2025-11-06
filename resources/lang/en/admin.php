@@ -8,17 +8,22 @@ return [
         'user_management' => 'User Management',
         'barber_management' => 'Barber Management',
         'service_management' => 'Service Management',
+        'service_list' => 'Service List',
+        'create_service' => 'Create Service',
+        'edit_service' => 'Edit Service',
         'settings' => 'Settings',
         'reports' => 'Reports',
         'statistics' => 'Statistics'
     ],
-    
+
     'buttons' => [
         'back_to_panel' => 'Back to Panel',
         'back_to_gallery' => 'Back to Gallery',
         'back_to_dashboard' => 'Back to Dashboard',
+        'back_to_list' => 'Back to List',
         'upload_images' => 'Upload Images',
         'add_new' => 'Add New',
+        'create_service' => 'Create Service',
         'edit' => 'Edit',
         'delete' => 'Delete',
         'activate' => 'Activate',
@@ -29,7 +34,7 @@ return [
         'manage' => 'Manage',
         'configure' => 'Configure'
     ],
-    
+
     'labels' => [
         'select_images' => 'Select Images',
         'drag_drop_hint' => 'Drag images here or',
@@ -51,6 +56,17 @@ return [
         'display_order_help' => 'Lower number = appears first in gallery',
         'image_info' => 'Image information',
         'name' => 'Name',
+        'description' => 'Description',
+        'duration' => 'Duration (min)',
+        'price' => 'Price',
+        'photo' => 'Photo',
+        'actions' => 'Actions',
+        'no_photo' => 'No photo',
+        'published' => 'Publish this service',
+        'order' => 'Order (priority)',
+        'order_help' => 'Lower values appear first (0 = normal priority)',
+        'max_size' => 'Maximum size: 2MB. Allowed formats: jpeg, png, jpg.',
+        'current_photo' => 'Current photo',
         'size' => 'Size',
         'type' => 'Type',
         'uploaded' => 'Uploaded',
@@ -60,7 +76,7 @@ return [
         'thumbnail' => 'Thumbnail',
         'copy' => 'Copy'
     ],
-    
+
     'navigation' => [
         'dashboard' => 'Dashboard',
         'users' => 'Users',
@@ -71,7 +87,7 @@ return [
         'settings' => 'Settings',
         'logout' => 'Logout'
     ],
-    
+
     'status' => [
         'active' => 'Active',
         'inactive' => 'Inactive',
@@ -81,7 +97,7 @@ return [
         'online' => 'Online',
         'offline' => 'Offline'
     ],
-    
+
     'messages' => [
         'welcome' => 'Welcome to the Administration Panel',
         'no_data' => 'No data available',
@@ -93,7 +109,7 @@ return [
         'confirm_delete' => 'Are you sure you want to delete this item?',
         'action_irreversible' => 'This action cannot be undone'
     ],
-    
+
     'notifications' => [
         'success_message' => 'Operation completed successfully',
         'error_message' => 'An error occurred during the operation',
