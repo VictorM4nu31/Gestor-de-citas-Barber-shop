@@ -16,6 +16,14 @@
         data-slots-url="{{ route('citas.available_slots') }}"
         data-csrf-token="{{ csrf_token() }}"
     >
+        <nav class="mb-8 grid grid-cols-4 gap-2" aria-label="Progreso de la reserva">
+            <template x-for="item in steps" :key="item.number">
+                <div class="border-t-4 pt-3" :class="step >= item.number ? 'border-primary text-primary' : 'border-accent text-muted'">
+                    <span class="block text-xs font-bold uppercase tracking-wider" x-text="`0${item.number}`"></span>
+                    <span class="mt-1 block text-xs font-semibold sm:text-sm" x-text="item.label"></span>
+                </div>
+            </template>
+        </nav>
         <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
             <section class="space-y-8">
                 <div class="max-w-2xl">
@@ -96,14 +104,15 @@
                             <legend class="eyebrow">04 / {{ __('appointments.time') }}</legend>
                             <input type="hidden" name="hora" x-model="selectedTime" required>
 
-                            <div x-show="loading" class="mt-4 flex items-center gap-3 text-muted" role="status">
-                                <span class="h-4 w-4 animate-spin border-2 border-primary border-t-transparent"></span>
-                                <span>Buscando espacios disponibles...</span>
+                            <div x-show="loading" class="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-5" role="status" aria-live="polite" aria-label="Cargando horarios">
+                                <template x-for="skeleton in 10" :key="skeleton">
+                                    <span class="h-12 animate-pulse border border-accent bg-accent/40"></span>
+                                </template>
                             </div>
 
                             <div x-show="!loading && slots.length" class="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-5" x-cloak>
                                 <template x-for="slot in slots" :key="slot.value">
-                                    <button type="button" @click="selectedTime = slot.value" :aria-pressed="selectedTime === slot.value" :class="selectedTime === slot.value ? 'bg-primary text-light border-primary' : 'bg-light text-secondary border-accent hover:border-primary'" class="border px-3 py-3 text-sm font-semibold transition">
+                                    <button type="button" @click="selectedTime = slot.value; updateStep()" :aria-pressed="selectedTime === slot.value" :class="selectedTime === slot.value ? 'bg-primary text-light border-primary' : 'bg-light text-secondary border-accent hover:border-primary'" class="border px-3 py-3 text-sm font-semibold transition">
                                         <span x-text="slot.label"></span>
                                     </button>
                                 </template>
@@ -163,6 +172,13 @@
                 selectedServices: serviceIds.map(String),
                 selectedTime: '',
                 slots: [],
+                step: 1,
+                steps: [
+                    { number: 1, label: 'Servicios' },
+                    { number: 2, label: 'Barbero y fecha' },
+                    { number: 3, label: 'Horario' },
+                    { number: 4, label: 'Confirmar' },
+                ],
                 loading: false,
                 submitting: false,
                 hasQuery: false,
@@ -198,12 +214,26 @@
                     this.barberName = barber.value ? barber.options[barber.selectedIndex].text.split(' · ')[0] : '';
                     const date = document.getElementById('fecha').value;
                     this.formattedDate = date ? new Intl.DateTimeFormat(document.documentElement.lang, { dateStyle: 'medium' }).format(new Date(`${date}T12:00:00`)) : '';
+                    this.updateStep();
+                },
+
+                updateStep() {
+                    if (!this.selectedServices.length) {
+                        this.step = 1;
+                    } else if (!document.getElementById('id_barbero').value || !document.getElementById('fecha').value) {
+                        this.step = 2;
+                    } else if (!this.selectedTime) {
+                        this.step = 3;
+                    } else {
+                        this.step = 4;
+                    }
                 },
 
                 async refreshSlots() {
                     this.updateSummary();
                     this.selectedTime = '';
                     this.slots = [];
+                    this.updateStep();
                     const barberId = document.getElementById('id_barbero').value;
                     const date = document.getElementById('fecha').value;
 
@@ -241,6 +271,7 @@
                         this.slots = [];
                     } finally {
                         this.loading = false;
+                        this.updateStep();
                     }
                 },
 
@@ -251,6 +282,7 @@
                     }
 
                     this.submitting = true;
+                    this.step = 4;
                 },
             };
         }
