@@ -434,7 +434,7 @@ class AdminController extends Controller
 
     public function citasShow(Cita $cita)
     {
-        $cita->load(['barbero', 'servicios']);
+        $cita->load(['barbero', 'serviciosMany']);
 
         return view('admin.citas.show', compact('cita'));
     }
@@ -443,7 +443,7 @@ class AdminController extends Controller
     {
         $servicios = Servicio::all();
         $barberos = Barbero::all();
-        $cita->load(['barbero', 'servicios']);
+        $cita->load(['barbero', 'serviciosMany']);
 
         return view('admin.citas.edit', compact('cita', 'servicios', 'barberos'));
     }
