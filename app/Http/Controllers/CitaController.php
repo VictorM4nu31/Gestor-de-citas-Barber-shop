@@ -40,6 +40,24 @@ class CitaController extends Controller
         return redirect()->route('citas.create', ['repeat' => $cita->id]);
     }
 
+    public function dashboard()
+    {
+        $proximaCita = Cita::where('id_usuario', Auth::id())
+            ->whereDate('fecha', '>=', today())
+            ->where('estado', '!=', 'cancelada')
+            ->with(['barbero', 'serviciosMany'])
+            ->orderBy('fecha')
+            ->orderBy('hora')
+            ->first();
+
+        $totalCitas = Cita::where('id_usuario', Auth::id())
+            ->whereDate('fecha', '>=', today())
+            ->where('estado', '!=', 'cancelada')
+            ->count();
+
+        return view('dashboard', compact('proximaCita', 'totalCitas'));
+    }
+
     public function store(StoreRequest $request)
     {
         try {

@@ -123,3 +123,9 @@ test('a user can repeat one of their appointments without copying its date', fun
 
     $response->assertRedirect(route('citas.create', ['repeat' => $cita->id]));
 });
+
+test('a user dashboard shows the appointment summary', function () {
+    $response = $this->actingAs($this->user)->get(route('dashboard'));
+
+    $response->assertOk()->assertViewIs('dashboard')->assertViewHas('totalCitas', 0);
+});
