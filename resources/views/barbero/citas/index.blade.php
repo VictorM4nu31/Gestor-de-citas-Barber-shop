@@ -35,7 +35,7 @@
                 </div>
 
                 @if($citas->count() > 0)
-                    <div class="overflow-x-auto">
+                    <div class="hidden overflow-x-auto md:block">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -92,6 +92,36 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="space-y-3 md:hidden">
+                        @foreach($citas as $cita)
+                            <article class="border border-accent bg-light p-4">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div>
+                                        <p class="text-lg font-bold text-secondary">{{ \Carbon\Carbon::parse($cita->fecha)->format('d/m/Y') }}</p>
+                                        <p class="text-sm text-muted">{{ $cita->hora }}</p>
+                                    </div>
+                                    <x-ui.status-badge :estado="$cita->estado" />
+                                </div>
+                                <dl class="mt-4 space-y-2 text-sm">
+                                    <div class="flex justify-between gap-4"><dt class="text-muted">Cliente</dt><dd class="text-right font-semibold">{{ $cita->nombre_completo }}</dd></div>
+                                    <div class="flex justify-between gap-4"><dt class="text-muted">Teléfono</dt><dd class="text-right">{{ $cita->numero_telefono }}</dd></div>
+                                    <div class="flex justify-between gap-4"><dt class="text-muted">Servicios</dt><dd class="text-right">{{ $cita->servicios_nombres_texto }}</dd></div>
+                                </dl>
+                                <div class="mt-4 flex flex-wrap gap-2">
+                                    <x-ui.button type="info" size="sm" href="{{ route('barbero.citas.show', $cita) }}">Ver</x-ui.button>
+                                    @if($cita->puedeSerAtendida())
+                                        <form action="{{ route('barbero.citas.atender', $cita) }}" method="POST" class="inline" x-data x-on:confirmed-attend-mobile-{{ $cita->id }}.window="$el.submit()">
+                                            @csrf
+                                            @method('PATCH')
+                                            <x-ui.button type="success" size="sm" @click="$dispatch('open-modal-attend-mobile-{{ $cita->id }}', { trigger: $el })">Atender</x-ui.button>
+                                        </form>
+                                        <x-ui.confirm-modal id="attend-mobile-{{ $cita->id }}" title="Marcar cita como atendida" message="¿Confirmas que la cita de {{ $cita->nombre_completo }} ya fue atendida?" variant="neutral" />
+                                    @endif
+                                </div>
+                            </article>
+                        @endforeach
                     </div>
 
                     <!-- Paginación -->

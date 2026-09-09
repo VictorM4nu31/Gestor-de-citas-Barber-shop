@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <div class="overflow-x-auto bg-surface">
+        <div class="hidden overflow-x-auto bg-surface md:block">
             <table class="min-w-full bg-light border border-metal">
                 <thead class="bg-secondary text-light">
                     <tr>
@@ -163,6 +163,32 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <div class="space-y-3 md:hidden">
+            @forelse($barberos as $barbero)
+                <article class="border border-accent bg-light p-4">
+                    <div class="flex items-start justify-between gap-3">
+                        <div>
+                            <h3 class="font-bold text-secondary">{{ $barbero->nombre_completo }}</h3>
+                            <p class="text-sm text-muted">{{ $barbero->especialidad }}</p>
+                        </div>
+                        @if($barbero->activo)
+                            <x-ui.status-badge estado="confirmada" />
+                        @else
+                            <x-ui.status-badge estado="cancelada" />
+                        @endif
+                    </div>
+                    <dl class="mt-4 space-y-2 text-sm">
+                        <div class="flex justify-between gap-4"><dt class="text-muted">Email</dt><dd class="break-all text-right">{{ $barbero->email }}</dd></div>
+                        <div class="flex justify-between gap-4"><dt class="text-muted">Teléfono</dt><dd class="text-right">{{ $barbero->telefono ?: 'Sin teléfono' }}</dd></div>
+                        <div class="flex justify-between gap-4"><dt class="text-muted">Experiencia</dt><dd class="text-right">{{ $barbero->experiencia }} años</dd></div>
+                    </dl>
+                    <a href="{{ route('admin.barberos.edit', $barbero) }}" class="mt-4 inline-flex bg-primary px-3 py-2 text-sm font-bold text-light">Editar</a>
+                </article>
+            @empty
+                <p class="border border-dashed border-accent p-6 text-center text-muted">No hay barberos.</p>
+            @endforelse
         </div>
     </main>
 

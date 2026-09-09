@@ -24,7 +24,7 @@
             </div>
         @endif
 
-        <div class="overflow-x-auto bg-surface">
+        <div class="hidden overflow-x-auto bg-surface md:block">
             <table class="min-w-full bg-light border border-metal">
                 <thead class="bg-secondary text-light">
                     <tr>
@@ -65,6 +65,33 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        <div class="space-y-3 md:hidden">
+            @forelse($servicios as $servicio)
+                <article class="border border-accent bg-light p-4">
+                    <div class="flex items-start justify-between gap-3">
+                        <h3 class="font-bold text-secondary">{{ $servicio->nombre }}</h3>
+                        <span class="font-bold text-primary">${{ number_format($servicio->precio, 2) }}</span>
+                    </div>
+                    <p class="mt-2 text-sm text-muted">{{ $servicio->descripcion }}</p>
+                    <div class="mt-3 flex justify-between text-sm text-muted">
+                        <span>{{ $servicio->duracion }} min</span>
+                        <span>{{ $servicio->publicado ? 'Publicado' : 'Oculto' }}</span>
+                    </div>
+                    <div class="mt-4 flex gap-2">
+                        <a href="{{ route('admin.servicios.edit', $servicio) }}" class="bg-primary px-3 py-2 text-sm font-bold text-light">Editar</a>
+                        <form action="{{ route('admin.servicios.destroy', $servicio) }}" method="POST" class="inline" x-data x-on:confirmed-delete-service-mobile-{{ $servicio->id }}.window="$el.submit()">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" @click="$dispatch('open-modal-delete-service-mobile-{{ $servicio->id }}', { trigger: $el })" class="border border-danger px-3 py-2 text-sm font-bold text-danger">Eliminar</button>
+                        </form>
+                        <x-ui.confirm-modal id="delete-service-mobile-{{ $servicio->id }}" title="Eliminar {{ $servicio->nombre }}" message="Esta acción es permanente." />
+                    </div>
+                </article>
+            @empty
+                <p class="border border-dashed border-accent p-6 text-center text-muted">No hay servicios.</p>
+            @endforelse
         </div>
     </main>
 
