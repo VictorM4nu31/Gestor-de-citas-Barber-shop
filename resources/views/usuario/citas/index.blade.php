@@ -31,7 +31,10 @@
                                 <div class="border rounded-lg p-4 bg-surface">
                                     <div class="flex justify-between items-start">
                                         <div>
-                                            <h3 class="font-semibold text-lg">{{ $cita->nombre_completo }}</h3>
+                                            <div class="flex flex-wrap items-center gap-3">
+                                                <h3 class="font-semibold text-lg">{{ $cita->nombre_completo }}</h3>
+                                                <x-ui.status-badge :estado="$cita->estado" />
+                                            </div>
                                             <p class="text-muted">{{ $cita->fecha }} - {{ $cita->hora }}</p>
                                             <p class="text-muted">{{ __('appointments.barber') }}: {{ $cita->barbero->nombre_completo ?? __('appointments.not_assigned') }}</p>
                                             <p class="text-muted">{{ __('appointments.cost') }}: ${{ number_format($cita->costo, 2) }}</p>

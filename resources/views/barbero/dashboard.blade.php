@@ -41,10 +41,7 @@
                                                     {{ $cita->nombre_completo }}
                                                 </p>
                                                 <div class="ml-2 flex-shrink-0 flex">
-                                                    <x-ui.badge 
-                                                        type="@if($cita->estado === 'pendiente') warning @elseif($cita->estado === 'atendida') success @else danger @endif">
-                                                        {{ $cita->estado_texto }}
-                                                    </x-ui.badge>
+                                                    <x-ui.status-badge :estado="$cita->estado" />
                                                 </div>
                                             </div>
                                             <div class="mt-2 sm:flex sm:justify-between">
@@ -78,8 +75,7 @@
                                                 <form action="{{ route('barbero.citas.atender', $cita) }}" method="POST" class="inline">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <x-ui.button type="success" size="sm" 
-                                                            onclick="return confirm('{{ __('dashboard.barber.confirm_attended') }}')">
+                                                    <x-ui.button type="success" size="sm">
                                                         {{ __('dashboard.barber.mark_attended') }}
                                                     </x-ui.button>
                                                 </form>

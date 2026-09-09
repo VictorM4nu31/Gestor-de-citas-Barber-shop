@@ -58,9 +58,7 @@
                         <div class="min-w-0">
                             <div class="flex flex-wrap items-center gap-3">
                                 <h2 class="truncate text-lg font-bold text-secondary">{{ $cita->nombre_completo }}</h2>
-                                <span class="inline-flex items-center gap-2 px-2 py-1 text-xs font-bold uppercase tracking-wider {{ $cita->estado === 'atendida' ? 'bg-success/10 text-success' : ($cita->estado === 'cancelada' ? 'bg-danger/10 text-danger' : 'bg-warning/10 text-warning') }}">
-                                    <span class="h-1.5 w-1.5 rounded-full bg-current"></span>{{ $cita->estado_texto }}
-                                </span>
+                                <x-ui.status-badge :estado="$cita->estado" />
                             </div>
                             <div class="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted">
                                 <span>{{ $cita->barbero->nombre_completo ?? 'Sin barbero' }}</span>

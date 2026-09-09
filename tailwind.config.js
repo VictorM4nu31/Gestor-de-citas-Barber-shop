@@ -38,6 +38,12 @@ export default {
                 success: '#1D6B52',
                 warning: '#8A5A00',
                 info: '#1D5870',
+                status: {
+                    pending: '#8A5A00',
+                    confirmed: '#1D5870',
+                    attended: '#1D6B52',
+                    cancelled: '#A13B32',
+                },
             },
         },
     },

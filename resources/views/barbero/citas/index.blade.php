@@ -66,10 +66,7 @@
                                             {{ $cita->servicios_nombres_texto }}
                                         </td>
                                         <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                            <x-ui.badge 
-                                                type="@if($cita->estado === 'pendiente') warning @elseif($cita->estado === 'atendida') success @else danger @endif">
-                                                {{ $cita->estado_texto }}
-                                            </x-ui.badge>
+                                            <x-ui.status-badge :estado="$cita->estado" />
                                             @if($cita->fecha_atencion)
                                                 <div class="text-xs text-gray-500 mt-1">
                                                     {{ $cita->fecha_atencion->format('d/m/Y H:i') }}
@@ -84,8 +81,7 @@
                                                 <form action="{{ route('barbero.citas.atender', $cita) }}" method="POST" class="inline">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <x-ui.button type="success" size="sm" 
-                                                            onclick="return confirm('{{ __('dashboard.barber.confirm_attended') }}')">
+                                                    <x-ui.button type="success" size="sm">
                                                         {{ __('dashboard.barber.mark_attended') }}
                                                     </x-ui.button>
                                                 </form>
