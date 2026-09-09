@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Barbero;
-use App\Models\Servicio;
-use App\Models\Cita;
-use App\Models\User;
-use App\Models\GalleryImage;
 use App\Http\Requests\StoreBarberoRequest;
 use App\Http\Requests\UpdateBarberoRequest;
+use App\Models\Barbero;
+use App\Models\Cita;
+use App\Models\GalleryImage;
+use App\Models\Servicio;
+use App\Models\User;
 use App\Services\BarberoValidationService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class AdminController extends Controller
@@ -28,8 +28,8 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        $barberos = \App\Models\Barbero::all();
-        $servicios = \App\Models\Servicio::all();
+        $barberos = Barbero::all();
+        $servicios = Servicio::all();
         $galleryImages = GalleryImage::active()->get();
         $citasHoy = Cita::whereDate('fecha', today())->count();
 
@@ -49,17 +49,19 @@ class AdminController extends Controller
                 case 'inactivos':
                     $query->inactivos();
                     break;
-                // 'todos' o cualquier otro valor muestra todos
+                    // 'todos' o cualquier otro valor muestra todos
             }
         }
 
         $barberos = $query->get();
+
         return view('admin.barberos.index', compact('barberos'));
     }
 
     public function barberosCreate()
     {
         $servicios = Servicio::publicadosOrdenados()->get();
+
         return view('admin.barberos.create', compact('servicios'));
     }
 
@@ -69,7 +71,7 @@ class AdminController extends Controller
 
         try {
             DB::transaction(function () use ($validated, $request) {
-                $user = \App\Models\User::create([
+                $user = User::create([
                     'name' => $validated['nombre_completo'],
                     'email' => $validated['email'],
                     'password' => Hash::make($validated['password']),
@@ -127,6 +129,7 @@ class AdminController extends Controller
     {
         $servicios = Servicio::publicadosOrdenados()->get();
         $serviciosAsignados = $barbero->servicios->pluck('id')->toArray();
+
         return view('admin.barberos.edit', compact('barbero', 'servicios', 'serviciosAsignados'));
     }
 
@@ -148,7 +151,7 @@ class AdminController extends Controller
                     $validated['foto'] = $request->file('foto')->store('barberos', 'public');
                 }
 
-                if (!$barbero->user_id || !$barbero->user) {
+                if (! $barbero->user_id || ! $barbero->user) {
                     $user = User::create([
                         'name' => $validated['nombre_completo'],
                         'email' => $validated['email'],
@@ -308,6 +311,7 @@ class AdminController extends Controller
     public function serviciosIndex()
     {
         $servicios = Servicio::all();
+
         return view('admin.servicios.index', compact('servicios'));
     }
 
@@ -385,7 +389,8 @@ class AdminController extends Controller
 
     public function citasIndex()
     {
-        $citas = Cita::with(['barbero', 'servicios'])->get();
+        $citas = Cita::with(['barbero', 'serviciosMany'])->get();
+
         return view('admin.citas.index', compact('citas'));
     }
 
@@ -393,6 +398,7 @@ class AdminController extends Controller
     {
         $servicios = Servicio::all();
         $barberos = Barbero::all();
+
         return view('admin.citas.create', compact('servicios', 'barberos'));
     }
 
@@ -410,17 +416,18 @@ class AdminController extends Controller
             'total_servicios' => 'required|numeric|min:0',
         ]);
 
-        $cita = new Cita();
+        $cita = new Cita;
         $cita->nombre_completo = $validated['nombre_completo'];
         $cita->numero_telefono = $validated['numero_telefono'];
         $cita->correo_electronico = $validated['correo_electronico'];
         $cita->id_barbero = $validated['id_barbero'];
         $cita->fecha = $validated['fecha'];
         $cita->hora = $validated['hora'];
+        $cita->servicios = implode(',', $validated['servicios']);
         $cita->costo = $validated['total_servicios'];
         $cita->save();
 
-        $cita->servicios()->attach($validated['servicios']);
+        $cita->serviciosMany()->sync($validated['servicios']);
 
         return redirect()->route('admin.citas.index')->with('success', __('messages.appointment.created'));
     }
@@ -428,6 +435,7 @@ class AdminController extends Controller
     public function citasShow(Cita $cita)
     {
         $cita->load(['barbero', 'servicios']);
+
         return view('admin.citas.show', compact('cita'));
     }
 
@@ -436,6 +444,7 @@ class AdminController extends Controller
         $servicios = Servicio::all();
         $barberos = Barbero::all();
         $cita->load(['barbero', 'servicios']);
+
         return view('admin.citas.edit', compact('cita', 'servicios', 'barberos'));
     }
 
@@ -460,10 +469,11 @@ class AdminController extends Controller
             'id_barbero' => $validated['id_barbero'],
             'fecha' => $validated['fecha'],
             'hora' => $validated['hora'],
+            'servicios' => implode(',', $validated['servicios']),
             'costo' => $validated['total_servicios'],
         ]);
 
-        $cita->servicios()->sync($validated['servicios']);
+        $cita->serviciosMany()->sync($validated['servicios']);
 
         return redirect()->route('admin.citas.index')->with('success', __('messages.appointment.updated'));
     }
@@ -471,6 +481,7 @@ class AdminController extends Controller
     public function citasDestroy(Cita $cita)
     {
         $cita->delete();
+
         return redirect()->route('admin.citas.index')->with('success', __('messages.appointment.deleted'));
     }
 

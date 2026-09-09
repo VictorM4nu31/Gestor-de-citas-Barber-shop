@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Barbero;
 use App\Models\Cita;
-use App\Models\Servicio;
 use App\Models\GalleryImage;
+use App\Models\Servicio;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-
 
 class BarberoController extends Controller
 {
@@ -24,6 +23,7 @@ class BarberoController extends Controller
 
         $servicios = $servicios->map(function ($s) {
             $s->descripcion_corta = Str::limit($s->descripcion, 120);
+
             return $s;
         });
 
@@ -37,11 +37,11 @@ class BarberoController extends Controller
     {
         $user = Auth::user();
         $barbero = $user->barbero;
-        
-        if (!$barbero) {
+
+        if (! $barbero) {
             abort(403, 'No se encontró el perfil de barbero asociado.');
         }
-        
+
         $citasHoy = $barbero->citas()
             ->with('usuario')
             ->where('fecha', now()->toDateString())
@@ -55,7 +55,7 @@ class BarberoController extends Controller
             ->orderBy('hora', 'asc')
             ->take(10)
             ->get();
-            
+
         return view('barbero.dashboard', compact('citasHoy', 'citasFuturas', 'barbero'));
     }
 
@@ -63,17 +63,17 @@ class BarberoController extends Controller
     {
         $user = Auth::user();
         $barbero = $user->barbero;
-        
-        if (!$barbero) {
+
+        if (! $barbero) {
             abort(403, 'No se encontró el perfil de barbero asociado.');
         }
-        
+
         $citas = $barbero->citas()
             ->with('usuario')
             ->orderBy('fecha', 'desc')
             ->orderBy('hora', 'desc')
             ->paginate(20);
-            
+
         return view('barbero.citas.index', compact('citas', 'barbero'));
     }
 
@@ -81,17 +81,17 @@ class BarberoController extends Controller
     {
         $user = Auth::user();
         $barbero = $user->barbero;
-        
+
         if ($cita->id_barbero !== $barbero->id) {
             abort(403, 'No tienes permiso para modificar esta cita.');
         }
-        
-        if (!$cita->puedeSerAtendida()) {
+
+        if (! $cita->puedeSerAtendida()) {
             return redirect()->back()->with('error', __('messages.appointment.cannot_attend'));
         }
-        
+
         $cita->marcarComoAtendida();
-        
+
         return redirect()->back()->with('success', __('messages.appointment.attended'));
     }
 
@@ -99,17 +99,18 @@ class BarberoController extends Controller
     {
         $user = Auth::user();
         $barbero = $user->barbero;
-        
+
         if ($cita->id_barbero !== $barbero->id) {
             abort(403, 'No tienes permiso para ver esta cita.');
         }
-        
+
         return view('barbero.citas.show', compact('cita', 'barbero'));
     }
 
     public function index()
     {
         $barberos = Barbero::all();
+
         return view('usuario.publico.barberos-index', compact('barberos'));
     }
 

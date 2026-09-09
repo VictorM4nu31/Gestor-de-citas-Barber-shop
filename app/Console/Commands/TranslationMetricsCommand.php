@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\TranslationMetricsService;
+use Illuminate\Console\Command;
 
 class TranslationMetricsCommand extends Command
 {
@@ -54,6 +54,7 @@ class TranslationMetricsCommand extends Command
 
         if (empty($stats)) {
             $this->info('No metrics data available.');
+
             return self::SUCCESS;
         }
 
@@ -64,13 +65,13 @@ class TranslationMetricsCommand extends Command
             $this->newLine();
             $this->line("Locale: <info>{$loc}</info>");
             $this->line(str_repeat('-', 20));
-            
+
             $this->line("Total Usage: <comment>{$data['total_usage']}</comment>");
             $this->line("Unique Daily Users: <comment>{$data['unique_daily']}</comment>");
             $this->line("Daily Errors: <comment>{$data['error_count']}</comment>");
 
             // Show daily usage trend
-            if (!empty($data['daily_usage'])) {
+            if (! empty($data['daily_usage'])) {
                 $this->line("\nDaily Usage (Last 7 days):");
                 foreach ($data['daily_usage'] as $date => $count) {
                     $this->line("  {$date}: {$count}");
@@ -78,19 +79,19 @@ class TranslationMetricsCommand extends Command
             }
 
             // Show missing translations
-            if (!empty($data['missing_translations'])) {
+            if (! empty($data['missing_translations'])) {
                 $this->line("\n<fg=yellow>Missing Translations:</>");
                 foreach ($data['missing_translations'] as $group => $keys) {
-                    $this->line("  <fg=red>{$group}:</> " . count($keys) . " missing keys");
+                    $this->line("  <fg=red>{$group}:</> ".count($keys).' missing keys');
                     if ($this->output->isVerbose()) {
                         foreach ($keys as $key) {
                             $this->line("    - {$key}");
                         }
                     }
                 }
-                
-                if (!$this->output->isVerbose()) {
-                    $this->line("  <fg=gray>Use -v flag to see detailed missing keys</>");
+
+                if (! $this->output->isVerbose()) {
+                    $this->line('  <fg=gray>Use -v flag to see detailed missing keys</>');
                 }
             }
         }
@@ -104,8 +105,8 @@ class TranslationMetricsCommand extends Command
     protected function clearMetrics(): int
     {
         $locale = $this->option('locale');
-        
-        if ($this->confirm("Are you sure you want to clear translation metrics" . ($locale ? " for locale '{$locale}'" : '') . "?")) {
+
+        if ($this->confirm('Are you sure you want to clear translation metrics'.($locale ? " for locale '{$locale}'" : '').'?')) {
             $this->metricsService->clearMetrics($locale);
             $this->info('Translation metrics cleared successfully.');
         } else {
@@ -122,20 +123,22 @@ class TranslationMetricsCommand extends Command
     {
         $format = $this->option('export');
         $locale = $this->option('locale');
-        
-        if (!in_array($format, ['json', 'csv'])) {
+
+        if (! in_array($format, ['json', 'csv'])) {
             $this->error('Invalid export format. Use json or csv.');
+
             return self::FAILURE;
         }
 
         $stats = $this->metricsService->getUsageStatistics($locale);
-        
+
         if (empty($stats)) {
             $this->error('No metrics data to export.');
+
             return self::FAILURE;
         }
 
-        $filename = 'translation_metrics_' . now()->format('Y-m-d_H-i-s') . '.' . $format;
+        $filename = 'translation_metrics_'.now()->format('Y-m-d_H-i-s').'.'.$format;
         $filepath = storage_path("app/{$filename}");
 
         try {
@@ -146,9 +149,10 @@ class TranslationMetricsCommand extends Command
             }
 
             $this->info("Metrics exported to: {$filepath}");
-            
+
         } catch (\Exception $e) {
             $this->error("Failed to export metrics: {$e->getMessage()}");
+
             return self::FAILURE;
         }
 
@@ -161,16 +165,16 @@ class TranslationMetricsCommand extends Command
     protected function exportToCsv(array $stats, string $filepath): void
     {
         $handle = fopen($filepath, 'w');
-        
+
         // Write header
         fputcsv($handle, [
-            'Locale', 'Total Usage', 'Unique Daily', 'Error Count', 
-            'Missing Translations', 'Date', 'Daily Usage'
+            'Locale', 'Total Usage', 'Unique Daily', 'Error Count',
+            'Missing Translations', 'Date', 'Daily Usage',
         ]);
 
         foreach ($stats as $locale => $data) {
             $missingCount = array_sum(array_map('count', $data['missing_translations']));
-            
+
             // Write summary row
             fputcsv($handle, [
                 $locale,
@@ -179,7 +183,7 @@ class TranslationMetricsCommand extends Command
                 $data['error_count'],
                 $missingCount,
                 '',
-                ''
+                '',
             ]);
 
             // Write daily usage details
@@ -191,7 +195,7 @@ class TranslationMetricsCommand extends Command
                     '',
                     '',
                     $date,
-                    $count
+                    $count,
                 ]);
             }
         }

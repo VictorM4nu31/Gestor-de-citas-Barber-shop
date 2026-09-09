@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Services\ImageProcessingService;
 use App\Models\GalleryImage;
+use App\Services\ImageProcessingService;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
 class GalleryMaintenance extends Command
@@ -58,8 +58,8 @@ class GalleryMaintenance extends Command
             $this->performSecurityScan();
         }
 
-        if (!$this->hasOption('cleanup') && !$this->hasOption('optimize') && 
-            !$this->hasOption('stats') && !$this->hasOption('security-scan')) {
+        if (! $this->hasOption('cleanup') && ! $this->hasOption('optimize') &&
+            ! $this->hasOption('stats') && ! $this->hasOption('security-scan')) {
             $this->showHelp();
         }
 
@@ -69,13 +69,13 @@ class GalleryMaintenance extends Command
     private function cleanupOrphanedFiles()
     {
         $this->info('Cleaning up orphaned files...');
-        
+
         $cleanedFiles = $this->imageService->cleanupOrphanedFiles();
-        
+
         if (empty($cleanedFiles)) {
             $this->info('No orphaned files found.');
         } else {
-            $this->info('Cleaned up ' . count($cleanedFiles) . ' orphaned files:');
+            $this->info('Cleaned up '.count($cleanedFiles).' orphaned files:');
             foreach ($cleanedFiles as $file) {
                 $this->line("  - {$file}");
             }
@@ -85,7 +85,7 @@ class GalleryMaintenance extends Command
     private function optimizeExistingImages()
     {
         $this->info('Optimizing existing images...');
-        
+
         $images = GalleryImage::all();
         $bar = $this->output->createProgressBar($images->count());
         $bar->start();
@@ -100,7 +100,7 @@ class GalleryMaintenance extends Command
                     $optimized++;
                 }
             } catch (\Exception $e) {
-                $this->error("Failed to optimize {$image->filename}: " . $e->getMessage());
+                $this->error("Failed to optimize {$image->filename}: ".$e->getMessage());
             }
             $bar->advance();
         }
@@ -113,9 +113,9 @@ class GalleryMaintenance extends Command
     private function showStorageStats()
     {
         $this->info('Gallery storage statistics:');
-        
+
         $stats = $this->imageService->getStorageStats();
-        
+
         $this->table(
             ['Metric', 'Value'],
             [
@@ -127,14 +127,14 @@ class GalleryMaintenance extends Command
         );
 
         if (isset($stats['error'])) {
-            $this->error('Error getting stats: ' . $stats['error']);
+            $this->error('Error getting stats: '.$stats['error']);
         }
     }
 
     private function performSecurityScan()
     {
         $this->info('Performing security scan on gallery images...');
-        
+
         $images = GalleryImage::all();
         $bar = $this->output->createProgressBar($images->count());
         $bar->start();
@@ -144,12 +144,12 @@ class GalleryMaintenance extends Command
             try {
                 $imagePath = Storage::disk('public')->path($image->path);
                 if (file_exists($imagePath)) {
-                    if (!$this->imageService->scanImageForThreats($imagePath)) {
+                    if (! $this->imageService->scanImageForThreats($imagePath)) {
                         $threats[] = $image;
                     }
                 }
             } catch (\Exception $e) {
-                $this->error("Failed to scan {$image->filename}: " . $e->getMessage());
+                $this->error("Failed to scan {$image->filename}: ".$e->getMessage());
             }
             $bar->advance();
         }
@@ -160,7 +160,7 @@ class GalleryMaintenance extends Command
         if (empty($threats)) {
             $this->info('No security threats detected.');
         } else {
-            $this->error('Security threats detected in ' . count($threats) . ' images:');
+            $this->error('Security threats detected in '.count($threats).' images:');
             foreach ($threats as $threat) {
                 $this->line("  - {$threat->filename} (ID: {$threat->id})");
             }

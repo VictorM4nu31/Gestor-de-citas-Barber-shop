@@ -16,15 +16,15 @@ return new class extends Migration
             if (Schema::hasColumn('barberos', 'password')) {
                 $table->dropColumn('password');
             }
-            
+
             // Agregar campos activo (boolean) y fecha_baja (timestamp)
             $table->boolean('activo')->default(true)->after('foto');
             $table->timestamp('fecha_baja')->nullable()->after('activo');
         });
 
         // Verificar si hay barberos con user_id null y mostrar advertencia
-        $barberosWithoutUser = \DB::table('barberos')->whereNull('user_id')->count();
-        
+        $barberosWithoutUser = DB::table('barberos')->whereNull('user_id')->count();
+
         if ($barberosWithoutUser > 0) {
             echo "\n⚠️  ADVERTENCIA: Hay {$barberosWithoutUser} barberos sin user_id.\n";
             echo "   Ejecute la migración de datos (tarea 2) antes de hacer user_id obligatorio.\n";
@@ -46,10 +46,10 @@ return new class extends Migration
         Schema::table('barberos', function (Blueprint $table) {
             // Revertir cambios: hacer user_id nullable nuevamente
             $table->foreignId('user_id')->nullable()->change();
-            
+
             // Eliminar campos agregados
             $table->dropColumn(['activo', 'fecha_baja']);
-            
+
             // Restaurar campo password si se eliminó
             // Nota: No podemos restaurar datos perdidos, solo la estructura
             $table->string('password')->nullable()->after('email');

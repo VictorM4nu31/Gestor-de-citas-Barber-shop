@@ -2,12 +2,13 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\User;
 use App\Models\Barbero;
-use App\Models\Servicio;
 use App\Models\Cita;
+use App\Models\Servicio;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class TestCitaSeeder extends Seeder
 {
@@ -15,18 +16,18 @@ class TestCitaSeeder extends Seeder
     {
         // Buscar o crear usuario con tu email
         $user = User::where('email', 'angelesvictor690@gmail.com')->first();
-        if (!$user) {
+        if (! $user) {
             echo "Creando usuario Victor Angeles...\n";
             $user = User::create([
                 'name' => 'Victor Manuel Angeles Muñiz',
                 'email' => 'angelesvictor690@gmail.com',
                 'password' => bcrypt('password'),
-                'email_verified_at' => now()
+                'email_verified_at' => now(),
             ]);
 
             // Asignar rol de usuario si existe
-            if (class_exists(\Spatie\Permission\Models\Role::class)) {
-                $userRole = \Spatie\Permission\Models\Role::where('name', 'user')->first();
+            if (class_exists(Role::class)) {
+                $userRole = Role::where('name', 'user')->first();
                 if ($userRole) {
                     $user->assignRole('user');
                 }
@@ -35,20 +36,22 @@ class TestCitaSeeder extends Seeder
 
         // Buscar barbero Marco específicamente
         $barbero = Barbero::where('email', 'marco@gmail.com')->where('activo', true)->first();
-        if (!$barbero) {
+        if (! $barbero) {
             echo "❌ No se encontró el barbero Marco (marco@gmail.com) o no está activo.\n";
             // Intentar buscar cualquier barbero activo
             $barbero = Barbero::where('activo', true)->first();
-            if (!$barbero) {
+            if (! $barbero) {
                 echo "❌ No hay barberos activos en el sistema.\n";
+
                 return;
             }
         }
 
         // Obtener servicio publicado
         $servicio = Servicio::where('publicado', true)->first();
-        if (!$servicio) {
+        if (! $servicio) {
             echo "❌ No se encontró un servicio publicado.\n";
+
             return;
         }
 
@@ -93,8 +96,9 @@ class TestCitaSeeder extends Seeder
             'id_usuario' => $user->id,
             'servicios' => $servicio->id,
             'costo' => $servicio->precio,
-            'estado' => 'pendiente'
+            'estado' => 'pendiente',
         ]);
+        $cita->serviciosMany()->sync([$servicio->id]);
 
         echo "\n✅ Cita creada exitosamente!\n";
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";

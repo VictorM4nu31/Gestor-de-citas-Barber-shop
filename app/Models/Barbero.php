@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Helpers\TranslationHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Traits\HasRoles;
-use App\Helpers\TranslationHelper;
 
 class Barbero extends Model
 {
@@ -34,7 +35,7 @@ class Barbero extends Model
     {
         static::deleting(function ($barbero) {
             if ($barbero->foto) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($barbero->foto);
+                Storage::disk('public')->delete($barbero->foto);
             }
         });
 
@@ -46,12 +47,12 @@ class Barbero extends Model
             }
 
             // Validar formato de email
-            if (!filter_var($barbero->email, FILTER_VALIDATE_EMAIL)) {
+            if (! filter_var($barbero->email, FILTER_VALIDATE_EMAIL)) {
                 throw new \InvalidArgumentException('El formato del email no es válido.');
             }
 
             // Validar que user_id esté presente para barberos activos
-            if ($barbero->activo && !$barbero->user_id) {
+            if ($barbero->activo && ! $barbero->user_id) {
                 throw new \InvalidArgumentException('Un barbero activo debe tener un usuario asociado.');
             }
         });
@@ -59,7 +60,7 @@ class Barbero extends Model
         // Validar antes de actualizar
         static::updating(function ($barbero) {
             // Si se está activando un barbero, validar que tenga usuario
-            if ($barbero->isDirty('activo') && $barbero->activo && !$barbero->user_id) {
+            if ($barbero->isDirty('activo') && $barbero->activo && ! $barbero->user_id) {
                 throw new \InvalidArgumentException('No se puede activar un barbero sin usuario asociado.');
             }
 
@@ -68,7 +69,7 @@ class Barbero extends Model
                 $emailExists = static::where('email', $barbero->email)
                     ->where('id', '!=', $barbero->id)
                     ->exists();
-                
+
                 if ($emailExists) {
                     throw new \InvalidArgumentException('El email ya está siendo usado por otro barbero.');
                 }
@@ -94,9 +95,9 @@ class Barbero extends Model
     public function serviciosPublicados()
     {
         return $this->belongsToMany(Servicio::class, 'barbero_servicio')
-                    ->where('publicado', true)
-                    ->orderBy('orden', 'asc')
-                    ->orderBy('created_at', 'desc');
+            ->where('publicado', true)
+            ->orderBy('servicios.orden', 'asc')
+            ->orderBy('servicios.created_at', 'desc');
     }
 
     public function scopeActivos($query)
@@ -114,7 +115,7 @@ class Barbero extends Model
      */
     public function canBeDeactivated(): bool
     {
-        if (!$this->activo) {
+        if (! $this->activo) {
             return false;
         }
 
@@ -141,7 +142,7 @@ class Barbero extends Model
             ->where('activo', true)
             ->exists();
 
-        return !$emailConflict;
+        return ! $emailConflict;
     }
 
     /**
@@ -163,7 +164,7 @@ class Barbero extends Model
      */
     public function hasValidUserIntegrity(): bool
     {
-        if (!$this->user_id || !$this->user) {
+        if (! $this->user_id || ! $this->user) {
             return false;
         }
 
@@ -178,9 +179,6 @@ class Barbero extends Model
 
     /**
      * Get translated specialty for the barbero
-     * 
-     * @param string|null $locale
-     * @return string
      */
     public function getTranslatedEspecialidad(?string $locale = null): string
     {
@@ -189,9 +187,6 @@ class Barbero extends Model
 
     /**
      * Get translated experience for the barbero
-     * 
-     * @param string|null $locale
-     * @return string
      */
     public function getTranslatedExperiencia(?string $locale = null): string
     {
@@ -200,9 +195,6 @@ class Barbero extends Model
 
     /**
      * Get all translated attributes for the barbero
-     * 
-     * @param string|null $locale
-     * @return array
      */
     public function getTranslatedAttributes(?string $locale = null): array
     {
@@ -216,6 +208,4 @@ class Barbero extends Model
             'activo' => $this->activo,
         ];
     }
-
-
 }

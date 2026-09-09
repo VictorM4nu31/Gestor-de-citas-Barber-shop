@@ -4,12 +4,11 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class TranslationMetricsService
 {
     protected string $cachePrefix = 'translation_metrics';
+
     protected int $cacheDuration = 3600; // 1 hour
 
     /**
@@ -35,10 +34,10 @@ class TranslationMetricsService
 
             // Track unique sessions (simplified)
             if ($ipAddress) {
-                $sessionKey = $this->getCacheKey('session', $locale, md5($ipAddress . now()->format('Y-m-d')));
-                if (!Cache::has($sessionKey)) {
+                $sessionKey = $this->getCacheKey('session', $locale, md5($ipAddress.now()->format('Y-m-d')));
+                if (! Cache::has($sessionKey)) {
                     Cache::put($sessionKey, true, $this->cacheDuration * 24);
-                    
+
                     $uniqueKey = $this->getCacheKey('unique_daily', $locale, now()->format('Y-m-d'));
                     $uniqueCount = Cache::get($uniqueKey, 0) + 1;
                     Cache::put($uniqueKey, $uniqueCount, $this->cacheDuration * 24);
@@ -69,8 +68,8 @@ class TranslationMetricsService
         try {
             $missingKey = $this->getCacheKey('missing', $locale, $group ?? 'default');
             $missing = Cache::get($missingKey, []);
-            
-            if (!in_array($key, $missing)) {
+
+            if (! in_array($key, $missing)) {
                 $missing[] = $key;
                 Cache::put($missingKey, $missing, $this->cacheDuration * 24);
             }
@@ -149,7 +148,7 @@ class TranslationMetricsService
             Log::error('Failed to get usage statistics', [
                 'error' => $e->getMessage(),
             ]);
-            
+
             return [];
         }
     }
@@ -161,16 +160,16 @@ class TranslationMetricsService
     {
         $missing = [];
         $groups = ['common', 'welcome', 'services', 'barberos', 'gallery', 'contact', 'auth'];
-        
+
         foreach ($groups as $group) {
             $missingKey = $this->getCacheKey('missing', $locale, $group);
             $groupMissing = Cache::get($missingKey, []);
-            
-            if (!empty($groupMissing)) {
+
+            if (! empty($groupMissing)) {
                 $missing[$group] = $groupMissing;
             }
         }
-        
+
         return $missing;
     }
 
@@ -181,28 +180,28 @@ class TranslationMetricsService
     {
         try {
             $locales = $locale ? [$locale] : config('app.available_locales', ['es', 'en']);
-            
+
             foreach ($locales as $loc) {
                 // Clear various metric types
                 $patterns = [
-                    'daily_usage', 'hourly_usage', 'total_usage', 
-                    'unique_daily', 'missing', 'errors'
+                    'daily_usage', 'hourly_usage', 'total_usage',
+                    'unique_daily', 'missing', 'errors',
                 ];
-                
+
                 foreach ($patterns as $pattern) {
                     $key = $this->getCacheKey($pattern, $loc);
                     Cache::forget($key);
-                    
+
                     // Clear dated keys (last 7 days)
                     for ($i = 0; $i < 7; $i++) {
                         $date = now()->subDays($i)->format('Y-m-d');
                         $datedKey = $this->getCacheKey($pattern, $loc, $date);
                         Cache::forget($datedKey);
-                        
+
                         // Clear hourly keys for today
                         if ($i === 0) {
                             for ($h = 0; $h < 24; $h++) {
-                                $hourKey = $this->getCacheKey($pattern, $loc, $date . '-' . str_pad($h, 2, '0', STR_PAD_LEFT));
+                                $hourKey = $this->getCacheKey($pattern, $loc, $date.'-'.str_pad($h, 2, '0', STR_PAD_LEFT));
                                 Cache::forget($hourKey);
                             }
                         }
@@ -226,11 +225,11 @@ class TranslationMetricsService
     protected function getCacheKey(string $type, string $locale, ?string $suffix = null): string
     {
         $key = "{$this->cachePrefix}.{$type}.{$locale}";
-        
+
         if ($suffix) {
             $key .= ".{$suffix}";
         }
-        
+
         return $key;
     }
 
@@ -240,7 +239,7 @@ class TranslationMetricsService
     protected function getPeriodUsage(string $locale, string $period): array
     {
         $usage = [];
-        
+
         if ($period === 'daily') {
             // Get last 7 days
             for ($i = 6; $i >= 0; $i--) {
@@ -256,7 +255,7 @@ class TranslationMetricsService
                 $usage[$hour] = Cache::get($key, 0);
             }
         }
-        
+
         return $usage;
     }
 }

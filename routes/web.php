@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CitaController;
-use App\Http\Controllers\BarberoController;
-use App\Http\Controllers\ServicioController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BarberoController;
+use App\Http\Controllers\CitaController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServicioController;
+use App\Http\Controllers\TranslationMetricsController;
 use Illuminate\Support\Facades\Route;
 
 // Language switching route
@@ -17,8 +18,6 @@ Route::get('/', [BarberoController::class, 'welcome'])->name('home');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,6 +34,7 @@ Route::get('servicios', [ServicioController::class, 'index'])->name('public.serv
 Route::get('servicios/{servicio}', [ServicioController::class, 'show'])->name('public.servicios.show');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/citas/available-slots', [CitaController::class, 'availableSlots'])->name('citas.available_slots');
     Route::resource('citas', CitaController::class);
     Route::get('/citas/servicios-barbero/{barbero}', [CitaController::class, 'getServiciosByBarbero'])->name('citas.servicios_barbero');
     Route::post('/citas/check-availability', [CitaController::class, 'checkAvailability'])->name('citas.check_availability');
@@ -46,9 +46,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // Translation metrics routes (admin only)
     Route::prefix('translation-metrics')->name('translation_metrics.')->group(function () {
-        Route::get('/', [\App\Http\Controllers\TranslationMetricsController::class, 'index'])->name('index');
-        Route::get('/missing', [\App\Http\Controllers\TranslationMetricsController::class, 'missing'])->name('missing');
-        Route::delete('/clear', [\App\Http\Controllers\TranslationMetricsController::class, 'clear'])->name('clear');
+        Route::get('/', [TranslationMetricsController::class, 'index'])->name('index');
+        Route::get('/missing', [TranslationMetricsController::class, 'missing'])->name('missing');
+        Route::delete('/clear', [TranslationMetricsController::class, 'clear'])->name('clear');
     });
 
     // Barberos CRUD

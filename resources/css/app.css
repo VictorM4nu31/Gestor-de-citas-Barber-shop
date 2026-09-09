@@ -2,75 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom Color Classes */
-@layer utilities {
-    .bg-success {
-        @apply bg-green-600;
+@layer base {
+    :root {
+        color-scheme: light;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
     }
-    .bg-danger {
-        @apply bg-red-600;
+
+    html {
+        scroll-behavior: smooth;
     }
-    .bg-warning {
-        @apply bg-yellow-500;
+
+    body {
+        @apply bg-background text-secondary font-sans antialiased;
     }
-    .bg-info {
-        @apply bg-blue-600;
+
+    ::selection {
+        @apply bg-brass text-secondary;
     }
-    .bg-primary {
-        @apply bg-red-800;
+
+    :focus-visible {
+        outline: 3px solid theme('colors.brass');
+        outline-offset: 3px;
     }
-    .bg-secondary {
-        @apply bg-gray-800;
-    }
-    .bg-accent {
-        @apply bg-gray-400;
-    }
-    .bg-surface {
-        @apply bg-gray-200;
-    }
-    .bg-metal {
-        @apply bg-gray-500;
-    }
-    .bg-light {
-        @apply bg-white;
-    }
-    .bg-dark {
-        @apply bg-black;
-    }
-    
-    .text-success {
-        @apply text-green-600;
-    }
-    .text-danger {
-        @apply text-red-600;
-    }
-    .text-warning {
-        @apply text-yellow-500;
-    }
-    .text-info {
-        @apply text-blue-600;
-    }
-    .text-primary {
-        @apply text-red-800;
-    }
-    .text-secondary {
-        @apply text-gray-800;
-    }
-    .text-accent {
-        @apply text-gray-400;
-    }
-    .text-metal {
-        @apply text-gray-500;
-    }
-    .text-light {
-        @apply text-white;
-    }
-    .text-dark {
-        @apply text-black;
+
+    [x-cloak] {
+        display: none !important;
     }
 }
 
-/* Gallery Styles */
+@layer components {
+    .eyebrow {
+        @apply text-xs font-bold uppercase tracking-[0.2em] text-primary;
+    }
+
+    .display-title {
+        @apply font-display tracking-tight text-secondary;
+    }
+
+    .surface-panel {
+        @apply border border-accent bg-light;
+        box-shadow: 0 12px 32px rgba(23, 21, 19, 0.06);
+    }
+
+    .hairline {
+        @apply border-t border-accent;
+    }
+}
+
 @layer components {
     .gallery-section {
         @apply relative;
@@ -81,7 +60,7 @@
     }
     
     .gallery-item {
-        @apply cursor-pointer transition-transform duration-200 hover:scale-[1.02];
+        @apply cursor-pointer transition-transform duration-300 hover:scale-[1.015];
     }
     
     .gallery-lightbox {
@@ -113,5 +92,27 @@
         .gallery-grid {
             @apply gap-4;
         }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@supports (view-transition-name: none) {
+    @view-transition {
+        navigation: auto;
+    }
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation-duration: 240ms;
     }
 }

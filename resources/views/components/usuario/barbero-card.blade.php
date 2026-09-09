@@ -1,11 +1,11 @@
 @props(['barbero'])
 
-<div class="bg-light border border-metal rounded-md shadow p-4 flex flex-col items-center">
+<a href="{{ route('public.barberos.show', $barbero) }}" class="group flex flex-col items-center border border-accent bg-light p-5 text-center transition hover:-translate-y-1 hover:border-primary">
     @if($barbero->foto)
-        <img class="rounded-full h-36 w-36 object-cover" src="{{ asset('storage/' . $barbero->foto) }}" alt="{{ $barbero->nombre_completo }}">
+        <img class="h-40 w-full object-cover grayscale transition duration-500 group-hover:grayscale-0" src="{{ asset('storage/' . $barbero->foto) }}" alt="{{ $barbero->nombre_completo }}">
     @else
-        <img class="rounded-full h-36 w-36 object-cover" src="https://via.placeholder.com/150" alt="{{ $barbero->nombre_completo }}">
+        <div class="flex h-40 w-full items-center justify-center bg-secondary text-5xl font-display text-brass">{{ mb_substr($barbero->nombre_completo, 0, 1) }}</div>
     @endif
-    <h3 class="text-secondary mt-4 text-lg font-medium">{{ $barbero->nombre_completo }}</h3>
-    <p class="text-muted">{{ $barbero->getTranslatedEspecialidad() }}</p>
-</div>
+    <h3 class="mt-5 text-lg font-semibold text-secondary">{{ $barbero->nombre_completo }}</h3>
+    <p class="mt-1 text-sm text-muted">{{ $barbero->getTranslatedEspecialidad() }}</p>
+</a>

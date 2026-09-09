@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\TranslationMetricsService;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -51,12 +51,12 @@ class TranslationAlertCommand extends Command
             foreach ($data['missing_translations'] as $group => $keys) {
                 $count = count($keys);
                 $missingCount += $count;
-                
+
                 if ($count > 0) {
                     $missingDetails[] = [
                         'group' => $group,
                         'count' => $count,
-                        'keys' => $keys
+                        'keys' => $keys,
                     ];
                 }
             }
@@ -66,13 +66,14 @@ class TranslationAlertCommand extends Command
                     'total_missing' => $missingCount,
                     'details' => $missingDetails,
                     'error_count' => $data['error_count'],
-                    'total_usage' => $data['total_usage']
+                    'total_usage' => $data['total_usage'],
                 ];
             }
         }
 
         if (empty($alerts)) {
             $this->info('✓ No translation issues found above threshold.');
+
             return self::SUCCESS;
         }
 
@@ -80,7 +81,7 @@ class TranslationAlertCommand extends Command
         $this->warn('Translation issues detected:');
         foreach ($alerts as $locale => $alert) {
             $this->line("  <fg=red>{$locale}:</> {$alert['total_missing']} missing translations");
-            
+
             if ($this->output->isVerbose()) {
                 foreach ($alert['details'] as $detail) {
                     $this->line("    - {$detail['group']}: {$detail['count']} missing");
@@ -90,6 +91,7 @@ class TranslationAlertCommand extends Command
 
         if ($dryRun) {
             $this->info('Dry run mode - no alerts sent.');
+
             return self::SUCCESS;
         }
 
@@ -97,7 +99,7 @@ class TranslationAlertCommand extends Command
         Log::warning('Translation alerts triggered', [
             'threshold' => $threshold,
             'alerts' => $alerts,
-            'timestamp' => now()->toISOString()
+            'timestamp' => now()->toISOString(),
         ]);
 
         // Send email alert if configured
@@ -109,7 +111,7 @@ class TranslationAlertCommand extends Command
         $this->createAlertFile($alerts, $threshold);
 
         $this->info('Alerts processed successfully.');
-        
+
         return self::SUCCESS;
     }
 
@@ -133,7 +135,7 @@ class TranslationAlertCommand extends Command
             $this->error("Failed to send email alert: {$e->getMessage()}");
             Log::error('Translation alert email failed', [
                 'email' => $email,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
     }
@@ -150,11 +152,11 @@ class TranslationAlertCommand extends Command
                 'alerts' => $alerts,
                 'summary' => [
                     'total_locales_affected' => count($alerts),
-                    'total_missing_translations' => array_sum(array_column($alerts, 'total_missing'))
-                ]
+                    'total_missing_translations' => array_sum(array_column($alerts, 'total_missing')),
+                ],
             ];
 
-            $filename = 'translation_alerts_' . now()->format('Y-m-d') . '.json';
+            $filename = 'translation_alerts_'.now()->format('Y-m-d').'.json';
             $filepath = storage_path("logs/{$filename}");
 
             file_put_contents($filepath, json_encode($alertData, JSON_PRETTY_PRINT));
@@ -180,16 +182,16 @@ class TranslationAlertCommand extends Command
             $message .= "- Missing translations: {$alert['total_missing']}\n";
             $message .= "- Recent errors: {$alert['error_count']}\n";
             $message .= "- Total usage: {$alert['total_usage']}\n";
-            
+
             $message .= "- Details:\n";
             foreach ($alert['details'] as $detail) {
                 $message .= "  * {$detail['group']}: {$detail['count']} missing keys\n";
             }
-            
+
             $message .= "\n";
         }
 
-        $message .= "Generated at: " . now()->toDateTimeString() . "\n";
+        $message .= 'Generated at: '.now()->toDateTimeString()."\n";
         $message .= "Please review and update missing translations.\n";
 
         return $message;

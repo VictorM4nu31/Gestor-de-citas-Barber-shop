@@ -10,7 +10,7 @@
         <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=dm-sans:400,500,600,700|dm-serif-display:400&display=swap" rel="stylesheet" />
         
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -22,11 +22,11 @@
     <x-shared.js-translations />
     </head>
     <body class="font-sans antialiased bg-background text-secondary">
-        <div class="min-h-screen bg-surface">
+        <div class="min-h-screen bg-background">
             @include('layouts.navigation')
 
             @isset($header)
-                <header class="bg-secondary text-white border-b border-accent">
+                <header class="bg-secondary text-white border-b border-secondary">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>

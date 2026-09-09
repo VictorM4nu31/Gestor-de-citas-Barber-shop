@@ -13,7 +13,7 @@ return [
         'edit_service' => 'Editar Servicio',
         'settings' => 'Configuraciones',
         'reports' => 'Reportes',
-        'statistics' => 'Estadísticas'
+        'statistics' => 'Estadísticas',
     ],
 
     'buttons' => [
@@ -32,7 +32,7 @@ return [
         'cancel' => 'Cancelar',
         'view' => 'Ver',
         'manage' => 'Gestionar',
-        'configure' => 'Configurar'
+        'configure' => 'Configurar',
     ],
 
     'labels' => [
@@ -74,7 +74,7 @@ return [
         'access_urls' => 'URLs de Acceso',
         'full_image' => 'Imagen completa',
         'thumbnail' => 'Miniatura',
-        'copy' => 'Copiar'
+        'copy' => 'Copiar',
     ],
 
     'navigation' => [
@@ -85,7 +85,7 @@ return [
         'gallery' => 'Galería',
         'reports' => 'Reportes',
         'settings' => 'Configuraciones',
-        'logout' => 'Cerrar Sesión'
+        'logout' => 'Cerrar Sesión',
     ],
 
     'status' => [
@@ -95,7 +95,7 @@ return [
         'approved' => 'Aprobado',
         'rejected' => 'Rechazado',
         'online' => 'En línea',
-        'offline' => 'Desconectado'
+        'offline' => 'Desconectado',
     ],
 
     'messages' => [
@@ -107,7 +107,7 @@ return [
         'success_update' => 'Actualizado exitosamente',
         'error_occurred' => 'Ha ocurrido un error',
         'confirm_delete' => '¿Estás seguro de que deseas eliminar este elemento?',
-        'action_irreversible' => 'Esta acción no se puede deshacer'
+        'action_irreversible' => 'Esta acción no se puede deshacer',
     ],
 
     'notifications' => [
@@ -116,6 +116,6 @@ return [
         'upload_success' => 'Imágenes subidas exitosamente',
         'upload_error' => 'Error al subir las imágenes',
         'delete_success' => 'Elemento eliminado exitosamente',
-        'update_success' => 'Elemento actualizado exitosamente'
-    ]
+        'update_success' => 'Elemento actualizado exitosamente',
+    ],
 ];

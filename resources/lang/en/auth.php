@@ -29,5 +29,5 @@ return [
     'Email' => 'Email',
     'Password' => 'Password',
     'Confirm Password' => 'Confirm Password',
-    'Reset Password' => 'Reset Password'
+    'Reset Password' => 'Reset Password',
 ];

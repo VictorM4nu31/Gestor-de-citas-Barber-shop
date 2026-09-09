@@ -1,36 +1,39 @@
-<section id="services" class="py-12 bg-surface">
-    <div class="container mx-auto px-4 lg:px-8">
-        <div class="text-center">
-            <h2 class="text-3xl font-semibold mb-4 text-secondary">{{ __('services.title') }}</h2>
-            <p class="text-lg mb-8 text-muted">{{ __('services.description') }}</p>
+<section id="services" class="bg-background py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-8">
+        <div class="grid gap-6 border-b border-accent pb-10 md:grid-cols-[.7fr_1.3fr] md:items-end">
+            <p class="eyebrow">01 / {{ __('services.title') }}</p>
+            <div>
+                <h2 class="display-title text-4xl sm:text-6xl">{{ __('services.title') }}</h2>
+                <p class="mt-4 max-w-xl text-lg text-muted">{{ __('services.description') }}</p>
+            </div>
         </div>
 
         @if(isset($servicios) && $servicios->count())
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+            <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 @foreach($servicios as $servicio)
-                    <div class="relative bg-secondary/5 rounded-2xl overflow-hidden shadow-lg border border-metal">
+                    <article class="group flex flex-col overflow-hidden border border-accent bg-light transition hover:-translate-y-1 hover:border-primary">
                         @if($servicio->foto)
-                            <div class="h-44 w-full overflow-hidden">
-                                <img src="{{ asset('storage/' . $servicio->foto) }}" alt="{{ $servicio->getTranslatedName() }}" class="w-full h-full object-cover">
+                            <div class="h-52 w-full overflow-hidden">
+                                <img src="{{ asset('storage/' . $servicio->foto) }}" alt="{{ $servicio->getTranslatedName() }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                             </div>
                         @else
-                            <div class="h-44 w-full bg-gradient-to-r from-secondary via-secondary/80 to-secondary/60"></div>
+                            <div class="flex h-52 items-end bg-secondary p-5 text-brass"><span class="text-6xl font-display">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span></div>
                         @endif
 
-                        <div class="p-6">
-                            <div class="flex items-center justify-between">
+                        <div class="flex flex-1 flex-col p-6">
+                            <div class="flex items-start justify-between gap-4">
                                 <h3 class="text-xl font-semibold text-secondary">{{ $servicio->getTranslatedName() }}</h3>
-                                <span class="text-sm font-medium bg-primary text-light px-3 py-1 rounded-full">${{ number_format($servicio->precio, 2) }}</span>
+                                <span class="whitespace-nowrap text-sm font-bold text-primary">${{ number_format($servicio->precio, 2) }}</span>
                             </div>
 
                             <p class="mt-3 text-sm text-metal">{{ \Illuminate\Support\Str::limit($servicio->getTranslatedDescription(), 120) }}</p>
 
-                            <div class="mt-4 flex items-center justify-between">
-                                <small class="text-xs text-muted">{{ __('services.duration') }}: {{ $servicio->duracion }} {{ __('services.minutes') }}</small>
-                                <a href="#contact" class="inline-block bg-primary text-light text-sm font-medium py-2 px-4 rounded-lg">{{ __('services.book') }}</a>
+                            <div class="mt-6 flex items-center justify-between gap-4 border-t border-accent pt-4">
+                                <small class="text-xs font-semibold uppercase tracking-wider text-muted">{{ $servicio->duracion }} {{ __('services.minutes') }}</small>
+                                <a href="{{ auth()->check() ? route('citas.create') : route('login') }}" class="text-sm font-bold text-primary hover:text-secondary">{{ __('services.book') }} <span aria-hidden="true">→</span></a>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 @endforeach
             </div>
         @else

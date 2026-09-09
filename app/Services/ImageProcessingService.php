@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\GalleryImage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -9,22 +10,33 @@ use Illuminate\Support\Str;
 class ImageProcessingService
 {
     private string $galleryPath = 'gallery';
+
     private string $thumbnailPath = 'gallery/thumbnails';
+
     private int $thumbnailWidth = 300;
+
     private int $thumbnailHeight = 300;
+
     private int $maxImageWidth = 1920;
+
     private int $maxImageHeight = 1080;
+
     private int $jpegQuality = 85;
+
     private int $webpQuality = 80;
+
     private int $pngCompressionLevel = 6;
+
     private bool $enableWebpConversion = true;
+
     private array $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
     private int $maxFileSize = 5242880; // 5MB in bytes
 
     public function __construct()
     {
         // Ensure GD extension is loaded
-        if (!extension_loaded('gd')) {
+        if (! extension_loaded('gd')) {
             throw new \Exception('GD extension is required for image processing');
         }
 
@@ -46,8 +58,9 @@ class ImageProcessingService
     /**
      * Process multiple gallery images from upload
      *
-     * @param array $uploadedFiles Array of UploadedFile instances
+     * @param  array  $uploadedFiles  Array of UploadedFile instances
      * @return array Array of processed image data
+     *
      * @throws \Exception
      */
     public function processGalleryImages(array $uploadedFiles): array
@@ -55,7 +68,7 @@ class ImageProcessingService
         $processedImages = [];
 
         foreach ($uploadedFiles as $file) {
-            if (!$this->validateImageFile($file)) {
+            if (! $this->validateImageFile($file)) {
                 throw new \Exception("Invalid image file: {$file->getClientOriginalName()}");
             }
 
@@ -69,18 +82,16 @@ class ImageProcessingService
     /**
      * Process a single image file
      *
-     * @param UploadedFile $file
-     * @return array
      * @throws \Exception
      */
     private function processSingleImage(UploadedFile $file): array
     {
         // Generate unique filename
         $filename = $this->generateUniqueFilename($file->getClientOriginalName());
-        
+
         // Define paths
-        $imagePath = $this->galleryPath . '/' . $filename;
-        $thumbnailPath = $this->thumbnailPath . '/' . $this->getThumbnailFilename($filename);
+        $imagePath = $this->galleryPath.'/'.$filename;
+        $thumbnailPath = $this->thumbnailPath.'/'.$this->getThumbnailFilename($filename);
 
         try {
             // Store original file temporarily to process it
@@ -111,16 +122,17 @@ class ImageProcessingService
             if (isset($tempPath)) {
                 Storage::delete($tempPath);
             }
-            throw new \Exception("Failed to process image {$file->getClientOriginalName()}: " . $e->getMessage());
+            throw new \Exception("Failed to process image {$file->getClientOriginalName()}: ".$e->getMessage());
         }
     }
 
     /**
      * Create thumbnail from image
      *
-     * @param string $sourcePath Full path to source image
-     * @param string $thumbnailPath Relative path for thumbnail storage
+     * @param  string  $sourcePath  Full path to source image
+     * @param  string  $thumbnailPath  Relative path for thumbnail storage
      * @return string Thumbnail path
+     *
      * @throws \Exception
      */
     public function createThumbnail(string $sourcePath, string $thumbnailPath): string
@@ -128,53 +140,51 @@ class ImageProcessingService
         try {
             // Create thumbnail using GD
             $thumbnailData = $this->resizeImage(
-                $sourcePath, 
-                $this->thumbnailWidth, 
-                $this->thumbnailHeight, 
+                $sourcePath,
+                $this->thumbnailWidth,
+                $this->thumbnailHeight,
                 true
             );
-            
+
             // Store thumbnail
             Storage::disk('public')->put($thumbnailPath, $thumbnailData);
-            
+
             return $thumbnailPath;
 
         } catch (\Exception $e) {
-            throw new \Exception("Failed to create thumbnail: " . $e->getMessage());
+            throw new \Exception('Failed to create thumbnail: '.$e->getMessage());
         }
     }
 
     /**
      * Process and optimize image for web display with security checks
      *
-     * @param string $sourcePath
-     * @param string $destinationPath
      * @throws \Exception
      */
     private function processAndStoreImage(string $sourcePath, string $destinationPath): void
     {
         try {
             // Security scan before processing
-            if (!$this->scanImageForThreats($sourcePath)) {
-                throw new \Exception("Image failed security scan");
+            if (! $this->scanImageForThreats($sourcePath)) {
+                throw new \Exception('Image failed security scan');
             }
 
             // Get image info
             $imageInfo = getimagesize($sourcePath);
-            if (!$imageInfo) {
-                throw new \Exception("Invalid image file");
+            if (! $imageInfo) {
+                throw new \Exception('Invalid image file');
             }
-            
+
             $width = $imageInfo[0];
             $height = $imageInfo[1];
-            
+
             // Check if resize is needed
             if ($width > $this->maxImageWidth || $height > $this->maxImageHeight) {
                 // Resize image
                 $resizedData = $this->resizeImage(
-                    $sourcePath, 
-                    $this->maxImageWidth, 
-                    $this->maxImageHeight, 
+                    $sourcePath,
+                    $this->maxImageWidth,
+                    $this->maxImageHeight,
                     false
                 );
                 Storage::disk('public')->put($destinationPath, $resizedData);
@@ -188,70 +198,62 @@ class ImageProcessingService
             $this->setSecureFilePermissions($destinationPath);
 
         } catch (\Exception $e) {
-            throw new \Exception("Failed to process and store image: " . $e->getMessage());
+            throw new \Exception('Failed to process and store image: '.$e->getMessage());
         }
     }
 
     /**
      * Generate unique filename to avoid conflicts with enhanced security
-     *
-     * @param string $originalName
-     * @return string
      */
     public function generateUniqueFilename(string $originalName): string
     {
         // Sanitize the original filename first
         $originalName = $this->sanitizeFilename($originalName);
-        
+
         $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
         $baseName = pathinfo($originalName, PATHINFO_FILENAME);
-        
+
         // Sanitize and slug the basename
         $baseName = Str::slug($baseName);
-        
+
         // Ensure we have a valid extension
         $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
-        if (!in_array($extension, $allowedExtensions)) {
+        if (! in_array($extension, $allowedExtensions)) {
             $extension = 'jpg'; // Default to jpg for security
         }
-        
+
         // Generate unique identifier with timestamp and random string
         $uniqueId = Str::random(12);
         $timestamp = now()->format('YmdHis');
-        
+
         // Limit basename length to prevent filesystem issues
         $baseName = substr($baseName, 0, 50);
-        
+
         return "{$baseName}_{$timestamp}_{$uniqueId}.{$extension}";
     }
 
     /**
      * Get thumbnail filename from main filename
-     *
-     * @param string $filename
-     * @return string
      */
     private function getThumbnailFilename(string $filename): string
     {
         $pathInfo = pathinfo($filename);
-        return $pathInfo['filename'] . '_thumb.' . $pathInfo['extension'];
+
+        return $pathInfo['filename'].'_thumb.'.$pathInfo['extension'];
     }
 
     /**
      * Validate uploaded image file with enhanced security checks
-     *
-     * @param UploadedFile $file
-     * @return bool
      */
     private function validateImageFile(UploadedFile $file): bool
     {
         // Check if file is valid
-        if (!$file->isValid()) {
+        if (! $file->isValid()) {
             return false;
         }
 
         // Check MIME type
-        if (!in_array($file->getMimeType(), $this->allowedMimeTypes)) {
+        if (! in_array($file->getMimeType(), $this->allowedMimeTypes)) {
             return false;
         }
 
@@ -263,14 +265,14 @@ class ImageProcessingService
         // Enhanced security validation
         try {
             $imageInfo = getimagesize($file->getPathname());
-            if (!$imageInfo) {
+            if (! $imageInfo) {
                 return false;
             }
 
             // Check image dimensions (prevent extremely large images)
             $width = $imageInfo[0];
             $height = $imageInfo[1];
-            
+
             if ($width > 8000 || $height > 8000) {
                 return false;
             }
@@ -295,68 +297,64 @@ class ImageProcessingService
 
     /**
      * Sanitize filename to prevent directory traversal and other attacks
-     *
-     * @param string $filename
-     * @return string
      */
     private function sanitizeFilename(string $filename): string
     {
         // Remove directory traversal attempts
         $filename = basename($filename);
-        
+
         // Remove null bytes and other dangerous characters
         $filename = str_replace(["\0", '/', '\\', ':', '*', '?', '"', '<', '>', '|'], '', $filename);
-        
+
         // Limit length
         if (strlen($filename) > 255) {
             $pathInfo = pathinfo($filename);
-            $extension = isset($pathInfo['extension']) ? '.' . $pathInfo['extension'] : '';
+            $extension = isset($pathInfo['extension']) ? '.'.$pathInfo['extension'] : '';
             $basename = substr($pathInfo['filename'], 0, 255 - strlen($extension));
-            $filename = $basename . $extension;
+            $filename = $basename.$extension;
         }
-        
+
         return $filename;
     }
 
     /**
      * Delete image files from storage
      *
-     * @param \App\Models\GalleryImage|string $imagePathOrModel
-     * @param string|null $thumbnailPath
-     * @return bool
+     * @param  GalleryImage|string  $imagePathOrModel
      */
     public function deleteImageFiles($imagePathOrModel, ?string $thumbnailPath = null): bool
     {
         try {
             $deleted = true;
-            
+
             // Handle both GalleryImage model and direct paths
-            if ($imagePathOrModel instanceof \App\Models\GalleryImage) {
+            if ($imagePathOrModel instanceof GalleryImage) {
                 $imagePath = $imagePathOrModel->path;
                 $thumbnailPath = $imagePathOrModel->thumbnail_path;
             } else {
                 $imagePath = $imagePathOrModel;
                 // thumbnailPath should be provided as second parameter
             }
-            
+
             // Delete main image
             if (Storage::disk('public')->exists($imagePath)) {
                 $deleted = Storage::disk('public')->delete($imagePath) && $deleted;
             }
-            
+
             // Delete thumbnail
             if ($thumbnailPath && Storage::disk('public')->exists($thumbnailPath)) {
                 $deleted = Storage::disk('public')->delete($thumbnailPath) && $deleted;
             }
-            
+
             return $deleted;
 
         } catch (\Exception $e) {
             // Log error but don't throw exception to avoid breaking the application
-            \Log::error("Failed to delete image files: " . $e->getMessage(), [
+            \Log::error('Failed to delete image files: '.$e->getMessage(), [
                 'image_path' => $imagePath ?? 'unknown',
-                'thumbnail_path' => $thumbnailPath ?? 'unknown'
+                'thumbnail_path' => $thumbnailPath ?? 'unknown',
             ]);
+
             return false;
         }
     }
@@ -369,43 +367,41 @@ class ImageProcessingService
     public function cleanupOrphanedFiles(): array
     {
         $cleanedFiles = [];
-        
+
         try {
             // Get all files in gallery directory
             $galleryFiles = Storage::disk('public')->files($this->galleryPath);
             $thumbnailFiles = Storage::disk('public')->files($this->thumbnailPath);
-            
+
             // Get all image paths from database
-            $dbImagePaths = \App\Models\GalleryImage::pluck('path')->toArray();
-            $dbThumbnailPaths = \App\Models\GalleryImage::pluck('thumbnail_path')->toArray();
-            
+            $dbImagePaths = GalleryImage::pluck('path')->toArray();
+            $dbThumbnailPaths = GalleryImage::pluck('thumbnail_path')->toArray();
+
             // Find orphaned gallery files
             foreach ($galleryFiles as $file) {
-                if (!in_array($file, $dbImagePaths)) {
+                if (! in_array($file, $dbImagePaths)) {
                     Storage::disk('public')->delete($file);
                     $cleanedFiles[] = $file;
                 }
             }
-            
+
             // Find orphaned thumbnail files
             foreach ($thumbnailFiles as $file) {
-                if (!in_array($file, $dbThumbnailPaths)) {
+                if (! in_array($file, $dbThumbnailPaths)) {
                     Storage::disk('public')->delete($file);
                     $cleanedFiles[] = $file;
                 }
             }
-            
+
         } catch (\Exception $e) {
-            \Log::error("Failed to cleanup orphaned files: " . $e->getMessage());
+            \Log::error('Failed to cleanup orphaned files: '.$e->getMessage());
         }
-        
+
         return $cleanedFiles;
     }
 
     /**
      * Ensure gallery directories exist
-     *
-     * @return void
      */
     public function ensureDirectoriesExist(): void
     {
@@ -415,34 +411,32 @@ class ImageProcessingService
 
     /**
      * Get storage statistics
-     *
-     * @return array
      */
     public function getStorageStats(): array
     {
         try {
             $galleryFiles = Storage::disk('public')->files($this->galleryPath);
             $thumbnailFiles = Storage::disk('public')->files($this->thumbnailPath);
-            
+
             $totalSize = 0;
             foreach (array_merge($galleryFiles, $thumbnailFiles) as $file) {
                 $totalSize += Storage::disk('public')->size($file);
             }
-            
+
             return [
                 'total_files' => count($galleryFiles),
                 'total_thumbnails' => count($thumbnailFiles),
                 'total_size_bytes' => $totalSize,
-                'total_size_mb' => round($totalSize / (1024 * 1024), 2)
+                'total_size_mb' => round($totalSize / (1024 * 1024), 2),
             ];
-            
+
         } catch (\Exception $e) {
             return [
                 'total_files' => 0,
                 'total_thumbnails' => 0,
                 'total_size_bytes' => 0,
                 'total_size_mb' => 0,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ];
         }
     }
@@ -450,18 +444,16 @@ class ImageProcessingService
     /**
      * Resize image using GD library
      *
-     * @param string $sourcePath
-     * @param int $maxWidth
-     * @param int $maxHeight
-     * @param bool $crop Whether to crop to exact dimensions or maintain aspect ratio
+     * @param  bool  $crop  Whether to crop to exact dimensions or maintain aspect ratio
      * @return string Binary image data
+     *
      * @throws \Exception
      */
     private function resizeImage(string $sourcePath, int $maxWidth, int $maxHeight, bool $crop = false): string
     {
         $imageInfo = getimagesize($sourcePath);
-        if (!$imageInfo) {
-            throw new \Exception("Invalid image file");
+        if (! $imageInfo) {
+            throw new \Exception('Invalid image file');
         }
 
         $originalWidth = $imageInfo[0];
@@ -470,8 +462,8 @@ class ImageProcessingService
 
         // Create source image resource
         $sourceImage = $this->createImageFromFile($sourcePath, $mimeType);
-        if (!$sourceImage) {
-            throw new \Exception("Failed to create image resource");
+        if (! $sourceImage) {
+            throw new \Exception('Failed to create image resource');
         }
 
         // Calculate new dimensions
@@ -479,11 +471,11 @@ class ImageProcessingService
             // For thumbnails, crop to exact dimensions
             $newWidth = $maxWidth;
             $newHeight = $maxHeight;
-            
+
             // Calculate crop area to center the image
             $sourceRatio = $originalWidth / $originalHeight;
             $targetRatio = $maxWidth / $maxHeight;
-            
+
             if ($sourceRatio > $targetRatio) {
                 // Source is wider, crop width
                 $cropWidth = $originalHeight * $targetRatio;
@@ -500,9 +492,9 @@ class ImageProcessingService
         } else {
             // Maintain aspect ratio
             $ratio = min($maxWidth / $originalWidth, $maxHeight / $originalHeight);
-            $newWidth = (int)($originalWidth * $ratio);
-            $newHeight = (int)($originalHeight * $ratio);
-            
+            $newWidth = (int) ($originalWidth * $ratio);
+            $newHeight = (int) ($originalHeight * $ratio);
+
             $cropX = 0;
             $cropY = 0;
             $cropWidth = $originalWidth;
@@ -511,9 +503,9 @@ class ImageProcessingService
 
         // Create new image
         $newImage = imagecreatetruecolor($newWidth, $newHeight);
-        if (!$newImage) {
+        if (! $newImage) {
             imagedestroy($sourceImage);
-            throw new \Exception("Failed to create new image resource");
+            throw new \Exception('Failed to create new image resource');
         }
 
         // Preserve transparency for PNG and GIF
@@ -527,14 +519,14 @@ class ImageProcessingService
         // Resize image
         $success = imagecopyresampled(
             $newImage, $sourceImage,
-            0, 0, (int)$cropX, (int)$cropY,
-            $newWidth, $newHeight, (int)$cropWidth, (int)$cropHeight
+            0, 0, (int) $cropX, (int) $cropY,
+            $newWidth, $newHeight, (int) $cropWidth, (int) $cropHeight
         );
 
-        if (!$success) {
+        if (! $success) {
             imagedestroy($sourceImage);
             imagedestroy($newImage);
-            throw new \Exception("Failed to resize image");
+            throw new \Exception('Failed to resize image');
         }
 
         // Get image data
@@ -546,8 +538,8 @@ class ImageProcessingService
         imagedestroy($sourceImage);
         imagedestroy($newImage);
 
-        if (!$imageData) {
-            throw new \Exception("Failed to generate image data");
+        if (! $imageData) {
+            throw new \Exception('Failed to generate image data');
         }
 
         return $imageData;
@@ -556,27 +548,27 @@ class ImageProcessingService
     /**
      * Optimize image without resizing with enhanced compression
      *
-     * @param string $sourcePath
      * @return string Binary image data
+     *
      * @throws \Exception
      */
     private function optimizeImage(string $sourcePath): string
     {
         $imageInfo = getimagesize($sourcePath);
-        if (!$imageInfo) {
-            throw new \Exception("Invalid image file");
+        if (! $imageInfo) {
+            throw new \Exception('Invalid image file');
         }
 
         $mimeType = $imageInfo['mime'];
         $sourceImage = $this->createImageFromFile($sourcePath, $mimeType);
-        
-        if (!$sourceImage) {
-            throw new \Exception("Failed to create image resource");
+
+        if (! $sourceImage) {
+            throw new \Exception('Failed to create image resource');
         }
 
         // Apply image optimization based on type and settings
         ob_start();
-        
+
         if ($this->enableWebpConversion && function_exists('imagewebp')) {
             // Convert to WebP for better compression
             imagewebp($sourceImage, null, $this->webpQuality);
@@ -587,13 +579,13 @@ class ImageProcessingService
             // Default to optimized JPEG
             imagejpeg($sourceImage, null, $this->jpegQuality);
         }
-        
+
         $imageData = ob_get_clean();
 
         imagedestroy($sourceImage);
 
-        if (!$imageData) {
-            throw new \Exception("Failed to optimize image");
+        if (! $imageData) {
+            throw new \Exception('Failed to optimize image');
         }
 
         return $imageData;
@@ -602,7 +594,7 @@ class ImageProcessingService
     /**
      * Apply advanced image optimization techniques
      *
-     * @param resource $image
+     * @param  resource  $image
      * @return resource
      */
     private function applyImageOptimizations($image)
@@ -611,15 +603,12 @@ class ImageProcessingService
         if (function_exists('imagefilter')) {
             imagefilter($image, IMG_FILTER_SHARPEN);
         }
-        
+
         return $image;
     }
 
     /**
      * Set proper file permissions for uploaded images
-     *
-     * @param string $filePath
-     * @return bool
      */
     public function setSecureFilePermissions(string $filePath): bool
     {
@@ -628,23 +617,21 @@ class ImageProcessingService
             return chmod(Storage::disk('public')->path($filePath), 0644);
         } catch (\Exception $e) {
             \Log::warning("Failed to set file permissions for: {$filePath}", [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return false;
         }
     }
 
     /**
      * Scan image for potential security threats
-     *
-     * @param string $filePath
-     * @return bool
      */
     public function scanImageForThreats(string $filePath): bool
     {
         try {
             $content = file_get_contents($filePath);
-            
+
             // Check for embedded scripts or suspicious content
             $suspiciousPatterns = [
                 '/<\?php/i',
@@ -655,15 +642,15 @@ class ImageProcessingService
                 '/onload=/i',
                 '/onerror=/i',
                 '/eval\(/i',
-                '/base64_decode/i'
+                '/base64_decode/i',
             ];
-            
+
             foreach ($suspiciousPatterns as $pattern) {
                 if (preg_match($pattern, $content)) {
                     return false;
                 }
             }
-            
+
             return true;
         } catch (\Exception $e) {
             return false;
@@ -673,8 +660,6 @@ class ImageProcessingService
     /**
      * Create image resource from file
      *
-     * @param string $filePath
-     * @param string $mimeType
      * @return resource|false
      */
     private function createImageFromFile(string $filePath, string $mimeType)

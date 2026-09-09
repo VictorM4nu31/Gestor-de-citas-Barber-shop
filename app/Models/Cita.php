@@ -34,17 +34,31 @@ class Cita extends Model
         return $this->belongsToMany(Servicio::class, 'cita_servicio', 'cita_id', 'servicio_id');
     }
 
-    public function getServiciosNamesAttribute()
+    /**
+     * Return service names from the pivot relation, with a legacy fallback.
+     *
+     * @return array<int, string>
+     */
+    public function getServiciosNamesAttribute(): array
     {
+        $servicios = $this->relationLoaded('serviciosMany')
+            ? $this->serviciosMany
+            : $this->serviciosMany()->get();
+
+        if ($servicios->isNotEmpty()) {
+            return $servicios->pluck('nombre')->all();
+        }
+
         if (empty($this->servicios)) {
             return [];
         }
-        
+
         $serviciosIds = explode(',', $this->servicios);
+
         return Servicio::whereIn('id', $serviciosIds)->pluck('nombre')->toArray();
     }
 
-    public function getServiciosNombresTextoAttribute()
+    public function getServiciosNombresTextoAttribute(): string
     {
         return implode(', ', $this->servicios_names);
     }
@@ -83,26 +97,26 @@ class Cita extends Model
     {
         $this->update([
             'estado' => 'atendida',
-            'fecha_atencion' => now()
+            'fecha_atencion' => now(),
         ]);
     }
 
     public function marcarComoCancelada()
     {
         $this->update([
-            'estado' => 'cancelada'
+            'estado' => 'cancelada',
         ]);
     }
 
-    public function puedeSerAtendida()
+    public function puedeSerAtendida(): bool
     {
-        return $this->estado === 'pendiente' && 
+        return $this->estado === 'pendiente' &&
                $this->fecha <= now()->toDateString();
     }
 
     public function getEstadoTextoAttribute()
     {
-        return match($this->estado) {
+        return match ($this->estado) {
             'pendiente' => 'Pendiente',
             'atendida' => 'Atendida',
             'cancelada' => 'Cancelada',

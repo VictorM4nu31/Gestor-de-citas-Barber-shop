@@ -17,9 +17,9 @@ return [
         'date_in_past' => 'La fecha debe ser futura',
         'date_in_future' => 'La fecha debe ser pasada',
         'numeric_only' => 'Solo se permiten números',
-        'already_exists' => 'Este valor ya existe en el sistema'
+        'already_exists' => 'Este valor ya existe en el sistema',
     ],
-    
+
     'placeholders' => [
         'enter_name' => 'Ingresa el nombre',
         'enter_first_name' => 'Ingresa el nombre',
@@ -37,9 +37,9 @@ return [
         'enter_duration' => 'Ingresa la duración',
         'search' => 'Buscar...',
         'enter_specialty' => 'Ingresa la especialidad',
-        'enter_experience' => 'Años de experiencia'
+        'enter_experience' => 'Años de experiencia',
     ],
-    
+
     'labels' => [
         'name' => 'Nombre',
         'first_name' => 'Nombre',
@@ -64,9 +64,9 @@ return [
         'image' => 'Imagen',
         'file' => 'Archivo',
         'optional' => 'Opcional',
-        'required' => 'Obligatorio'
+        'required' => 'Obligatorio',
     ],
-    
+
     'buttons' => [
         'submit' => 'Enviar',
         'save' => 'Guardar',
@@ -86,9 +86,9 @@ return [
         'back' => 'Volver',
         'next' => 'Siguiente',
         'previous' => 'Anterior',
-        'finish' => 'Finalizar'
+        'finish' => 'Finalizar',
     ],
-    
+
     'confirmations' => [
         'delete_confirm' => '¿Estás seguro de que deseas eliminar este elemento?',
         'action_irreversible' => 'Esta acción no se puede deshacer.',
@@ -97,9 +97,9 @@ return [
         'confirm_logout' => '¿Estás seguro de que deseas cerrar sesión?',
         'confirm_deactivate' => '¿Estás seguro de que deseas desactivar este elemento?',
         'confirm_activate' => '¿Estás seguro de que deseas activar este elemento?',
-        'data_will_be_lost' => 'Los datos se perderán permanentemente.'
+        'data_will_be_lost' => 'Los datos se perderán permanentemente.',
     ],
-    
+
     'messages' => [
         'form_saved' => 'Formulario guardado exitosamente',
         'form_updated' => 'Formulario actualizado exitosamente',
@@ -113,9 +113,9 @@ return [
         'loading' => 'Cargando...',
         'uploading' => 'Subiendo archivo...',
         'upload_complete' => 'Subida completada',
-        'upload_failed' => 'Error al subir el archivo'
+        'upload_failed' => 'Error al subir el archivo',
     ],
-    
+
     'help' => [
         'password_requirements' => 'La contraseña debe tener al menos 8 caracteres',
         'email_format' => 'Ingresa un email válido (ejemplo@dominio.com)',
@@ -123,6 +123,6 @@ return [
         'file_size_limit' => 'Tamaño máximo de archivo: 10MB',
         'supported_formats' => 'Formatos soportados: JPG, PNG, GIF, WEBP',
         'required_fields' => 'Los campos marcados con * son obligatorios',
-        'optional_fields' => 'Los campos sin * son opcionales'
-    ]
+        'optional_fields' => 'Los campos sin * son opcionales',
+    ],
 ];

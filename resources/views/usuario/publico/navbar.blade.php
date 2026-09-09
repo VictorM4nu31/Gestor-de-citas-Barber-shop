@@ -1,25 +1,24 @@
-<nav class="bg-secondary text-white border-b border-accent w-100 px-8 md:px-auto">
-    <div class="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
+<nav class="border-b border-secondary/10 bg-background px-4 text-secondary sm:px-8">
+    <div class="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-6">
         <div class="md:order-1">
-            <img src="{{ asset('img/logo.png') }}" class="h-10 w-10" alt="Logo">
+            <a href="{{ route('home') }}" class="flex items-center gap-3">
+                <img src="{{ asset('img/logo.png') }}" class="h-10 w-10 object-contain" alt="Logo">
+                <span class="hidden text-sm font-bold uppercase tracking-[0.18em] sm:block">MasterCut</span>
+            </a>
         </div>
-        <div class="text-white order-3 w-full md:w-auto md:order-2">
-            <ul class="flex font-semibold justify-between">
-                <!-- Active Link = text-primary
-                Inactive Link = hover:text-primary -->
-                <li class="md:px-4 md:py-2 text-primary"><a href="#">{{ __('common.navigation.home') }}</a></li>
-                <li class="md:px-4 md:py-2 hover:text-primary"><a href="#footer">{{ __('common.navigation.contact') }}</a></li>
+        <div class="hidden md:block">
+            <ul class="flex items-center gap-8 text-sm font-semibold">
+                <li><a class="transition-colors hover:text-primary" href="#services">{{ __('services.title') }}</a></li>
+                <li><a class="transition-colors hover:text-primary" href="#barberos">{{ __('welcome.barberos.title') }}</a></li>
+                <li><a class="transition-colors hover:text-primary" href="#gallery">{{ __('welcome.gallery.title') }}</a></li>
             </ul>
         </div>
-        <div class="order-2 md:order-3 flex items-center space-x-4">
+        <div class="flex items-center gap-3">
             {{-- Language Switcher --}}
             <x-shared.language-switcher />
-            
-            <a href="{{ route('login') }}" class="px-4 py-2 bg-primary hover:bg-secondary text-white rounded-xl flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clip-rule="evenodd" />
-                </svg>
-                <span>{{ __('common.navigation.login') }}</span>
+
+            <a href="{{ route('login') }}" class="hidden border border-secondary px-4 py-2 text-sm font-bold transition hover:bg-secondary hover:text-light sm:inline-flex">
+                {{ __('common.navigation.login') }}
             </a>
         </div>
     </div>

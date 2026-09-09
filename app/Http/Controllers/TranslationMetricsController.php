@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\TranslationMetricsService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class TranslationMetricsController extends Controller
 {
@@ -27,14 +27,14 @@ class TranslationMetricsController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $stats,
-                'timestamp' => now()->toISOString()
+                'timestamp' => now()->toISOString(),
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'error' => 'Failed to retrieve metrics',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -47,7 +47,7 @@ class TranslationMetricsController extends Controller
         try {
             $locale = $request->query('locale');
             $locales = $locale ? [$locale] : config('app.available_locales', ['es', 'en']);
-            
+
             $missing = [];
             foreach ($locales as $loc) {
                 $missing[$loc] = $this->metricsService->getMissingTranslations($loc);
@@ -56,14 +56,14 @@ class TranslationMetricsController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $missing,
-                'timestamp' => now()->toISOString()
+                'timestamp' => now()->toISOString(),
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'error' => 'Failed to retrieve missing translations',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -79,14 +79,14 @@ class TranslationMetricsController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Metrics cleared successfully'
+                'message' => 'Metrics cleared successfully',
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'error' => 'Failed to clear metrics',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }

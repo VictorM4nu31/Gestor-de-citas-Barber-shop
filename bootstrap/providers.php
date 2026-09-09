@@ -1,7 +1,11 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\PageTitleServiceProvider;
+use App\Providers\TranslationCacheServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\PageTitleServiceProvider::class,
-    App\Providers\TranslationCacheServiceProvider::class,
+    AppServiceProvider::class,
+    PageTitleServiceProvider::class,
+    TranslationCacheServiceProvider::class,
 ];

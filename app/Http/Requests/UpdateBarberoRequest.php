@@ -2,10 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
-use Illuminate\Validation\Rule;
 use App\Rules\UniqueEmailAcrossTables;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateBarberoRequest extends FormRequest
 {

@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\GalleryImage;
-use App\Services\ImageProcessingService;
+use App\Http\Requests\ReorderGalleryImagesRequest;
 use App\Http\Requests\StoreGalleryImageRequest;
 use App\Http\Requests\UpdateGalleryImageRequest;
-use App\Http\Requests\ReorderGalleryImagesRequest;
+use App\Models\GalleryImage;
+use App\Services\ImageProcessingService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class GalleryController extends Controller
 {
@@ -38,7 +39,7 @@ class GalleryController extends Controller
                 case 'inactive':
                     $query->where('is_active', false);
                     break;
-                // 'all' or any other value shows all images
+                    // 'all' or any other value shows all images
             }
         }
 
@@ -47,7 +48,7 @@ class GalleryController extends Controller
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
                 $q->where('original_name', 'like', "%{$search}%")
-                  ->orWhere('alt_text', 'like', "%{$search}%");
+                    ->orWhere('alt_text', 'like', "%{$search}%");
             });
         }
 
@@ -58,7 +59,7 @@ class GalleryController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $images,
-                'html' => view('admin.gallery.partials.image-grid', compact('images'))->render()
+                'html' => view('admin.gallery.partials.image-grid', compact('images'))->render(),
             ]);
         }
 
@@ -81,7 +82,7 @@ class GalleryController extends Controller
         $validated = $request->validated();
 
         // Security logging
-        \Illuminate\Support\Facades\Log::info('Gallery upload attempt', [
+        Log::info('Gallery upload attempt', [
             'user_id' => Auth::id(),
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
@@ -90,13 +91,13 @@ class GalleryController extends Controller
 
         try {
             $uploadedImages = [];
-            
-            DB::transaction(function () use ($validated, &$uploadedImages, $request) {
+
+            DB::transaction(function () use ($validated, &$uploadedImages) {
                 $images = $this->imageProcessingService->processGalleryImages($validated['images']);
-                
+
                 foreach ($images as $index => $imageData) {
                     $altText = isset($validated['alt_texts'][$index]) ? $validated['alt_texts'][$index] : null;
-                    
+
                     $galleryImage = GalleryImage::create([
                         'filename' => $imageData['filename'],
                         'original_name' => $imageData['original_name'],
@@ -108,13 +109,13 @@ class GalleryController extends Controller
                         'display_order' => GalleryImage::getNextDisplayOrder(),
                         'is_active' => true,
                     ]);
-                    
+
                     $uploadedImages[] = $galleryImage;
                 }
             });
 
             // Log successful upload
-            \Illuminate\Support\Facades\Log::info('Gallery upload successful', [
+            Log::info('Gallery upload successful', [
                 'user_id' => Auth::id(),
                 'uploaded_count' => count($uploadedImages),
                 'total_size' => array_sum(array_column($uploadedImages, 'size')),
@@ -125,16 +126,16 @@ class GalleryController extends Controller
                     'success' => true,
                     'message' => 'Imágenes subidas exitosamente.',
                     'data' => $uploadedImages,
-                    'uploaded_count' => count($uploadedImages)
+                    'uploaded_count' => count($uploadedImages),
                 ]);
             }
 
             return redirect()->route('admin.gallery.index')
-                ->with('success', 'Imágenes subidas exitosamente. Total: ' . count($uploadedImages));
+                ->with('success', 'Imágenes subidas exitosamente. Total: '.count($uploadedImages));
 
         } catch (\Exception $e) {
             // Log upload failure
-            \Illuminate\Support\Facades\Log::error('Gallery upload failed', [
+            Log::error('Gallery upload failed', [
                 'user_id' => Auth::id(),
                 'ip' => $request->ip(),
                 'error' => $e->getMessage(),
@@ -144,13 +145,13 @@ class GalleryController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error al subir las imágenes: ' . $e->getMessage()
+                    'message' => 'Error al subir las imágenes: '.$e->getMessage(),
                 ], 500);
             }
 
             return redirect()->back()
                 ->withInput()
-                ->withErrors(['error' => 'Error al subir las imágenes: ' . $e->getMessage()]);
+                ->withErrors(['error' => 'Error al subir las imágenes: '.$e->getMessage()]);
         }
     }
 
@@ -163,7 +164,7 @@ class GalleryController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $galleryImage,
-                'html' => view('admin.gallery.partials.image-details', compact('galleryImage'))->render()
+                'html' => view('admin.gallery.partials.image-details', compact('galleryImage'))->render(),
             ]);
         }
 
@@ -179,7 +180,7 @@ class GalleryController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $galleryImage,
-                'html' => view('admin.gallery.partials.edit-form', compact('galleryImage'))->render()
+                'html' => view('admin.gallery.partials.edit-form', compact('galleryImage'))->render(),
             ]);
         }
 
@@ -200,7 +201,7 @@ class GalleryController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Imagen actualizada exitosamente.',
-                    'data' => $galleryImage->fresh()
+                    'data' => $galleryImage->fresh(),
                 ]);
             }
 
@@ -211,13 +212,13 @@ class GalleryController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error al actualizar la imagen: ' . $e->getMessage()
+                    'message' => 'Error al actualizar la imagen: '.$e->getMessage(),
                 ], 500);
             }
 
             return redirect()->back()
                 ->withInput()
-                ->withErrors(['error' => 'Error al actualizar la imagen: ' . $e->getMessage()]);
+                ->withErrors(['error' => 'Error al actualizar la imagen: '.$e->getMessage()]);
         }
     }
 
@@ -230,7 +231,7 @@ class GalleryController extends Controller
             DB::transaction(function () use ($galleryImage) {
                 // Delete image files from storage
                 $this->imageProcessingService->deleteImageFiles($galleryImage);
-                
+
                 // Delete database record
                 $galleryImage->delete();
             });
@@ -238,7 +239,7 @@ class GalleryController extends Controller
             if (request()->ajax()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Imagen eliminada exitosamente.'
+                    'message' => 'Imagen eliminada exitosamente.',
                 ]);
             }
 
@@ -249,12 +250,12 @@ class GalleryController extends Controller
             if (request()->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error al eliminar la imagen: ' . $e->getMessage()
+                    'message' => 'Error al eliminar la imagen: '.$e->getMessage(),
                 ], 500);
             }
 
             return redirect()->back()
-                ->withErrors(['error' => 'Error al eliminar la imagen: ' . $e->getMessage()]);
+                ->withErrors(['error' => 'Error al eliminar la imagen: '.$e->getMessage()]);
         }
     }
 
@@ -276,7 +277,7 @@ class GalleryController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Orden de imágenes actualizado exitosamente.'
+                    'message' => 'Orden de imágenes actualizado exitosamente.',
                 ]);
             }
 
@@ -287,12 +288,12 @@ class GalleryController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error al reordenar las imágenes: ' . $e->getMessage()
+                    'message' => 'Error al reordenar las imágenes: '.$e->getMessage(),
                 ], 500);
             }
 
             return redirect()->back()
-                ->withErrors(['error' => 'Error al reordenar las imágenes: ' . $e->getMessage()]);
+                ->withErrors(['error' => 'Error al reordenar las imágenes: '.$e->getMessage()]);
         }
     }
 
@@ -302,7 +303,7 @@ class GalleryController extends Controller
     public function toggleActive(GalleryImage $galleryImage)
     {
         try {
-            $galleryImage->update(['is_active' => !$galleryImage->is_active]);
+            $galleryImage->update(['is_active' => ! $galleryImage->is_active]);
 
             $status = $galleryImage->is_active ? 'activada' : 'desactivada';
 
@@ -310,7 +311,7 @@ class GalleryController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => "Imagen {$status} exitosamente.",
-                    'data' => $galleryImage->fresh()
+                    'data' => $galleryImage->fresh(),
                 ]);
             }
 
@@ -321,12 +322,12 @@ class GalleryController extends Controller
             if (request()->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error al cambiar el estado de la imagen: ' . $e->getMessage()
+                    'message' => 'Error al cambiar el estado de la imagen: '.$e->getMessage(),
                 ], 500);
             }
 
             return redirect()->back()
-                ->withErrors(['error' => 'Error al cambiar el estado de la imagen: ' . $e->getMessage()]);
+                ->withErrors(['error' => 'Error al cambiar el estado de la imagen: '.$e->getMessage()]);
         }
     }
 
@@ -337,15 +338,15 @@ class GalleryController extends Controller
     {
         $request->validate([
             'image_ids' => 'required|array|min:1',
-            'image_ids.*' => 'integer|exists:gallery_images,id'
+            'image_ids.*' => 'integer|exists:gallery_images,id',
         ]);
 
         try {
             $deletedCount = 0;
-            
+
             DB::transaction(function () use ($request, &$deletedCount) {
                 $images = GalleryImage::whereIn('id', $request->image_ids)->get();
-                
+
                 foreach ($images as $image) {
                     $this->imageProcessingService->deleteImageFiles($image);
                     $image->delete();
@@ -356,7 +357,7 @@ class GalleryController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
-                    'message' => "Se eliminaron {$deletedCount} imágenes exitosamente."
+                    'message' => "Se eliminaron {$deletedCount} imágenes exitosamente.",
                 ]);
             }
 
@@ -367,12 +368,12 @@ class GalleryController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Error al eliminar las imágenes: ' . $e->getMessage()
+                    'message' => 'Error al eliminar las imágenes: '.$e->getMessage(),
                 ], 500);
             }
 
             return redirect()->back()
-                ->withErrors(['error' => 'Error al eliminar las imágenes: ' . $e->getMessage()]);
+                ->withErrors(['error' => 'Error al eliminar las imágenes: '.$e->getMessage()]);
         }
     }
 }

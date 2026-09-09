@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use App\Helpers\TranslationHelper;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class GalleryImage extends Model
 {
@@ -23,7 +23,7 @@ class GalleryImage extends Model
         'alt_text',
         'display_order',
         'is_active',
-        'alt_text_en'
+        'alt_text_en',
     ];
 
     /**
@@ -53,7 +53,7 @@ class GalleryImage extends Model
     public function scopeOrdered(Builder $query): Builder
     {
         return $query->orderBy('display_order', 'asc')
-                    ->orderBy('created_at', 'desc');
+            ->orderBy('created_at', 'desc');
     }
 
     /**
@@ -69,7 +69,7 @@ class GalleryImage extends Model
      */
     public function getImageUrlAttribute(): string
     {
-        return asset('storage/' . $this->path);
+        return asset('storage/'.$this->path);
     }
 
     /**
@@ -77,7 +77,7 @@ class GalleryImage extends Model
      */
     public function getThumbnailUrlAttribute(): string
     {
-        return asset('storage/' . $this->thumbnail_path);
+        return asset('storage/'.$this->thumbnail_path);
     }
 
     /**
@@ -87,12 +87,12 @@ class GalleryImage extends Model
     {
         $bytes = $this->size;
         $units = ['B', 'KB', 'MB', 'GB'];
-        
+
         for ($i = 0; $bytes > 1024 && $i < count($units) - 1; $i++) {
             $bytes /= 1024;
         }
-        
-        return round($bytes, 2) . ' ' . $units[$i];
+
+        return round($bytes, 2).' '.$units[$i];
     }
 
     /**
@@ -121,9 +121,6 @@ class GalleryImage extends Model
 
     /**
      * Get translated alt text for the image
-     * 
-     * @param string|null $locale
-     * @return string
      */
     public function getTranslatedAltText(?string $locale = null): string
     {
@@ -132,9 +129,6 @@ class GalleryImage extends Model
 
     /**
      * Get all translated attributes for the gallery image
-     * 
-     * @param string|null $locale
-     * @return array
      */
     public function getTranslatedAttributes(?string $locale = null): array
     {

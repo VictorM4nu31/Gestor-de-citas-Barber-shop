@@ -2,9 +2,9 @@
 
 namespace App\Listeners;
 
-use Illuminate\Translation\Events\TranslationMissing;
 use App\Services\TranslationMetricsService;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Translation\Events\TranslationMissing;
 
 class TranslationMissingListener
 {

@@ -11,5 +11,5 @@ return [
     'back_to_services' => 'Back to Services',
     'description' => 'Description',
     'price' => 'Price',
-    'book_service' => 'Book this Service'
+    'book_service' => 'Book this Service',
 ];

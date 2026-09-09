@@ -8,7 +8,8 @@ class ServicioController extends Controller
 {
     public function index()
     {
-        $servicios = \App\Models\Servicio::publicadosOrdenados()->get();
+        $servicios = Servicio::publicadosOrdenados()->get();
+
         return view('usuario.publico.servicios-index', compact('servicios'));
     }
 
@@ -17,4 +18,3 @@ class ServicioController extends Controller
         return view('usuario.publico.servicios-show', compact('servicio'));
     }
 }
-

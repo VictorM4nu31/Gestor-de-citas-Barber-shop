@@ -6,7 +6,7 @@
 ])
 
 @php
-    $baseClasses = 'bg-surface rounded-lg';
+    $baseClasses = 'bg-light rounded-md';
     
     $paddingClasses = [
         'sm' => 'p-3',
@@ -14,7 +14,7 @@
         'lg' => 'p-6'
     ];
     
-    $shadowClass = $shadow ? 'shadow-md' : '';
+    $shadowClass = $shadow ? 'shadow-[0_12px_32px_rgba(23,21,19,0.06)]' : '';
     $borderClass = $border ? 'border border-accent' : '';
     
     $classes = $baseClasses . ' ' . ($paddingClasses[$padding] ?? $paddingClasses['md']) . ' ' . $shadowClass . ' ' . $borderClass . ' ' . $class;

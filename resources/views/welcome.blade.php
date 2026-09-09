@@ -18,19 +18,21 @@
 
     <main class="min-h-screen">
         <x-usuario.hero :title="__('welcome.hero.title')" :subtitle="__('welcome.hero.subtitle')" :primary_cta="__('welcome.hero.primary_cta')" :secondary_cta="__('welcome.hero.secondary_cta')" />
-        <section id="about" class="text-center py-12 bg-secondary">
-            <div class="container mx-auto px-4 lg:px-8 flex flex-col md:flex-row items-center">
-                <div class="w-full md:w-1/2">
-                    <h2 class="text-3xl font-semibold mb-4 text-primary">{{ __('welcome.about.title') }}</h2>
-                    <p class="text-lg mb-8 text-muted">{{ __('welcome.about.description') }}</p>
-                    <h3 class="text-2xl font-semibold mb-4 text-primary">{{ __('welcome.about.location_title') }}</h3>
-                    <div id="mi_mapa" class="h-96 w-full rounded-lg overflow-hidden"></div>
+        <section id="about" class="bg-secondary py-20 text-light">
+            <div class="mx-auto flex max-w-7xl flex-col gap-10 px-4 sm:px-8 md:flex-row md:items-end">
+                <div class="w-full md:w-3/5">
+                    <p class="eyebrow text-brass">02 / The place</p>
+                    <h2 class="display-title mt-4 text-4xl text-light sm:text-6xl">{{ __('welcome.about.title') }}</h2>
+                    <p class="mt-6 max-w-xl text-lg leading-relaxed text-light/70">{{ __('welcome.about.description') }}</p>
+                    <div id="mi_mapa" class="mt-8 h-72 w-full overflow-hidden border border-light/20 grayscale"></div>
                 </div>
-                <div class="w-full md:w-1/2 md:pl-8 mt-8 md:mt-0">
-                    <h2 class="text-3xl font-semibold mb-4 text-primary">{{ __('welcome.about.info_title') }}</h2>
-                    <p class="text-lg mb-4 text-muted">{{ __('welcome.about.address') }}</p>
-                    <p class="text-lg mb-4 text-muted">{{ __('welcome.about.phone') }}</p>
-                    <p class="text-lg text-muted">{{ __('welcome.about.schedule') }}</p>
+                <div class="w-full border-l border-brass/50 pl-6 md:w-2/5 md:pl-10">
+                    <p class="eyebrow text-brass">{{ __('welcome.about.info_title') }}</p>
+                    <div class="mt-6 space-y-4 text-lg text-light/80">
+                        <p>{{ __('welcome.about.address') }}</p>
+                        <p>{{ __('welcome.about.phone') }}</p>
+                        <p>{{ __('welcome.about.schedule') }}</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -45,21 +47,23 @@
                 :columns="['mobile' => 1, 'tablet' => 2, 'desktop' => 3]"
                 :lazy-load="true"
                 :show-count="false"
-                class="py-12 bg-secondary"
+                class="bg-background py-20"
                 id="gallery"
             >
                 <x-slot:header>
-                    <h2 class="text-3xl font-semibold mb-4 text-primary">{{ __('welcome.gallery.title') }}</h2>
-                    <p class="text-lg mb-8 text-muted">{{ __('welcome.gallery.description') }}</p>
+                    <p class="eyebrow">03 / Lookbook</p>
+                    <h2 class="display-title mt-3 text-4xl text-secondary sm:text-6xl">{{ __('welcome.gallery.title') }}</h2>
+                    <p class="mt-4 max-w-xl text-lg text-muted">{{ __('welcome.gallery.description') }}</p>
                 </x-slot:header>
             </x-gallery.section>
         @endif
 
-        <section id="barberos" class="text-center py-12 bg-background">
-            <div class="container mx-auto px-4 lg:px-8">
-                <h2 class="text-3xl font-semibold mb-4 text-secondary">{{ __('welcome.barberos.title') }}</h2>
-                <p class="text-lg mb-8 text-muted">{{ __('welcome.barberos.description') }}</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <section id="barberos" class="bg-paper py-20">
+            <div class="mx-auto max-w-7xl px-4 sm:px-8">
+                <p class="eyebrow">04 / The team</p>
+                <h2 class="display-title mt-3 text-4xl text-secondary sm:text-6xl">{{ __('welcome.barberos.title') }}</h2>
+                <p class="mt-4 max-w-xl text-lg text-muted">{{ __('welcome.barberos.description') }}</p>
+                <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     @foreach($barberos as $barbero)
                         <x-usuario.barbero-card :barbero="$barbero" />
                     @endforeach
@@ -67,10 +71,14 @@
             </div>
         </section>
 
-        <section id="contact" class="text-center py-12 bg-background">
-            <div class="container mx-auto">
-                <h2 class="text-3xl font-semibold mb-4 text-secondary">{{ __('welcome.contact.title') }}</h2>
-                <p class="text-lg mb-8 text-muted">{{ __('welcome.contact.description') }}</p>
+        <section id="contact" class="bg-brass py-16">
+            <div class="mx-auto flex max-w-7xl flex-col justify-between gap-8 px-4 sm:px-8 md:flex-row md:items-end">
+                <div>
+                    <p class="eyebrow text-secondary">05 / Make time</p>
+                    <h2 class="display-title mt-3 max-w-2xl text-4xl text-secondary sm:text-6xl">{{ __('welcome.contact.title') }}</h2>
+                    <p class="mt-4 max-w-xl text-lg text-secondary/75">{{ __('welcome.contact.description') }}</p>
+                </div>
+                <a href="{{ auth()->check() ? route('citas.create') : route('login') }}" class="inline-flex items-center justify-center gap-3 bg-secondary px-6 py-4 font-bold text-light transition hover:bg-primary">{{ __('welcome.hero.primary_cta') }} <span aria-hidden="true">→</span></a>
             </div>
         </section>
     </main>

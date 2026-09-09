@@ -14,7 +14,7 @@ return [
     'phone' => 'Teléfono',
     'specialty' => 'Especialidad',
     'book_appointment_with' => 'Agendar Cita con',
-    
+
     // Sección administrativa
     'admin' => [
         'titles' => [
@@ -22,7 +22,7 @@ return [
             'edit' => 'Editar Barbero',
             'show' => 'Ver Barbero',
             'list' => 'Lista de Barberos',
-            'management_actions' => 'Acciones de Gestión'
+            'management_actions' => 'Acciones de Gestión',
         ],
         'buttons' => [
             'create_barber' => 'Crear Barbero',
@@ -34,7 +34,7 @@ return [
             'deactivate' => 'Dar de Baja',
             'reactivate' => 'Reactivar',
             'reactivate_barber' => 'Reactivar Barbero',
-            'delete_permanent' => 'Eliminar Permanentemente'
+            'delete_permanent' => 'Eliminar Permanentemente',
         ],
         'labels' => [
             'full_name' => 'Nombre Completo',
@@ -49,7 +49,7 @@ return [
             'services_offered' => 'Servicios que ofrece',
             'status' => 'Estado',
             'deactivation_date' => 'Fecha de Baja',
-            'current_services' => 'Servicios Actuales'
+            'current_services' => 'Servicios Actuales',
         ],
         'status' => [
             'active' => 'Activo',
@@ -58,13 +58,13 @@ return [
             'actives' => 'Activos',
             'inactives' => 'Inactivos',
             'since' => 'Desde',
-            'deactivated_on' => 'Dado de baja el'
+            'deactivated_on' => 'Dado de baja el',
         ],
         'filters' => [
             'all' => 'Todos',
             'active' => 'Activos',
             'inactive' => 'Inactivos',
-            'showing_count' => 'Mostrando :count barbero|Mostrando :count barberos'
+            'showing_count' => 'Mostrando :count barbero|Mostrando :count barberos',
         ],
         'table' => [
             'id' => 'ID',
@@ -76,20 +76,20 @@ return [
             'experience' => 'Experiencia',
             'photo' => 'Foto',
             'actions' => 'Acciones',
-            'no_photo' => 'Sin foto'
+            'no_photo' => 'Sin foto',
         ],
         'messages' => [
             'file_requirements' => 'Tamaño máximo: 2MB. Formatos permitidos: jpeg, png, jpg.',
             'services_help' => 'Selecciona los servicios que este barbero puede ofrecer. Solo se mostrarán servicios publicados.',
             'no_services_available' => 'No hay servicios publicados disponibles.',
             'services_assigned' => 'Servicios actuales: :count asignados. Modifica la selección para cambiar los servicios que este barbero puede ofrecer.',
-            'price_duration_format' => ':price • :duration min'
+            'price_duration_format' => ':price • :duration min',
         ],
         'confirmations' => [
             'deactivate' => '¿Estás seguro de que deseas dar de baja a este barbero?\n\nEl barbero:\n• No podrá acceder al sistema\n• Se mantendrá su historial de citas\n• Podrá ser reactivado más tarde',
             'reactivate' => '¿Estás seguro de que deseas reactivar a este barbero?\n\nEl barbero podrá volver a acceder al sistema.',
             'deactivate_simple' => '¿Estás seguro de que deseas dar de baja a este barbero? No podrá acceder al sistema pero se mantendrá su historial.',
-            'reactivate_simple' => '¿Estás seguro de que deseas reactivar a este barbero?'
+            'reactivate_simple' => '¿Estás seguro de que deseas reactivar a este barbero?',
         ],
         'empty_states' => [
             'no_barbers' => 'No hay barberos registrados',
@@ -97,7 +97,7 @@ return [
             'no_inactive_barbers' => 'No hay barberos inactivos',
             'no_barbers_description' => 'Comienza creando tu primer barbero.',
             'no_active_description' => 'Todos los barberos están dados de baja o no hay barberos registrados.',
-            'no_inactive_description' => 'Todos los barberos están activos.'
-        ]
-    ]
+            'no_inactive_description' => 'Todos los barberos están activos.',
+        ],
+    ],
 ];

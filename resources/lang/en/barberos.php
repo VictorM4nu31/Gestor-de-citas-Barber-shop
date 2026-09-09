@@ -14,7 +14,7 @@ return [
     'phone' => 'Phone',
     'specialty' => 'Specialty',
     'book_appointment_with' => 'Book Appointment with',
-    
+
     // Administrative section
     'admin' => [
         'titles' => [
@@ -22,7 +22,7 @@ return [
             'edit' => 'Edit Barber',
             'show' => 'View Barber',
             'list' => 'Barbers List',
-            'management_actions' => 'Management Actions'
+            'management_actions' => 'Management Actions',
         ],
         'buttons' => [
             'create_barber' => 'Create Barber',
@@ -34,7 +34,7 @@ return [
             'deactivate' => 'Deactivate',
             'reactivate' => 'Reactivate',
             'reactivate_barber' => 'Reactivate Barber',
-            'delete_permanent' => 'Delete Permanently'
+            'delete_permanent' => 'Delete Permanently',
         ],
         'labels' => [
             'full_name' => 'Full Name',
@@ -49,7 +49,7 @@ return [
             'services_offered' => 'Services Offered',
             'status' => 'Status',
             'deactivation_date' => 'Deactivation Date',
-            'current_services' => 'Current Services'
+            'current_services' => 'Current Services',
         ],
         'status' => [
             'active' => 'Active',
@@ -58,13 +58,13 @@ return [
             'actives' => 'Active',
             'inactives' => 'Inactive',
             'since' => 'Since',
-            'deactivated_on' => 'Deactivated on'
+            'deactivated_on' => 'Deactivated on',
         ],
         'filters' => [
             'all' => 'All',
             'active' => 'Active',
             'inactive' => 'Inactive',
-            'showing_count' => 'Showing :count barber|Showing :count barbers'
+            'showing_count' => 'Showing :count barber|Showing :count barbers',
         ],
         'table' => [
             'id' => 'ID',
@@ -76,20 +76,20 @@ return [
             'experience' => 'Experience',
             'photo' => 'Photo',
             'actions' => 'Actions',
-            'no_photo' => 'No photo'
+            'no_photo' => 'No photo',
         ],
         'messages' => [
             'file_requirements' => 'Maximum size: 2MB. Allowed formats: jpeg, png, jpg.',
             'services_help' => 'Select the services this barber can offer. Only published services will be shown.',
             'no_services_available' => 'No published services available.',
             'services_assigned' => 'Current services: :count assigned. Modify the selection to change the services this barber can offer.',
-            'price_duration_format' => ':price • :duration min'
+            'price_duration_format' => ':price • :duration min',
         ],
         'confirmations' => [
             'deactivate' => 'Are you sure you want to deactivate this barber?\n\nThe barber:\n• Will not be able to access the system\n• Their appointment history will be maintained\n• Can be reactivated later',
             'reactivate' => 'Are you sure you want to reactivate this barber?\n\nThe barber will be able to access the system again.',
             'deactivate_simple' => 'Are you sure you want to deactivate this barber? They will not be able to access the system but their history will be maintained.',
-            'reactivate_simple' => 'Are you sure you want to reactivate this barber?'
+            'reactivate_simple' => 'Are you sure you want to reactivate this barber?',
         ],
         'empty_states' => [
             'no_barbers' => 'No barbers registered',
@@ -97,7 +97,7 @@ return [
             'no_inactive_barbers' => 'No inactive barbers',
             'no_barbers_description' => 'Start by creating your first barber.',
             'no_active_description' => 'All barbers are deactivated or there are no registered barbers.',
-            'no_inactive_description' => 'All barbers are active.'
-        ]
-    ]
+            'no_inactive_description' => 'All barbers are active.',
+        ],
+    ],
 ];

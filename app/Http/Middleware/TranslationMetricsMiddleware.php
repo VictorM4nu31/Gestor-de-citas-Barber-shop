@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\TranslationMetricsService;
 use Closure;
 use Illuminate\Http\Request;
-use App\Services\TranslationMetricsService;
 use Symfony\Component\HttpFoundation\Response;
 
 class TranslationMetricsMiddleware
@@ -36,7 +36,7 @@ class TranslationMetricsMiddleware
     {
         try {
             // Only track for web routes, not API or admin routes
-            if (!$request->is('api/*') && !$request->is('admin/*')) {
+            if (! $request->is('api/*') && ! $request->is('admin/*')) {
                 $locale = app()->getLocale();
                 $userAgent = $request->userAgent();
                 $ipAddress = $request->ip();

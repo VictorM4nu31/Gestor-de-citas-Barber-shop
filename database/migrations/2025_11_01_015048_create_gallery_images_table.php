@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('display_order')->default(0)->comment('Display order (0 = first)');
             $table->boolean('is_active')->default(true)->comment('Active/inactive status');
             $table->timestamps();
-            
+
             // Indexes for performance optimization
             $table->index(['is_active', 'display_order'], 'idx_active_order');
             $table->index('created_at', 'idx_created_at');

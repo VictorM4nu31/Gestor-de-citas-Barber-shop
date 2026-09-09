@@ -10,7 +10,7 @@ class PageTitleService
     public static function getTitle(): string
     {
         $routeName = request()->route()?->getName();
-        
+
         $titles = [
             'admin.dashboard' => 'Panel Administrativo - Barbería',
             'barbero.dashboard' => 'Panel Barbero - Barbería',

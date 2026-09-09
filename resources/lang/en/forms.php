@@ -17,9 +17,9 @@ return [
         'date_in_past' => 'Date must be in the future',
         'date_in_future' => 'Date must be in the past',
         'numeric_only' => 'Only numbers are allowed',
-        'already_exists' => 'This value already exists in the system'
+        'already_exists' => 'This value already exists in the system',
     ],
-    
+
     'placeholders' => [
         'enter_name' => 'Enter name',
         'enter_first_name' => 'Enter first name',
@@ -37,9 +37,9 @@ return [
         'enter_duration' => 'Enter duration',
         'search' => 'Search...',
         'enter_specialty' => 'Enter specialty',
-        'enter_experience' => 'Years of experience'
+        'enter_experience' => 'Years of experience',
     ],
-    
+
     'labels' => [
         'name' => 'Name',
         'first_name' => 'First Name',
@@ -64,9 +64,9 @@ return [
         'image' => 'Image',
         'file' => 'File',
         'optional' => 'Optional',
-        'required' => 'Required'
+        'required' => 'Required',
     ],
-    
+
     'buttons' => [
         'submit' => 'Submit',
         'save' => 'Save',
@@ -86,9 +86,9 @@ return [
         'back' => 'Back',
         'next' => 'Next',
         'previous' => 'Previous',
-        'finish' => 'Finish'
+        'finish' => 'Finish',
     ],
-    
+
     'confirmations' => [
         'delete_confirm' => 'Are you sure you want to delete this item?',
         'action_irreversible' => 'This action cannot be undone.',
@@ -97,9 +97,9 @@ return [
         'confirm_logout' => 'Are you sure you want to logout?',
         'confirm_deactivate' => 'Are you sure you want to deactivate this item?',
         'confirm_activate' => 'Are you sure you want to activate this item?',
-        'data_will_be_lost' => 'Data will be permanently lost.'
+        'data_will_be_lost' => 'Data will be permanently lost.',
     ],
-    
+
     'messages' => [
         'form_saved' => 'Form saved successfully',
         'form_updated' => 'Form updated successfully',
@@ -113,9 +113,9 @@ return [
         'loading' => 'Loading...',
         'uploading' => 'Uploading file...',
         'upload_complete' => 'Upload completed',
-        'upload_failed' => 'Error uploading file'
+        'upload_failed' => 'Error uploading file',
     ],
-    
+
     'help' => [
         'password_requirements' => 'Password must be at least 8 characters',
         'email_format' => 'Enter a valid email (example@domain.com)',
@@ -123,6 +123,6 @@ return [
         'file_size_limit' => 'Maximum file size: 10MB',
         'supported_formats' => 'Supported formats: JPG, PNG, GIF, WEBP',
         'required_fields' => 'Fields marked with * are required',
-        'optional_fields' => 'Fields without * are optional'
-    ]
+        'optional_fields' => 'Fields without * are optional',
+    ],
 ];

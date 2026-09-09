@@ -13,9 +13,9 @@ class BarberoValidationService
      */
     public function validateCanDeactivate(Barbero $barbero): void
     {
-        if (!$barbero->activo) {
+        if (! $barbero->activo) {
             throw ValidationException::withMessages([
-                'estado' => 'El barbero ya está inactivo.'
+                'estado' => 'El barbero ya está inactivo.',
             ]);
         }
 
@@ -26,7 +26,7 @@ class BarberoValidationService
 
         if ($citasFuturas > 0) {
             throw ValidationException::withMessages([
-                'citas' => "No se puede dar de baja al barbero porque tiene {$citasFuturas} cita(s) programada(s) para fechas futuras. Reprograme o cancele las citas primero."
+                'citas' => "No se puede dar de baja al barbero porque tiene {$citasFuturas} cita(s) programada(s) para fechas futuras. Reprograme o cancele las citas primero.",
             ]);
         }
     }
@@ -38,7 +38,7 @@ class BarberoValidationService
     {
         if ($barbero->activo) {
             throw ValidationException::withMessages([
-                'estado' => 'El barbero ya está activo.'
+                'estado' => 'El barbero ya está activo.',
             ]);
         }
 
@@ -50,7 +50,7 @@ class BarberoValidationService
 
         if ($emailConflict) {
             throw ValidationException::withMessages([
-                'email' => 'No se puede reactivar el barbero porque su email está siendo usado por otro barbero activo.'
+                'email' => 'No se puede reactivar el barbero porque su email está siendo usado por otro barbero activo.',
             ]);
         }
 
@@ -62,7 +62,7 @@ class BarberoValidationService
 
             if ($userEmailConflict) {
                 throw ValidationException::withMessages([
-                    'email' => 'No se puede reactivar el barbero porque su email está siendo usado por otro usuario en el sistema.'
+                    'email' => 'No se puede reactivar el barbero porque su email está siendo usado por otro usuario en el sistema.',
                 ]);
             }
         }
@@ -78,14 +78,14 @@ class BarberoValidationService
 
         if ($citasCount > 0) {
             throw ValidationException::withMessages([
-                'citas' => "No se puede eliminar permanentemente el barbero porque tiene {$citasCount} cita(s) asociada(s) en el historial. Considere dar de baja en lugar de eliminar."
+                'citas' => "No se puede eliminar permanentemente el barbero porque tiene {$citasCount} cita(s) asociada(s) en el historial. Considere dar de baja en lugar de eliminar.",
             ]);
         }
 
         // Verificar si está activo (debe estar inactivo para eliminación permanente)
         if ($barbero->activo) {
             throw ValidationException::withMessages([
-                'estado' => 'No se puede eliminar permanentemente un barbero activo. Primero debe darlo de baja.'
+                'estado' => 'No se puede eliminar permanentemente un barbero activo. Primero debe darlo de baja.',
             ]);
         }
     }
@@ -95,9 +95,9 @@ class BarberoValidationService
      */
     public function validateIsActive(Barbero $barbero): void
     {
-        if (!$barbero->activo) {
+        if (! $barbero->activo) {
             throw ValidationException::withMessages([
-                'estado' => 'No se pueden realizar operaciones en un barbero inactivo.'
+                'estado' => 'No se pueden realizar operaciones en un barbero inactivo.',
             ]);
         }
     }

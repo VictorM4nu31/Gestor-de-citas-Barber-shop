@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests\Cita;
 
+use App\Models\Barbero;
+use App\Models\Servicio;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -17,7 +20,7 @@ class StoreRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -33,21 +36,22 @@ class StoreRequest extends FormRequest
                 'exists:servicios,id',
                 function ($attribute, $value, $fail) {
                     // Verificar que el servicio esté publicado
-                    $servicio = \App\Models\Servicio::find($value);
-                    if (!$servicio || !$servicio->publicado) {
+                    $servicio = Servicio::find($value);
+                    if (! $servicio || ! $servicio->publicado) {
                         $fail('El servicio seleccionado no está disponible.');
+
                         return;
                     }
 
                     // Verificar que el servicio esté asignado al barbero
                     $barberoId = $this->input('id_barbero');
                     if ($barberoId) {
-                        $barbero = \App\Models\Barbero::find($barberoId);
-                        if ($barbero && !$barbero->servicios()->where('servicios.id', $value)->exists()) {
+                        $barbero = Barbero::find($barberoId);
+                        if ($barbero && ! $barbero->servicios()->where('servicios.id', $value)->exists()) {
                             $fail('El servicio seleccionado no está disponible para este barbero.');
                         }
                     }
-                }
+                },
             ],
             'id_barbero' => 'required|integer|exists:barberos,id',
         ];

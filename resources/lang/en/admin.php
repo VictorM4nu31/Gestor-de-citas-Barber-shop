@@ -13,7 +13,7 @@ return [
         'edit_service' => 'Edit Service',
         'settings' => 'Settings',
         'reports' => 'Reports',
-        'statistics' => 'Statistics'
+        'statistics' => 'Statistics',
     ],
 
     'buttons' => [
@@ -32,7 +32,7 @@ return [
         'cancel' => 'Cancel',
         'view' => 'View',
         'manage' => 'Manage',
-        'configure' => 'Configure'
+        'configure' => 'Configure',
     ],
 
     'labels' => [
@@ -74,7 +74,7 @@ return [
         'access_urls' => 'Access URLs',
         'full_image' => 'Full image',
         'thumbnail' => 'Thumbnail',
-        'copy' => 'Copy'
+        'copy' => 'Copy',
     ],
 
     'navigation' => [
@@ -85,7 +85,7 @@ return [
         'gallery' => 'Gallery',
         'reports' => 'Reports',
         'settings' => 'Settings',
-        'logout' => 'Logout'
+        'logout' => 'Logout',
     ],
 
     'status' => [
@@ -95,7 +95,7 @@ return [
         'approved' => 'Approved',
         'rejected' => 'Rejected',
         'online' => 'Online',
-        'offline' => 'Offline'
+        'offline' => 'Offline',
     ],
 
     'messages' => [
@@ -107,7 +107,7 @@ return [
         'success_update' => 'Updated successfully',
         'error_occurred' => 'An error occurred',
         'confirm_delete' => 'Are you sure you want to delete this item?',
-        'action_irreversible' => 'This action cannot be undone'
+        'action_irreversible' => 'This action cannot be undone',
     ],
 
     'notifications' => [
@@ -116,6 +116,6 @@ return [
         'upload_success' => 'Images uploaded successfully',
         'upload_error' => 'Error uploading images',
         'delete_success' => 'Item deleted successfully',
-        'update_success' => 'Item updated successfully'
-    ]
+        'update_success' => 'Item updated successfully',
+    ],
 ];

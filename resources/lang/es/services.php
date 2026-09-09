@@ -11,5 +11,5 @@ return [
     'back_to_services' => 'Volver a Servicios',
     'description' => 'Descripción',
     'price' => 'Precio',
-    'book_service' => 'Agendar este Servicio'
+    'book_service' => 'Agendar este Servicio',
 ];

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Helpers\TranslationHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Helpers\TranslationHelper;
 
 class Servicio extends Model
 {
@@ -27,7 +27,9 @@ class Servicio extends Model
      */
     public function scopePublicadosOrdenados($query)
     {
-        return $query->where('publicado', true)->orderBy('orden', 'asc')->orderBy('created_at', 'desc');
+        return $query->where('publicado', true)
+            ->orderBy('servicios.orden', 'asc')
+            ->orderBy('servicios.created_at', 'desc');
     }
 
     public function barberos()
@@ -37,9 +39,6 @@ class Servicio extends Model
 
     /**
      * Get translated name for the service
-     * 
-     * @param string|null $locale
-     * @return string
      */
     public function getTranslatedName(?string $locale = null): string
     {
@@ -48,9 +47,6 @@ class Servicio extends Model
 
     /**
      * Get translated description for the service
-     * 
-     * @param string|null $locale
-     * @return string
      */
     public function getTranslatedDescription(?string $locale = null): string
     {
@@ -59,9 +55,6 @@ class Servicio extends Model
 
     /**
      * Get all translated attributes for the service
-     * 
-     * @param string|null $locale
-     * @return array
      */
     public function getTranslatedAttributes(?string $locale = null): array
     {
@@ -76,4 +69,3 @@ class Servicio extends Model
         ];
     }
 }
-

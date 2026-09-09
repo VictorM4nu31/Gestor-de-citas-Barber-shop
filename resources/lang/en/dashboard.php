@@ -7,30 +7,30 @@ return [
         'barbers' => [
             'title' => 'Barbers',
             'total_registered' => 'Total registered',
-            'view_all' => 'View all →'
+            'view_all' => 'View all →',
         ],
         'services' => [
             'title' => 'Services',
             'total_available' => 'Total available',
-            'view_all' => 'View all →'
+            'view_all' => 'View all →',
         ],
         'gallery' => [
             'title' => 'Gallery',
             'active_images' => 'Active images',
-            'manage' => 'Manage →'
+            'manage' => 'Manage →',
         ],
         'appointments' => [
             'title' => 'Appointments',
             'for_today' => 'For today',
-            'view_all' => 'View all →'
-        ]
+            'view_all' => 'View all →',
+        ],
     ],
     'quick_actions' => [
         'title' => 'Quick Actions',
         'new_barber' => 'New Barber',
         'new_service' => 'New Service',
         'upload_images' => 'Upload Images',
-        'new_appointment' => 'New Appointment'
+        'new_appointment' => 'New Appointment',
     ],
     'barber' => [
         'control_panel' => 'Control Panel',
@@ -43,7 +43,7 @@ return [
         'view_details' => 'View Details',
         'mark_attended' => 'Mark Attended',
         'confirm_attended' => 'Do you confirm that you have attended to this client?',
-        'mark_as_attended' => 'Mark as Attended'
+        'mark_as_attended' => 'Mark as Attended',
     ],
     'reports' => [
         'title' => 'Reports and Statistics',
@@ -58,7 +58,7 @@ return [
         'date_range' => 'Date Range',
         'from_date' => 'From',
         'to_date' => 'To',
-        'generate_report' => 'Generate Report'
+        'generate_report' => 'Generate Report',
     ],
     'navigation' => [
         'main_dashboard' => 'Main Dashboard',
@@ -66,6 +66,6 @@ return [
         'barber_panel' => 'Barber Panel',
         'user_panel' => 'User Panel',
         'settings' => 'Settings',
-        'logout' => 'Logout'
-    ]
+        'logout' => 'Logout',
+    ],
 ];

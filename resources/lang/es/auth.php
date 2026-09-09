@@ -29,5 +29,5 @@ return [
     'Email' => 'Correo Electrónico',
     'Password' => 'Contraseña',
     'Confirm Password' => 'Confirmar Contraseña',
-    'Reset Password' => 'Restablecer Contraseña'
+    'Reset Password' => 'Restablecer Contraseña',
 ];

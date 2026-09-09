@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 use App\Rules\UniqueEmailAcrossTables;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBarberoRequest extends FormRequest
 {
@@ -30,9 +29,9 @@ class StoreBarberoRequest extends FormRequest
             ],
             'email' => [
                 'required',
-                'email:rfc,dns',
+                'email:rfc',
                 'max:255',
-                new UniqueEmailAcrossTables(),
+                new UniqueEmailAcrossTables,
             ],
             'password' => [
                 'required',

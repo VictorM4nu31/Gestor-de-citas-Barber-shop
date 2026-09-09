@@ -23,8 +23,8 @@ return [
         'max_files_per_upload' => env('GALLERY_MAX_FILES_PER_UPLOAD', 10),
         'allowed_mime_types' => [
             'image/jpeg',
-            'image/png', 
-            'image/webp'
+            'image/png',
+            'image/webp',
         ],
         'allowed_extensions' => ['jpg', 'jpeg', 'png', 'webp'],
 
@@ -71,7 +71,7 @@ return [
             '/onload=/i',
             '/onerror=/i',
             '/eval\(/i',
-            '/base64_decode/i'
+            '/base64_decode/i',
         ],
     ],
 

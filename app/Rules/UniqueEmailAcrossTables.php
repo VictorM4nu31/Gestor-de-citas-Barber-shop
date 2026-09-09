@@ -10,6 +10,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 class UniqueEmailAcrossTables implements ValidationRule
 {
     protected $ignoreBarberoId;
+
     protected $ignoreUserId;
 
     public function __construct(?int $ignoreBarberoId = null, ?int $ignoreUserId = null)
@@ -31,6 +32,7 @@ class UniqueEmailAcrossTables implements ValidationRule
 
         if ($barberoQuery->exists()) {
             $fail(__('validation.custom_rules.unique_email_across_tables'));
+
             return;
         }
 
@@ -42,6 +44,7 @@ class UniqueEmailAcrossTables implements ValidationRule
 
         if ($userQuery->exists()) {
             $fail(__('validation.custom_rules.unique_email_across_users'));
+
             return;
         }
     }

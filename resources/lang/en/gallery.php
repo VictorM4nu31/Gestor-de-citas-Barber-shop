@@ -11,9 +11,9 @@ return [
     'no_images' => 'No images available in the gallery.',
     'image_alt_default' => 'Gallery image',
     'errors' => [
-        'load_failed' => 'Error loading image'
+        'load_failed' => 'Error loading image',
     ],
-    
+
     'admin' => [
         'basic_info' => 'Basic Information',
         'technical_info' => 'Technical Information',
@@ -39,7 +39,7 @@ return [
             'set_as_featured' => 'Set as Featured',
             'change_order' => 'Change Order',
             'view_details' => 'View Details',
-            'download' => 'Download'
+            'download' => 'Download',
         ],
         'upload' => [
             'title' => 'Upload New Images',
@@ -51,7 +51,7 @@ return [
             'allowed_formats' => 'Allowed formats: JPG, PNG, GIF, WEBP',
             'uploading' => 'Uploading...',
             'upload_success' => 'Images uploaded successfully',
-            'upload_error' => 'Error uploading images'
+            'upload_error' => 'Error uploading images',
         ],
         'management' => [
             'total_images' => '{0} images|{1} image|[2,*] images',
@@ -78,7 +78,7 @@ return [
             'drag_to_reorder' => 'Drag images to change their display order',
             'save_order' => 'Save Order',
             'order_saved' => 'Order saved successfully',
-            'order_error' => 'Error saving order'
+            'order_error' => 'Error saving order',
         ],
         'modals' => [
             'upload' => [
@@ -91,7 +91,7 @@ return [
                 'uploading' => 'Uploading images...',
                 'upload_button' => 'Upload Images',
                 'uploading_button' => 'Uploading...',
-                'cancel' => 'Cancel'
+                'cancel' => 'Cancel',
             ],
             'edit' => [
                 'title' => 'Edit Image',
@@ -106,14 +106,14 @@ return [
                 'uploaded_label' => 'Uploaded:',
                 'save_changes' => 'Save Changes',
                 'saving' => 'Saving...',
-                'cancel' => 'Cancel'
-            ]
+                'cancel' => 'Cancel',
+            ],
         ],
         'upload' => [
             'validation' => [
                 'max_files' => 'Maximum :max files allowed',
                 'file_type' => 'File type not allowed. Use JPG, PNG or WEBP.',
-                'file_size' => 'File too large. Maximum :maxMB allowed.'
+                'file_size' => 'File too large. Maximum :maxMB allowed.',
             ],
             'status' => [
                 'pending' => 'Queued...',
@@ -121,14 +121,14 @@ return [
                 'completed' => 'Completed',
                 'error' => 'Upload error',
                 'preparing' => 'Preparing...',
-                'queue' => 'Queued...'
+                'queue' => 'Queued...',
             ],
             'errors' => [
                 'connection' => 'Connection error with server',
                 'offline' => 'No internet connection',
                 'server' => 'Server error: :status',
-                'unknown' => 'Unknown error'
-            ]
+                'unknown' => 'Unknown error',
+            ],
         ],
         'reorder' => [
             'drop_here' => 'Drop here',
@@ -137,7 +137,7 @@ return [
             'cancel_order' => 'Cancel',
             'changes_cancelled' => 'Changes cancelled',
             'order_saved' => 'Order saved successfully',
-            'save_error' => 'Error saving order'
-        ]
-    ]
+            'save_error' => 'Error saving order',
+        ],
+    ],
 ];

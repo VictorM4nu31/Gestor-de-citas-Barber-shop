@@ -7,30 +7,30 @@ return [
         'barbers' => [
             'title' => 'Barberos',
             'total_registered' => 'Total registrados',
-            'view_all' => 'Ver todos →'
+            'view_all' => 'Ver todos →',
         ],
         'services' => [
             'title' => 'Servicios',
             'total_available' => 'Total disponibles',
-            'view_all' => 'Ver todos →'
+            'view_all' => 'Ver todos →',
         ],
         'gallery' => [
             'title' => 'Galería',
             'active_images' => 'Imágenes activas',
-            'manage' => 'Gestionar →'
+            'manage' => 'Gestionar →',
         ],
         'appointments' => [
             'title' => 'Citas',
             'for_today' => 'Para hoy',
-            'view_all' => 'Ver todas →'
-        ]
+            'view_all' => 'Ver todas →',
+        ],
     ],
     'quick_actions' => [
         'title' => 'Acciones Rápidas',
         'new_barber' => 'Nuevo Barbero',
         'new_service' => 'Nuevo Servicio',
         'upload_images' => 'Subir Imágenes',
-        'new_appointment' => 'Nueva Cita'
+        'new_appointment' => 'Nueva Cita',
     ],
     'barber' => [
         'control_panel' => 'Panel de Control',
@@ -43,7 +43,7 @@ return [
         'view_details' => 'Ver Detalles',
         'mark_attended' => 'Marcar Atendida',
         'confirm_attended' => '¿Confirmas que has atendido a este cliente?',
-        'mark_as_attended' => 'Marcar como Atendida'
+        'mark_as_attended' => 'Marcar como Atendida',
     ],
     'reports' => [
         'title' => 'Reportes y Estadísticas',
@@ -58,7 +58,7 @@ return [
         'date_range' => 'Rango de Fechas',
         'from_date' => 'Desde',
         'to_date' => 'Hasta',
-        'generate_report' => 'Generar Reporte'
+        'generate_report' => 'Generar Reporte',
     ],
     'navigation' => [
         'main_dashboard' => 'Dashboard Principal',
@@ -66,6 +66,6 @@ return [
         'barber_panel' => 'Panel de Barbero',
         'user_panel' => 'Panel de Usuario',
         'settings' => 'Configuraciones',
-        'logout' => 'Cerrar Sesión'
-    ]
+        'logout' => 'Cerrar Sesión',
+    ],
 ];

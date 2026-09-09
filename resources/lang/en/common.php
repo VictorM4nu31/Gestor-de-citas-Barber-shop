@@ -17,13 +17,13 @@ return [
         'schedule' => 'Schedule',
         'my_appointments' => 'My Appointments',
         'profile' => 'Profile',
-        'logout' => 'Log Out'
+        'logout' => 'Log Out',
     ],
     'profile' => [
         'title' => 'Profile',
         'update_profile' => 'Update Profile',
         'update_password' => 'Update Password',
-        'delete_account' => 'Delete Account'
+        'delete_account' => 'Delete Account',
     ],
     'buttons' => [
         'learn_more' => 'Learn More',
@@ -33,7 +33,7 @@ return [
         'book' => 'Book',
         'close' => 'Close',
         'previous' => 'Previous',
-        'next' => 'Next'
+        'next' => 'Next',
     ],
     'ui' => [
         'close' => 'Close',
@@ -47,19 +47,19 @@ return [
         'view' => 'View',
         'back' => 'Back',
         'submit' => 'Submit',
-        'reset' => 'Reset'
+        'reset' => 'Reset',
     ],
     'language' => [
         'spanish' => 'Español',
         'english' => 'English',
-        'switch_to' => 'Switch to'
+        'switch_to' => 'Switch to',
     ],
     'messages' => [
-        'language_switched_successfully' => 'Language switched successfully.'
+        'language_switched_successfully' => 'Language switched successfully.',
     ],
     'company' => [
         'name' => 'MASTER CUT BARBER SHOP',
-        'tagline' => 'Style and precision in every cut'
+        'tagline' => 'Style and precision in every cut',
     ],
     'common' => [
         'duration' => 'Duration',
@@ -67,7 +67,7 @@ return [
         'minutes' => 'min',
         'years' => 'years',
         'experience' => 'Experience',
-        'specialties' => 'Specialties'
+        'specialties' => 'Specialties',
     ],
     'footer' => [
         'find_us' => 'Find Us',
@@ -82,12 +82,12 @@ return [
         'hours_sunday' => 'Sun: 9:00 AM - 2:00 PM',
         'book_online' => 'Book online:',
         'website' => 'www.mastercutbarber.com/bookings',
-        'copyright' => '© 2024 Master Cut Barber Shop | All rights reserved.'
+        'copyright' => '© 2024 Master Cut Barber Shop | All rights reserved.',
     ],
     'errors' => [
         'localization_error' => 'A language error occurred. The default language has been restored.',
         'invalid_locale' => 'The selected language is not valid.',
         'translation_missing' => 'Translation not available.',
-        'too_many_language_switches' => 'Too many language switches. Try again in :seconds seconds.'
-    ]
+        'too_many_language_switches' => 'Too many language switches. Try again in :seconds seconds.',
+    ],
 ];

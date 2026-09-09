@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Barbero;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -17,14 +18,15 @@ class UpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         $barberoId = $this->route('barbero')->id ?? null;
+
         return [
             'nombre_completo' => 'required|string|max:255',
-            'email' => 'required|email|unique:barberos,email,' . $barberoId,
+            'email' => 'required|email|unique:barberos,email,'.$barberoId,
             'telefono' => 'nullable|string|max:20',
             'especialidad' => 'required|string|max:100',
             'experiencia' => 'required|string',

@@ -34,22 +34,25 @@ class StoreGalleryImageRequest extends FormRequest
                 'dimensions:min_width=50,min_height=50,max_width=10000,max_height=10000',
                 function ($attribute, $value, $fail) {
                     // Additional security validation
-                    if (!$value->isValid()) {
+                    if (! $value->isValid()) {
                         $fail(__('validation.custom_rules.invalid_file'));
+
                         return;
                     }
 
                     // Verify actual image content
                     $imageInfo = getimagesize($value->getPathname());
-                    if (!$imageInfo) {
+                    if (! $imageInfo) {
                         $fail(__('validation.custom_rules.invalid_image_content'));
+
                         return;
                     }
 
                     // Check MIME type consistency (relaxed - allow common variations)
                     $allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-                    if (!in_array($imageInfo['mime'], $allowedMimes)) {
+                    if (! in_array($imageInfo['mime'], $allowedMimes)) {
                         $fail(__('validation.custom_rules.image_type_not_allowed'));
+
                         return;
                     }
 
@@ -58,10 +61,11 @@ class StoreGalleryImageRequest extends FormRequest
                     if ($handle) {
                         $firstKB = fread($handle, 1024);
                         fclose($handle);
-                        
+
                         // Only check for obvious executable patterns at the beginning of file
                         if (preg_match('/^<\?php|^<\?=|^#!/', $firstKB)) {
                             $fail(__('validation.custom_rules.executable_content_detected'));
+
                             return;
                         }
                     }
