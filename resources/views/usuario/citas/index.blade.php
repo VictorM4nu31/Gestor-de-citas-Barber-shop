@@ -37,6 +37,10 @@
                                             <p class="text-muted">{{ __('appointments.cost') }}: ${{ number_format($cita->costo, 2) }}</p>
                                         </div>
                                         <div class="flex gap-2">
+                                            <a href="{{ route('citas.repeat', $cita->id) }}"
+                                               class="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded">
+                                                Repetir cita
+                                            </a>
                                             <a href="{{ route('citas.show', $cita->id) }}"
                                                class="bg-info hover:bg-info/90 text-white font-bold py-2 px-4 rounded">
                                                 {{ __('appointments.view_details') }}

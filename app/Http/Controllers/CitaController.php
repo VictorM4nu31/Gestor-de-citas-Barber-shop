@@ -11,6 +11,7 @@ use App\Services\BarberoAvailabilityService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -23,8 +24,20 @@ class CitaController extends Controller
     {
         $servicios = Servicio::publicadosOrdenados()->get();
         $barberos = Barbero::activos()->get();
+        $repeatCita = Cita::where('id_usuario', Auth::id())
+            ->with('serviciosMany')
+            ->find(request()->query('repeat'));
+        $rebookServiceIds = $repeatCita?->serviciosMany->modelKeys() ?? [];
+        $rebookBarberoId = $repeatCita?->id_barbero;
 
-        return view('usuario.citas.create', compact('servicios', 'barberos'));
+        return view('usuario.citas.create', compact('servicios', 'barberos', 'rebookServiceIds', 'rebookBarberoId'));
+    }
+
+    public function repeat(Cita $cita): RedirectResponse
+    {
+        abort_unless($cita->id_usuario === Auth::id(), 404);
+
+        return redirect()->route('citas.create', ['repeat' => $cita->id]);
     }
 
     public function store(StoreRequest $request)

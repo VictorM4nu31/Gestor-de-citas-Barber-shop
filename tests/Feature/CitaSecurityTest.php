@@ -103,3 +103,23 @@ test('creating an appointment synchronizes its service pivot', function () {
         'servicio_id' => $this->servicio->id,
     ]);
 });
+
+test('a user can repeat one of their appointments without copying its date', function () {
+    $cita = Cita::create([
+        'nombre_completo' => $this->user->name,
+        'numero_telefono' => '5555555555',
+        'correo_electronico' => $this->user->email,
+        'fecha' => now()->addDay()->toDateString(),
+        'hora' => '11:00',
+        'servicios' => (string) $this->servicio->id,
+        'id_barbero' => $this->barbero->id,
+        'id_usuario' => $this->user->id,
+        'costo' => $this->servicio->precio,
+        'estado' => 'pendiente',
+    ]);
+    $cita->serviciosMany()->sync([$this->servicio->id]);
+
+    $response = $this->actingAs($this->user)->get(route('citas.repeat', $cita));
+
+    $response->assertRedirect(route('citas.create', ['repeat' => $cita->id]));
+});

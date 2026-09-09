@@ -11,7 +11,7 @@
 
     <main
         class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8"
-        x-data="appointmentBooking()"
+        x-data="appointmentBooking(@js($rebookServiceIds ?? []), @js($rebookBarberoId ?? null))"
         x-init="init()"
         data-slots-url="{{ route('citas.available_slots') }}"
         data-csrf-token="{{ csrf_token() }}"
@@ -158,9 +158,9 @@
 
     @push('scripts')
     <script>
-        function appointmentBooking() {
+        function appointmentBooking(serviceIds = [], barberId = null) {
             return {
-                selectedServices: [],
+                selectedServices: serviceIds.map(String),
                 selectedTime: '',
                 slots: [],
                 loading: false,
@@ -176,6 +176,14 @@
                     const today = new Date();
                     const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().split('T')[0];
                     date.min = localDate;
+
+                    if (barberId) {
+                        document.getElementById('id_barbero').value = barberId;
+                    }
+
+                    if (this.selectedServices.length && barberId) {
+                        this.$nextTick(() => this.refreshSlots());
+                    }
                 },
 
                 updateSummary() {
