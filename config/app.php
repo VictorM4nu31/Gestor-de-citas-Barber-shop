@@ -82,18 +82,8 @@ return [
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'es'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Available Locales
-    |--------------------------------------------------------------------------
-    |
-    | List of locales supported by the application for internationalization.
-    | These locales will be used by the localization middleware and language
-    | switching functionality.
-    |
-    */
-
-    'available_locales' => ['es', 'en'],
+    // La aplicación solo opera en español.
+    'available_locales' => ['es'],
 
     /*
     |--------------------------------------------------------------------------

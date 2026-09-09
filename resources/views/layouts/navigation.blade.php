@@ -66,9 +66,6 @@
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
-                {{-- Language Switcher --}}
-                <x-shared.language-switcher />
-
                 @auth
                 <x-shared.dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -170,29 +167,6 @@
                     {{ __('common.navigation.login') }}
                 </x-shared.responsive-nav-link>
             @endguest
-        </div>
-
-        {{-- Mobile Language Switcher --}}
-        <div class="pt-4 pb-1 border-t border-accent">
-            <div class="px-4">
-                <div class="font-medium text-base text-white mb-3">{{ __('common.language.switch_to') }}</div>
-                <div class="flex space-x-4">
-                    @if(app()->getLocale() !== 'es')
-                        <a href="{{ route('language.switch', 'es') }}"
-                           class="flex items-center space-x-2 px-3 py-2 text-sm text-white hover:text-primary transition-colors duration-150">
-                            <span class="text-lg" role="img" aria-label="{{ __('common.language.spanish') }}">🇪🇸</span>
-                            <span>{{ __('common.language.spanish') }}</span>
-                        </a>
-                    @endif
-                    @if(app()->getLocale() !== 'en')
-                        <a href="{{ route('language.switch', 'en') }}"
-                           class="flex items-center space-x-2 px-3 py-2 text-sm text-white hover:text-primary transition-colors duration-150">
-                            <span class="text-lg" role="img" aria-label="{{ __('common.language.english') }}">🇺🇸</span>
-                            <span>{{ __('common.language.english') }}</span>
-                        </a>
-                    @endif
-                </div>
-            </div>
         </div>
 
         @auth

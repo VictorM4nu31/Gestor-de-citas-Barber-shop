@@ -4,14 +4,10 @@ use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BarberoController;
 use App\Http\Controllers\CitaController;
-use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\TranslationMetricsController;
 use Illuminate\Support\Facades\Route;
-
-// Language switching route
-Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
 
 Route::get('/', [BarberoController::class, 'welcome'])->name('home');
 

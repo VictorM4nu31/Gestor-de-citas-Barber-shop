@@ -14,9 +14,6 @@
             </ul>
         </div>
         <div class="flex items-center gap-3">
-            {{-- Language Switcher --}}
-            <x-shared.language-switcher />
-
             <a href="{{ route('login') }}" class="border border-secondary px-4 py-2 text-sm font-bold transition hover:bg-secondary hover:text-light">
                 {{ __('common.navigation.login') }}
             </a>
