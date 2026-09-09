@@ -16,8 +16,9 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="mb-4">
+                        <label for="email" class="sr-only">{{ __('auth.email_placeholder') }}</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
                                 <svg class="h-5 w-5 text-muted" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -25,15 +26,16 @@
                                 </svg>
                             </span>
                             <input id="email" type="email" name="email" placeholder="{{ __('auth.email_placeholder') }}"
-                                class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                                :value="old('email')" required autofocus autocomplete="username">
+                                class="w-full pl-10 pr-3 py-2 border border-accent rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                value="{{ old('email') }}" required autofocus autocomplete="username">
                         </div>
                         <x-shared.input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
-                    <div class="mb-6">
+                    <div class="mb-4">
+                        <label for="password" class="sr-only">{{ __('auth.password_placeholder') }}</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
                                 <svg class="h-5 w-5 text-muted" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -42,10 +44,14 @@
                                 </svg>
                             </span>
                             <input id="password" type="password" name="password" placeholder="{{ __('auth.password_placeholder') }}"
-                                class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                class="w-full pl-10 pr-3 py-2 border border-accent rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                                 required autocomplete="current-password">
                         </div>
                         <x-shared.input-error :messages="$errors->get('password')" class="mt-2" />
+                    </div>
+
+                    <div class="mb-6 text-right">
+                        <a href="{{ route('password.request') }}" class="text-sm text-primary hover:underline">{{ __('auth.forgot_password') }}</a>
                     </div>
 
                     <button type="submit"

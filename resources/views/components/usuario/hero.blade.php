@@ -6,9 +6,9 @@
             <p class="mt-8 max-w-xl text-lg leading-relaxed text-light/70">{{ $subtitle ?? 'Experience the art of traditional barbering combined with modern techniques. Our master barbers deliver precision cuts and grooming services that define excellence.' }}</p>
 
             <div class="mt-10 flex flex-wrap gap-3">
-                <a href="{{ auth()->check() ? route('citas.create') : route('login') }}" class="inline-flex items-center gap-3 bg-brass px-6 py-4 font-bold text-secondary transition hover:bg-light">{{ $primary_cta ?? 'Book Appointment' }} <span aria-hidden="true">→</span></a>
-                @if(isset($secondary_cta))
-                    <a href="#services" class="inline-flex items-center border border-light/40 px-6 py-4 font-bold text-light transition hover:border-light">{{ $secondary_cta }}</a>
+                <a href="{{ auth()->check() ? route('citas.create') : route('login') }}" class="inline-flex items-center gap-3 bg-brass px-6 py-4 font-bold text-secondary transition hover:bg-light">{{ $primaryCta ?? 'Reservar Cita' }} <span aria-hidden="true">→</span></a>
+                @if(isset($secondaryCta))
+                    <a href="#services" class="inline-flex items-center border border-light/40 px-6 py-4 font-bold text-light transition hover:border-light">{{ $secondaryCta }}</a>
                 @endif
             </div>
         </div>

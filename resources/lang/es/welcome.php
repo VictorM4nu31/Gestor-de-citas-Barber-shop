@@ -14,7 +14,7 @@ return [
     ],
     'about' => [
         'title' => 'Sobre Nosotros',
-        'description' => 'Conoce al equipo de profesionales que te atenderá con el mejor servicio en nuestra barbería.',
+        'description' => 'Un espacio de oficio donde el corte se toma en serio: sillas cómodas, herramientas precisas y tiempo dedicado a cada cliente.',
         'location_title' => 'Ubicación',
         'info_title' => 'Información de la Barbería',
         'address' => 'Dirección: Calle Ejemplo 123, Ciudad',

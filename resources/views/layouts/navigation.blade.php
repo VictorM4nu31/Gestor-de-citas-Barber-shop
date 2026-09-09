@@ -48,6 +48,20 @@
                             </x-shared.nav-link>
                         @endif
                     @endif
+                    @guest
+                        <x-shared.nav-link :href="route('home')" :active="request()->routeIs('home')">
+                            {{ __('common.navigation.home') }}
+                        </x-shared.nav-link>
+                        <x-shared.nav-link :href="route('public.servicios.index')" :active="request()->routeIs('public.servicios.*')">
+                            {{ __('common.navigation.services') }}
+                        </x-shared.nav-link>
+                        <x-shared.nav-link :href="route('public.barberos.index')" :active="request()->routeIs('public.barberos.*')">
+                            {{ __('common.navigation.barberos') }}
+                        </x-shared.nav-link>
+                        <x-shared.nav-link :href="route('login')" :active="request()->routeIs('login')">
+                            {{ __('common.navigation.login') }}
+                        </x-shared.nav-link>
+                    @endguest
                 </div>
             </div>
 
@@ -142,6 +156,20 @@
                     </x-shared.responsive-nav-link>
                 @endif
             @endif
+            @guest
+                <x-shared.responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                    {{ __('common.navigation.home') }}
+                </x-shared.responsive-nav-link>
+                <x-shared.responsive-nav-link :href="route('public.servicios.index')" :active="request()->routeIs('public.servicios.*')">
+                    {{ __('common.navigation.services') }}
+                </x-shared.responsive-nav-link>
+                <x-shared.responsive-nav-link :href="route('public.barberos.index')" :active="request()->routeIs('public.barberos.*')">
+                    {{ __('common.navigation.barberos') }}
+                </x-shared.responsive-nav-link>
+                <x-shared.responsive-nav-link :href="route('login')" :active="request()->routeIs('login')">
+                    {{ __('common.navigation.login') }}
+                </x-shared.responsive-nav-link>
+            @endguest
         </div>
 
         {{-- Mobile Language Switcher --}}

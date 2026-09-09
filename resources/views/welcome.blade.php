@@ -21,7 +21,7 @@
         <section id="about" class="bg-secondary py-20 text-light">
             <div class="mx-auto flex max-w-7xl flex-col gap-10 px-4 sm:px-8 md:flex-row md:items-end">
                 <div class="w-full md:w-3/5">
-                    <p class="eyebrow text-brass">02 / The place</p>
+                    <p class="eyebrow text-brass">01 / El lugar</p>
                     <h2 class="display-title mt-4 text-4xl text-light sm:text-6xl">{{ __('welcome.about.title') }}</h2>
                     <p class="mt-6 max-w-xl text-lg leading-relaxed text-light/70">{{ __('welcome.about.description') }}</p>
                     <div id="mi_mapa" class="mt-8 h-72 w-full overflow-hidden border border-light/20 grayscale"></div>
@@ -51,7 +51,7 @@
                 id="gallery"
             >
                 <x-slot:header>
-                    <p class="eyebrow">03 / Lookbook</p>
+                    <p class="eyebrow">03 / Trabajos</p>
                     <h2 class="display-title mt-3 text-4xl text-secondary sm:text-6xl">{{ __('welcome.gallery.title') }}</h2>
                     <p class="mt-4 max-w-xl text-lg text-muted">{{ __('welcome.gallery.description') }}</p>
                 </x-slot:header>
@@ -60,7 +60,7 @@
 
         <section id="barberos" class="bg-paper py-20">
             <div class="mx-auto max-w-7xl px-4 sm:px-8">
-                <p class="eyebrow">04 / The team</p>
+                <p class="eyebrow">04 / El equipo</p>
                 <h2 class="display-title mt-3 text-4xl text-secondary sm:text-6xl">{{ __('welcome.barberos.title') }}</h2>
                 <p class="mt-4 max-w-xl text-lg text-muted">{{ __('welcome.barberos.description') }}</p>
                 <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -74,7 +74,7 @@
         <section id="contact" class="bg-brass py-16">
             <div class="mx-auto flex max-w-7xl flex-col justify-between gap-8 px-4 sm:px-8 md:flex-row md:items-end">
                 <div>
-                    <p class="eyebrow text-secondary">05 / Make time</p>
+                    <p class="eyebrow text-secondary">05 / Reserva</p>
                     <h2 class="display-title mt-3 max-w-2xl text-4xl text-secondary sm:text-6xl">{{ __('welcome.contact.title') }}</h2>
                     <p class="mt-4 max-w-xl text-lg text-secondary/75">{{ __('welcome.contact.description') }}</p>
                 </div>

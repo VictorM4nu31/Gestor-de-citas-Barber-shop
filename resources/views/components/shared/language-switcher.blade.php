@@ -14,10 +14,10 @@
             {{-- Current language flag and name --}}
             <span class="flex items-center space-x-2">
                 @if($currentLocale === 'es')
-                    <span class="text-lg" role="img" aria-label="{{ __('common.language.spanish') }}">🇪🇸</span>
+                    <span class="text-lg" aria-hidden="true">🇪🇸</span>
                     <span class="hidden sm:inline">{{ __('common.language.spanish') }}</span>
                 @else
-                    <span class="text-lg" role="img" aria-label="{{ __('common.language.english') }}">🇺🇸</span>
+                    <span class="text-lg" aria-hidden="true">🇺🇸</span>
                     <span class="hidden sm:inline">{{ __('common.language.english') }}</span>
                 @endif
             </span>
@@ -60,10 +60,10 @@
 
                         <span class="flex items-center space-x-3">
                             @if($locale === 'es')
-                                <span class="text-lg" role="img" aria-label="{{ __('common.language.spanish') }}">🇪🇸</span>
+                                <span class="text-lg" aria-hidden="true">🇪🇸</span>
                                 <span>{{ __('common.language.spanish') }}</span>
                             @else
-                                <span class="text-lg" role="img" aria-label="{{ __('common.language.english') }}">🇺🇸</span>
+                                <span class="text-lg" aria-hidden="true">🇺🇸</span>
                                 <span>{{ __('common.language.english') }}</span>
                             @endif
                         </span>

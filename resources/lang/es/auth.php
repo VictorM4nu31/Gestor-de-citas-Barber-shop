@@ -22,6 +22,10 @@ return [
     'reset_password' => 'Restablecer Contraseña',
     'send_reset_link' => 'Enviar enlace de restablecimiento',
     'remember_password' => '¿Recordaste tu contraseña?',
+    'failed' => 'Estas credenciales no coinciden con nuestros registros.',
+    'password' => 'La contraseña proporcionada es incorrecta.',
+    'throttle' => 'Demasiados intentos de acceso. Inténtalo de nuevo en :seconds segundos.',
+    'verify_title' => 'Verifica tu correo',
 
     // Mensajes de recuperación de contraseña
     'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.' => '¿Olvidaste tu contraseña? No hay problema. Solo déjanos saber tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña que te permitirá elegir una nueva.',
@@ -30,4 +34,12 @@ return [
     'Password' => 'Contraseña',
     'Confirm Password' => 'Confirmar Contraseña',
     'Reset Password' => 'Restablecer Contraseña',
+
+    // Verificación de correo y confirmación de contraseña
+    'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.' => '¡Gracias por registrarte! Antes de comenzar, verifica tu correo electrónico haciendo clic en el enlace que te acabamos de enviar. Si no recibiste el correo, con gusto te enviaremos otro.',
+    'A new verification link has been sent to the email address you provided during registration.' => 'Se ha enviado un nuevo enlace de verificación a tu correo electrónico.',
+    'Resend Verification Email' => 'Reenviar correo de verificación',
+    'Log Out' => 'Cerrar sesión',
+    'This is a secure area of the application. Please confirm your password before continuing.' => 'Esta es un área segura de la aplicación. Confirma tu contraseña antes de continuar.',
+    'Confirm' => 'Confirmar',
 ];

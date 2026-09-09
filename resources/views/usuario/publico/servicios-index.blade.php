@@ -1,11 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-white leading-tight">Nuestros Servicios</h2>
+        <h2 class="font-semibold text-xl text-white leading-tight">Servicios Disponibles</h2>
     </x-slot>
 
     <main class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-semibold mb-6 text-secondary">Servicios Disponibles</h1>
-        
+        @if($servicios->isEmpty())
+            <div class="border border-dashed border-accent bg-light p-12 text-center">
+                <p class="display-title text-3xl">Aún no hay servicios publicados.</p>
+                <p class="mt-3 text-muted">Vuelve pronto o reserva directamente desde la página principal.</p>
+                <a href="{{ route('home') }}" class="mt-6 inline-block bg-primary px-6 py-3 font-bold text-light transition hover:bg-secondary">Volver al inicio</a>
+            </div>
+        @else
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($servicios as $servicio)
                 <div class="bg-background border border-accent rounded-lg shadow-md p-6">
@@ -27,6 +32,7 @@
                 </div>
             @endforeach
         </div>
+        @endif
         
         <div class="text-center mt-8">
             <a href="{{ route('citas.create') }}" class="bg-success hover:bg-primary text-white py-3 px-6 rounded-lg text-lg">Agendar una Cita</a>

@@ -22,6 +22,10 @@ return [
     'reset_password' => 'Reset Password',
     'send_reset_link' => 'Send reset link',
     'remember_password' => 'Remember your password?',
+    'failed' => 'These credentials do not match our records.',
+    'password' => 'The provided password is incorrect.',
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'verify_title' => 'Verify your email',
 
     // Mensajes de recuperación de contraseña
     'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.' => 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.',

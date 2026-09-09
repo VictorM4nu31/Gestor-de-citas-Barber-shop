@@ -1,11 +1,9 @@
 <section id="services" class="bg-background py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-8">
-        <div class="grid gap-6 border-b border-accent pb-10 md:grid-cols-[.7fr_1.3fr] md:items-end">
-            <p class="eyebrow">01 / {{ __('services.title') }}</p>
-            <div>
-                <h2 class="display-title text-4xl sm:text-6xl">{{ __('services.title') }}</h2>
-                <p class="mt-4 max-w-xl text-lg text-muted">{{ __('services.description') }}</p>
-            </div>
+        <div class="border-b border-accent pb-10">
+            <p class="eyebrow">02 / Servicios</p>
+            <h2 class="display-title mt-3 text-4xl sm:text-6xl">{{ __('services.title') }}</h2>
+            <p class="mt-4 max-w-xl text-lg text-muted">{{ __('services.description') }}</p>
         </div>
 
         @if(isset($servicios) && $servicios->count())

@@ -15,38 +15,41 @@
                     @csrf
                     <!-- Nombre -->
                     <div class="mb-4">
+                        <label for="name" class="sr-only">{{ __('auth.name_placeholder') }}</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
                                 <svg class="h-5 w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                             </span>
                             <input id="name" type="text" name="name" placeholder="{{ __('auth.name_placeholder') }}"
-                                   class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                                   :value="old('name')" required autofocus autocomplete="name">
+                                   class="w-full pl-10 pr-3 py-2 border border-accent rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                   value="{{ old('name') }}" required autofocus autocomplete="name">
                         </div>
                         <x-shared.input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
                     <!-- Correo electrónico -->
                     <div class="mb-4">
+                        <label for="email" class="sr-only">{{ __('auth.email_placeholder') }}</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
                                 <svg class="h-5 w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                             </span>
                             <input id="email" type="email" name="email" placeholder="{{ __('auth.email_placeholder') }}"
-                                   class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                                   :value="old('email')" required autocomplete="username">
+                                   class="w-full pl-10 pr-3 py-2 border border-accent rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                   value="{{ old('email') }}" required autocomplete="username">
                         </div>
                         <x-shared.input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
                     <!-- Contraseña -->
                     <div class="mb-4">
+                        <label for="password" class="sr-only">{{ __('auth.password_placeholder') }}</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
                                 <svg class="h-5 w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             </span>
                             <input id="password" type="password" name="password" placeholder="{{ __('auth.password_placeholder') }}"
-                                   class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                   class="w-full pl-10 pr-3 py-2 border border-accent rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                                    required autocomplete="new-password">
                         </div>
                         <x-shared.input-error :messages="$errors->get('password')" class="mt-2" />
@@ -54,12 +57,13 @@
 
                     <!-- Confirmar Contraseña -->
                     <div class="mb-6">
+                        <label for="password_confirmation" class="sr-only">{{ __('auth.confirm_password_placeholder') }}</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
                                 <svg class="h-5 w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             </span>
                             <input id="password_confirmation" type="password" name="password_confirmation" placeholder="{{ __('auth.confirm_password_placeholder') }}"
-                                   class="w-full pl-10 pr-3 py-2 border border-graymuted rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                   class="w-full pl-10 pr-3 py-2 border border-accent rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                                    required autocomplete="new-password">
                         </div>
                         <x-shared.input-error :messages="$errors->get('password_confirmation')" class="mt-2" />

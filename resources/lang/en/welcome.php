@@ -14,7 +14,7 @@ return [
     ],
     'about' => [
         'title' => 'About Us',
-        'description' => 'Meet the team of professionals who will serve you with the best service in our barbershop.',
+        'description' => 'A craftsman space where the cut is taken seriously: comfortable chairs, precise tools, and dedicated time for each client.',
         'location_title' => 'Location',
         'info_title' => 'Barbershop Information',
         'address' => 'Address: 123 Example Street, City',
