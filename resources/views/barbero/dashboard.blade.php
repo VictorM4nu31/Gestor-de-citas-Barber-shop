@@ -72,13 +72,14 @@
                                                 {{ __('dashboard.barber.view_details') }}
                                             </x-ui.button>
                                             @if($cita->puedeSerAtendida())
-                                                <form action="{{ route('barbero.citas.atender', $cita) }}" method="POST" class="inline">
+                                                <form action="{{ route('barbero.citas.atender', $cita) }}" method="POST" class="inline" x-data x-on:confirmed-attend-today-{{ $cita->id }}.window="$el.submit()">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <x-ui.button type="success" size="sm">
+                                                    <x-ui.button type="success" size="sm" @click="$dispatch('open-modal-attend-today-{{ $cita->id }}', { trigger: $el })">
                                                         {{ __('dashboard.barber.mark_attended') }}
                                                     </x-ui.button>
                                                 </form>
+                                                <x-ui.confirm-modal id="attend-today-{{ $cita->id }}" title="Marcar cita como atendida" message="¿Confirmas que la cita de {{ $cita->nombre_completo }} ya fue atendida?" variant="neutral" />
                                             @endif
                                         </div>
                                     </div>

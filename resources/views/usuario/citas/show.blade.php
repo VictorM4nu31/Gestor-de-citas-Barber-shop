@@ -20,11 +20,12 @@
                 <div class="border border-metal rounded-lg p-4 text-center">
                     <h2 class="text-lg font-semibold mb-4 text-secondary">{{ __('appointments.actions') }}</h2>
                     <a href="{{ route('citas.index') }}" class="w-full bg-light text-secondary border border-metal py-2 rounded-md mb-4 inline-block">{{ __('appointments.back_to_appointments') }}</a>
-                    <form action="{{ route('citas.destroy', $cita->id) }}" method="POST" class="delete-form">
+                    <form action="{{ route('citas.destroy', $cita->id) }}" method="POST" class="delete-form" x-data x-on:confirmed-cancel-cita.window="$el.submit()">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="w-full bg-danger hover:bg-secondary text-light py-2 rounded-md">{{ __('appointments.cancel_appointment') }}</button>
+                        <button type="button" @click="$dispatch('open-modal-cancel-cita', { trigger: $el })" class="w-full bg-danger hover:bg-secondary text-light py-2 rounded-md">{{ __('appointments.cancel_appointment') }}</button>
                     </form>
+                    <x-ui.confirm-modal id="cancel-cita" title="Cancelar cita" message="¿Quieres cancelar esta cita?" />
                 </div>
             </div>
         </div>
@@ -32,12 +33,6 @@
 
     @push('scripts')
     <script>
-        document.querySelector('.delete-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            if (confirm('{{ __('appointments.confirm_cancel_detailed') }}')) {
-                this.submit();
-            }
-        });
     </script>
     @endpush
 </x-app-layout>

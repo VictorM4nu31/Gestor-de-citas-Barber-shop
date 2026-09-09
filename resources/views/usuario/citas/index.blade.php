@@ -48,15 +48,19 @@
                                                class="bg-info hover:bg-info/90 text-white font-bold py-2 px-4 rounded">
                                                 {{ __('appointments.view_details') }}
                                             </a>
-                                            <form method="POST" action="{{ route('citas.destroy', $cita->id) }}"
-                                                  onsubmit="return confirm('{{ __('appointments.confirm_cancel') }}')">
+                                            <form method="POST" action="{{ route('citas.destroy', $cita->id) }}" x-data x-on:confirmed-cancel-cita-{{ $cita->id }}.window="$el.submit()">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit"
+                                                <button type="button" @click="$dispatch('open-modal-cancel-cita-{{ $cita->id }}', { trigger: $el })"
                                                         class="bg-danger hover:bg-danger/90 text-white font-bold py-2 px-4 rounded">
                                                     {{ __('appointments.cancel') }}
                                                 </button>
                                             </form>
+                                            <x-ui.confirm-modal
+                                                id="cancel-cita-{{ $cita->id }}"
+                                                title="Cancelar cita"
+                                                message="¿Quieres cancelar la cita de {{ $cita->fecha }} a las {{ $cita->hora }}?"
+                                            />
                                         </div>
                                     </div>
                                 </div>

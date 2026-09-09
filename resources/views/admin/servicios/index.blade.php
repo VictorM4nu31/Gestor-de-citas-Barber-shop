@@ -54,11 +54,12 @@
                         </td>
                         <td class="py-2 px-4 border-metal">
                             <a href="{{ route('admin.servicios.edit', $servicio->id) }}" class="bg-primary hover:bg-secondary text-light py-1 px-2 rounded">{{ __('admin.buttons.edit') }}</a>
-                            <form action="{{ route('admin.servicios.destroy', $servicio->id) }}" method="POST" class="inline-block">
+                            <form action="{{ route('admin.servicios.destroy', $servicio->id) }}" method="POST" class="inline-block" x-data x-on:confirmed-delete-service-{{ $servicio->id }}.window="$el.submit()">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="bg-danger hover:bg-secondary text-light py-1 px-2 rounded" onclick="return confirm('{{ __('admin.messages.confirm_delete') }}')">{{ __('admin.buttons.delete') }}</button>
+                                <button type="button" class="bg-danger hover:bg-secondary text-light py-1 px-2 rounded" @click="$dispatch('open-modal-delete-service-{{ $servicio->id }}', { trigger: $el })">{{ __('admin.buttons.delete') }}</button>
                             </form>
+                            <x-ui.confirm-modal id="delete-service-{{ $servicio->id }}" title="Eliminar {{ $servicio->nombre }}" message="Esta acción eliminará el servicio de forma permanente." />
                         </td>
                     </tr>
                     @endforeach

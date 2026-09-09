@@ -7,7 +7,7 @@
     'reorderRoute' => ''
 ])
 
-<div class="gallery-admin-index" x-data="galleryIndex()">
+<div class="gallery-admin-index" x-data="galleryIndex()" x-on:confirmed-gallery-bulk-delete.window="executeBulkDelete()">
     <!-- Header Section -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 space-y-4 md:space-y-0">
         <div>
@@ -170,6 +170,7 @@
 
     <!-- Edit Modal -->
     <x-admin.gallery.edit-modal />
+    <x-ui.confirm-modal id="gallery-bulk-delete" title="Eliminar imágenes seleccionadas" message="Esta acción eliminará las imágenes seleccionadas de forma permanente." />
 </div>
 
 @push('scripts')
@@ -261,8 +262,10 @@ function galleryIndex() {
 
         bulkDelete() {
             if (this.selectedImages.length === 0) return;
-            
-            if (confirm(`{{ __('admin.messages.confirm_delete') }} ${this.selectedImages.length} {{ __('gallery.admin.management.selected_count') }}?`)) {
+            this.$dispatch('open-modal-gallery-bulk-delete', { trigger: this.$root });
+        },
+
+        executeBulkDelete() {
                 fetch('/admin/gallery/bulk-delete', {
                     method: 'POST',
                     headers: {
@@ -279,7 +282,6 @@ function galleryIndex() {
                         location.reload();
                     }
                 });
-            }
         },
 
         toggleReorderMode() {

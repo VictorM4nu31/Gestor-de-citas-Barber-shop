@@ -65,38 +65,41 @@
                 
                 @if($barbero->activo)
                     <!-- Botón Dar de Baja -->
-                    <form action="{{ route('admin.barberos.dar_de_baja', $barbero->id) }}" method="POST" class="inline-block">
+                    <form action="{{ route('admin.barberos.dar_de_baja', $barbero->id) }}" method="POST" class="inline-block" x-data x-on:confirmed-deactivate-show.window="$el.submit()">
                         @csrf
                         @method('PATCH')
                         <button type="submit" 
                                 class="bg-warning hover:bg-warning/90 text-white py-2 px-4 rounded flex items-center"
-                                onclick="return confirm('{{ __('barberos.admin.confirmations.deactivate_simple') }}')">
+                                type="button" @click="$dispatch('open-modal-deactivate-show', { trigger: $el })">
                             <i class="fas fa-user-times mr-2"></i>{{ __('barberos.admin.buttons.deactivate') }}
                         </button>
                     </form>
+                    <x-ui.confirm-modal id="deactivate-show" title="Dar de baja a {{ $barbero->nombre_completo }}" message="¿Quieres dar de baja este barbero?" variant="neutral" />
                 @else
                     <!-- Botón Reactivar -->
-                    <form action="{{ route('admin.barberos.reactivar', $barbero->id) }}" method="POST" class="inline-block">
+                    <form action="{{ route('admin.barberos.reactivar', $barbero->id) }}" method="POST" class="inline-block" x-data x-on:confirmed-reactivate-show.window="$el.submit()">
                         @csrf
                         @method('PATCH')
                         <button type="submit" 
                                 class="bg-success hover:bg-success/90 text-white py-2 px-4 rounded flex items-center"
-                                onclick="return confirm('{{ __('barberos.admin.confirmations.reactivate_simple') }}')">
+                                type="button" @click="$dispatch('open-modal-reactivate-show', { trigger: $el })">
                             <i class="fas fa-user-check mr-2"></i>{{ __('barberos.admin.buttons.reactivate_barber') }}
                         </button>
                     </form>
+                    <x-ui.confirm-modal id="reactivate-show" title="Reactivar a {{ $barbero->nombre_completo }}" message="¿Quieres reactivar este barbero?" variant="neutral" />
                 @endif
                 
                 <!-- Botón Eliminar Permanente -->
-                <form action="{{ route('admin.barberos.eliminar_permanente', $barbero->id) }}" method="POST" class="inline-block">
+                <form action="{{ route('admin.barberos.eliminar_permanente', $barbero->id) }}" method="POST" class="inline-block" x-data x-on:confirmed-delete-show.window="$el.submit()">
                     @csrf
                     @method('DELETE')
                     <button type="submit" 
                             class="bg-danger hover:bg-danger/90 text-white py-2 px-4 rounded flex items-center"
-                            onclick="return confirm('{{ __('users.confirmations.delete_barbero_permanent') }}')">
+                            type="button" @click="$dispatch('open-modal-delete-show', { trigger: $el })">
                         <i class="fas fa-trash-alt mr-2"></i>{{ __('barberos.admin.buttons.delete_permanent') }}
                     </button>
                 </form>
+                <x-ui.confirm-modal id="delete-show" title="Eliminar a {{ $barbero->nombre_completo }}" message="Esta acción es permanente y no se puede deshacer." />
             </div>
         </div>
     </main>

@@ -38,11 +38,12 @@
             
             <div class="mt-6 flex space-x-4">
                 <a href="{{ route('admin.citas.edit', $cita->id) }}" class="bg-info hover:bg-info/90 text-white py-2 px-4 rounded">Editar</a>
-                <form action="{{ route('admin.citas.destroy', $cita->id) }}" method="POST" class="inline">
+                <form action="{{ route('admin.citas.destroy', $cita->id) }}" method="POST" class="inline" x-data x-on:confirmed-delete-admin-cita.window="$el.submit()">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="bg-danger hover:bg-danger/90 text-white py-2 px-4 rounded" onclick="return confirm('¿Estás seguro de que deseas eliminar esta cita?')">Eliminar</button>
+                    <button type="button" @click="$dispatch('open-modal-delete-admin-cita', { trigger: $el })" class="bg-danger hover:bg-danger/90 text-white py-2 px-4 rounded">Eliminar</button>
                 </form>
+                <x-ui.confirm-modal id="delete-admin-cita" title="Eliminar cita #{{ $cita->id }}" message="Esta acción es permanente y no se puede deshacer." />
             </div>
         </div>
     </main>

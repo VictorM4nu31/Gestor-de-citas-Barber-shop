@@ -70,11 +70,12 @@
                         <div class="flex flex-wrap gap-2 md:justify-end">
                             <a href="{{ route('admin.citas.show', $cita) }}" class="border border-accent px-3 py-2 text-sm font-bold text-secondary transition hover:border-primary">Ver</a>
                             <a href="{{ route('admin.citas.edit', $cita) }}" class="bg-secondary px-3 py-2 text-sm font-bold text-light transition hover:bg-primary">Editar</a>
-                            <form action="{{ route('admin.citas.destroy', $cita) }}" method="POST" class="inline delete-form">
+                            <form action="{{ route('admin.citas.destroy', $cita) }}" method="POST" class="inline delete-form" x-data x-on:confirmed-delete-cita-{{ $cita->id }}.window="$el.submit()">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="border border-danger px-3 py-2 text-sm font-bold text-danger transition hover:bg-danger hover:text-light">Eliminar</button>
+                                <button type="button" @click="$dispatch('open-modal-delete-cita-{{ $cita->id }}', { trigger: $el })" class="border border-danger px-3 py-2 text-sm font-bold text-danger transition hover:bg-danger hover:text-light">Eliminar</button>
                             </form>
+                            <x-ui.confirm-modal id="delete-cita-{{ $cita->id }}" title="Eliminar cita de {{ $cita->nombre_completo }}" message="Esta acción es permanente y no se puede deshacer." />
                         </div>
                     </article>
                 @endforeach
@@ -101,13 +102,6 @@
             };
         }
 
-        document.querySelectorAll('.delete-form').forEach((form) => {
-            form.addEventListener('submit', (event) => {
-                if (! window.confirm('¿Eliminar esta cita?')) {
-                    event.preventDefault();
-                }
-            });
-        });
     </script>
     @endpush
 </x-app-layout>

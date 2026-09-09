@@ -158,18 +158,21 @@
                 action="{{ route('admin.gallery.destroy', $galleryImage) }}" 
                 method="POST" 
                 class="inline"
-                onsubmit="return confirm('{{ __('admin.messages.confirm_delete') }} {{ __('admin.messages.action_irreversible') }}')"
+                x-data
+                x-on:confirmed-delete-gallery-detail.window="$el.submit()"
             >
                 @csrf
                 @method('DELETE')
                 <button 
-                    type="submit"
+                    type="button"
+                    @click="$dispatch('open-modal-delete-gallery-detail', { trigger: $el })"
                     class="bg-danger hover:bg-red-600 text-light px-4 py-2 rounded transition-colors"
                 >
                     <i class="fas fa-trash mr-2"></i>
                     {{ __('admin.buttons.delete') }}
                 </button>
             </form>
+            <x-ui.confirm-modal id="delete-gallery-detail" title="Eliminar imagen" message="Esta imagen se eliminará de forma permanente." />
         </div>
     </div>
 </div>

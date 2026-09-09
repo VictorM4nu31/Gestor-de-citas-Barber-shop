@@ -8,6 +8,7 @@
     class="gallery-image-card bg-surface border border-accent rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
     :class="reorderMode ? 'cursor-move' : ''"
     x-data="imageCard({{ $image->id }})"
+    x-on:confirmed-delete-image-{{ $image->id }}.window="executeDelete()"
     data-image-id="{{ $image->id }}"
 >
     <!-- Selection Checkbox -->
@@ -130,6 +131,7 @@
             </span>
         </div>
     </div>
+    <x-ui.confirm-modal id="delete-image-{{ $image->id }}" title="Eliminar imagen" message="Esta imagen se eliminará de forma permanente." />
 </div>
 
 @push('scripts')
@@ -188,7 +190,10 @@ function imageCard(imageId) {
         },
 
         deleteImage() {
-            if (confirm('{{ __('admin.messages.confirm_delete') }} {{ __('admin.messages.action_irreversible') }}')) {
+            this.$dispatch(`open-modal-delete-image-${this.imageId}`, { trigger: this.$root });
+        },
+
+        executeDelete() {
                 fetch(`/admin/gallery/${this.imageId}`, {
                     method: 'DELETE',
                     headers: {
@@ -210,7 +215,6 @@ function imageCard(imageId) {
                     console.error('Error deleting image:', error);
                     alert('{{ __('admin.notifications.error_message') }}');
                 });
-            }
         }
     }
 }
