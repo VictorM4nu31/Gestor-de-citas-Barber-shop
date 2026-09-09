@@ -18,3 +18,12 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/.agents/
+/.ai/
+/.codegraph/
+/.github/
+/.playwright-mcp/
+/.opencode/
+/AGENTS.md
+/boost.json
+/opencode.json

@@ -13,10 +13,12 @@ class Cita extends Model
         'nombre_completo', 'numero_telefono', 'correo_electronico',
         'fecha', 'hora', 'servicios', 'id_barbero', 'id_usuario', 'costo',
         'estado', 'fecha_atencion',
+        'recordatorio_enviado_at',
     ];
 
     protected $casts = [
         'fecha_atencion' => 'datetime',
+        'recordatorio_enviado_at' => 'datetime',
     ];
 
     public function barbero()

@@ -4,6 +4,9 @@ use App\Models\Barbero;
 use App\Models\Cita;
 use App\Models\Servicio;
 use App\Models\User;
+use App\Notifications\AppointmentCreatedNotification;
+use App\Notifications\AppointmentReminderNotification;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     $this->user = User::factory()->create([
@@ -84,6 +87,8 @@ test('availability only exposes occupied hours', function () {
 });
 
 test('creating an appointment synchronizes its service pivot', function () {
+    Notification::fake();
+
     $response = $this->actingAs($this->user)->post(route('citas.store'), [
         'nombre_completo' => $this->user->name,
         'numero_telefono' => '5555555555',
@@ -102,6 +107,7 @@ test('creating an appointment synchronizes its service pivot', function () {
         'cita_id' => $cita->id,
         'servicio_id' => $this->servicio->id,
     ]);
+    Notification::assertSentTo($this->user, AppointmentCreatedNotification::class);
 });
 
 test('a user can repeat one of their appointments without copying its date', function () {
@@ -128,4 +134,27 @@ test('a user dashboard shows the appointment summary', function () {
     $response = $this->actingAs($this->user)->get(route('dashboard'));
 
     $response->assertOk()->assertViewIs('dashboard')->assertViewHas('totalCitas', 0);
+});
+
+test('the reminder command sends one reminder for tomorrow appointments', function () {
+    Notification::fake();
+
+    $cita = Cita::create([
+        'nombre_completo' => $this->user->name,
+        'numero_telefono' => '5555555555',
+        'correo_electronico' => $this->user->email,
+        'fecha' => today()->addDay()->toDateString(),
+        'hora' => '11:00',
+        'servicios' => (string) $this->servicio->id,
+        'id_barbero' => $this->barbero->id,
+        'id_usuario' => $this->user->id,
+        'costo' => $this->servicio->precio,
+        'estado' => 'pendiente',
+    ]);
+    $cita->serviciosMany()->sync([$this->servicio->id]);
+
+    $this->artisan('appointments:send-reminders')->assertExitCode(0);
+
+    Notification::assertSentTo($this->user, AppointmentReminderNotification::class);
+    $this->assertNotNull($cita->fresh()->recordatorio_enviado_at);
 });

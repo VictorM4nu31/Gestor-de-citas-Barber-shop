@@ -10,3 +10,7 @@ Artisan::command('inspire', function () {
 
 // Schedule translation alerts to run daily
 Schedule::command('translation:alert --threshold=5')->daily();
+Schedule::command('appointments:send-reminders')
+    ->dailyAt('09:00')
+    ->withoutOverlapping()
+    ->onOneServer();

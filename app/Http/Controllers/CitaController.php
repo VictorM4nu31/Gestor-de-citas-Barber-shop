@@ -7,6 +7,7 @@ use App\Http\Requests\Cita\StoreRequest;
 use App\Models\Barbero;
 use App\Models\Cita;
 use App\Models\Servicio;
+use App\Notifications\AppointmentCreatedNotification;
 use App\Services\BarberoAvailabilityService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -14,6 +15,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class CitaController extends Controller
@@ -105,6 +107,15 @@ class CitaController extends Controller
 
             $cita->save();
             $cita->serviciosMany()->sync($serviceIds);
+
+            try {
+                $user->notify(new AppointmentCreatedNotification($cita->load(['barbero', 'serviciosMany'])));
+            } catch (\Throwable $notificationException) {
+                Log::warning('No se pudo enviar la confirmación de cita.', [
+                    'cita_id' => $cita->id,
+                    'error' => $notificationException->getMessage(),
+                ]);
+            }
 
             return redirect()->route('citas.index')->with('success', __('messages.appointment.created'));
 
