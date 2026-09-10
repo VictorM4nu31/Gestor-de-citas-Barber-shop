@@ -14,7 +14,7 @@ class TestCitaSeeder extends Seeder
 {
     public function run()
     {
-        // Buscar o crear usuario con tu email
+        // Buscar o crear usuario cliente de prueba
         $user = User::where('email', 'angelesvictor690@gmail.com')->first();
         if (! $user) {
             echo "Creando usuario Victor Angeles...\n";
@@ -24,27 +24,19 @@ class TestCitaSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
             ]);
-
-            // Asignar rol de usuario si existe
-            if (class_exists(Role::class)) {
-                $userRole = Role::where('name', 'user')->first();
-                if ($userRole) {
-                    $user->assignRole('user');
-                }
-            }
         }
 
-        // Buscar barbero Marco específicamente
-        $barbero = Barbero::where('email', 'marco@gmail.com')->where('activo', true)->first();
-        if (! $barbero) {
-            echo "❌ No se encontró el barbero Marco (marco@gmail.com) o no está activo.\n";
-            // Intentar buscar cualquier barbero activo
-            $barbero = Barbero::where('activo', true)->first();
-            if (! $barbero) {
-                echo "❌ No hay barberos activos en el sistema.\n";
+        // Asignar rol de cliente si existe y aún no lo tiene
+        if (class_exists(Role::class) && Role::where('name', 'usuario')->exists()) {
+            $user->assignRole('usuario');
+        }
 
-                return;
-            }
+        // Buscar cualquier barbero activo
+        $barbero = Barbero::where('activo', true)->first();
+        if (! $barbero) {
+            echo "❌ No hay barberos activos en el sistema.\n";
+
+            return;
         }
 
         // Obtener servicio publicado
@@ -59,7 +51,7 @@ class TestCitaSeeder extends Seeder
         echo "Barbero: {$barbero->nombre_completo} ({$barbero->email})\n";
         echo "Servicio: {$servicio->nombre} - \${$servicio->precio}\n";
 
-        // Verificar si ya existe una cita similar para hoy o mañana
+        // Verificar si ya existe una cita futura para este usuario
         $citaExistente = Cita::where('id_usuario', $user->id)
             ->where('fecha', '>=', Carbon::today()->format('Y-m-d'))
             ->first();
