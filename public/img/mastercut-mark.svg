@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">MasterCut</title>
+  <desc id="desc">Monograma MC dentro de un sello de barbería</desc>
+  <rect width="128" height="128" rx="24" fill="#171513"/>
+  <path d="M20 32h88M20 96h88" stroke="#D99A4E" stroke-width="4"/>
+  <path d="M31 82V46l17 22 16-22v36M72 82V46l16 18 9-12v30" fill="none" stroke="#FFFDF8" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/>
+  <circle cx="104" cy="24" r="5" fill="#B86643"/>
+</svg>

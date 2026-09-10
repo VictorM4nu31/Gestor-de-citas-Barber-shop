@@ -32,8 +32,8 @@
 
 <a href="{{ $dashboardRoute }}" class="inline-block {{ $class }}">
     <img
-        src="{{ asset('img/logo.png') }}"
-        alt="Barbería - Logo"
+        src="{{ asset('img/mastercut-mark.svg') }}"
+        alt="MasterCut - Inicio"
         class="{{ $logoClass }} object-contain"
         loading="lazy"
     >

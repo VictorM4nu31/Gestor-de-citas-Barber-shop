@@ -48,6 +48,28 @@
     .hairline {
         @apply border-t border-accent;
     }
+
+    .form-select,
+    select.form-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 20 20' fill='none' stroke='%23655F58' stroke-width='1.8'%3E%3Cpath d='m5 7 5 5 5-5'/%3E%3C/svg%3E");
+        background-position: right 0.75rem center;
+        background-repeat: no-repeat;
+        background-size: 1rem;
+        padding-right: 2.75rem;
+    }
+
+    .form-date,
+    input[type='date'].form-date,
+    input[type='time'].form-date {
+        color-scheme: light;
+    }
+
+    .form-date::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        opacity: 0.55;
+        padding: 0.25rem;
+    }
 }
 
 @layer components {

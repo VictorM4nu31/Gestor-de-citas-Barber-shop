@@ -52,11 +52,11 @@
             
             <div class="md:w-48">
                 <label for="status-filter" class="block text-sm font-medium text-secondary mb-2">{{ __('gallery.admin.management.status_filter') }}</label>
-                <select 
+                    <select
                     id="status-filter" 
                     x-model="statusFilter"
                     @change="filterImages()"
-                    class="w-full px-3 py-2 border border-accent rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    class="form-select w-full px-3 py-2 border border-accent rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
                     <option value="">{{ __('gallery.admin.management.all_status') }}</option>
                     <option value="active">{{ __('gallery.admin.management.active_status') }}</option>

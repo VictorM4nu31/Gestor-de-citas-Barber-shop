@@ -2,7 +2,7 @@
     <div class="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-6">
         <div class="md:order-1">
             <a href="{{ route('home') }}" class="flex items-center gap-3">
-                <img src="{{ asset('img/logo.png') }}" class="h-10 w-10 object-contain" alt="Logo">
+                <img src="{{ asset('img/mastercut-mark.svg') }}" class="h-10 w-10 object-contain" alt="MasterCut - Inicio">
                 <span class="hidden text-sm font-bold uppercase tracking-[0.18em] sm:block">MasterCut</span>
             </a>
         </div>

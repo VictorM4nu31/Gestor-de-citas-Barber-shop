@@ -86,7 +86,7 @@
                         <div class="grid gap-6 border-t border-accent pt-8 md:grid-cols-2">
                             <div>
                                 <label for="id_barbero" class="eyebrow">02 / {{ __('appointments.select_barber') }}</label>
-                                <select id="id_barbero" name="id_barbero" required @change="refreshSlots()" class="mt-3 block w-full border-0 border-b-2 border-accent bg-transparent px-0 py-3 text-lg text-secondary focus:border-primary focus:ring-0">
+                                <select id="id_barbero" name="id_barbero" required @change="refreshSlots()" class="form-select mt-3 block w-full border-0 border-b-2 border-accent bg-transparent px-0 py-3 text-lg text-secondary focus:border-primary focus:ring-0">
                                     <option value="">{{ __('appointments.select_barber_placeholder') }}</option>
                                     @foreach($barberos as $barbero)
                                         <option value="{{ $barbero->id }}">{{ $barbero->nombre_completo }} · {{ $barbero->getTranslatedEspecialidad() }}</option>
@@ -96,7 +96,7 @@
 
                             <div>
                                 <label for="fecha" class="eyebrow">03 / {{ __('appointments.date') }}</label>
-                                <input id="fecha" name="fecha" type="date" required @change="refreshSlots()" class="mt-3 block w-full border-0 border-b-2 border-accent bg-transparent px-0 py-3 text-lg text-secondary focus:border-primary focus:ring-0">
+                                <input id="fecha" name="fecha" type="date" required @change="refreshSlots()" class="form-date mt-3 block w-full border-0 border-b-2 border-accent bg-transparent px-0 py-3 text-lg text-secondary focus:border-primary focus:ring-0">
                             </div>
                         </div>
 

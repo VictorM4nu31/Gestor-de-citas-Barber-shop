@@ -32,6 +32,27 @@ class BarberoSeeder extends Seeder
                 'especialidad' => 'Barba y bigote',
                 'experiencia' => '5 años de experiencia en estilizado de barba.',
             ],
+            [
+                'nombre_completo' => 'Carlos Ramírez',
+                'email' => 'carlos.ramirez@example.com',
+                'telefono' => '555123456',
+                'especialidad' => 'Fades y cortes modernos',
+                'experiencia' => '8 años creando fades, texturas y estilos contemporáneos.',
+            ],
+            [
+                'nombre_completo' => 'Sofía Martínez',
+                'email' => 'sofia.martinez@example.com',
+                'telefono' => '555654321',
+                'especialidad' => 'Color y styling',
+                'experiencia' => '7 años de experiencia en color, styling y asesoría de imagen.',
+            ],
+            [
+                'nombre_completo' => 'Luis Hernández',
+                'email' => 'luis.hernandez@example.com',
+                'telefono' => '555789012',
+                'especialidad' => 'Afeitado clásico',
+                'experiencia' => '12 años de experiencia en barbería tradicional y navaja.',
+            ],
         ];
 
         $serviciosIds = Servicio::publicadosOrdenados()->pluck('id')->all();

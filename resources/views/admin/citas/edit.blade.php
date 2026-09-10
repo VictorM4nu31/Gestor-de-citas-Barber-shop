@@ -44,7 +44,7 @@
                         <!-- Barbero -->
                         <div>
                             <label for="id_barbero" class="block text-sm font-medium text-secondary">Seleccionar Barbero</label>
-                            <select id="id_barbero" name="id_barbero" class="mt-1 block w-full border border-accent rounded-md shadow-sm" required>
+                            <select id="id_barbero" name="id_barbero" class="form-select mt-1 block w-full border border-accent rounded-md shadow-sm" required>
                                 <option value="">Seleccionar barbero</option>
                                 @foreach($barberos as $barbero)
                                     <option value="{{ $barbero->id }}" {{ old('id_barbero', $cita->id_barbero) == $barbero->id ? 'selected' : '' }}>{{ $barbero->nombre_completo }}</option>
@@ -55,13 +55,13 @@
                         <!-- Fecha -->
                         <div>
                             <label for="fecha" class="block text-sm font-medium text-secondary">Fecha</label>
-                            <input type="date" id="fecha" name="fecha" value="{{ old('fecha', $cita->fecha) }}" class="mt-1 block w-full border border-accent rounded-md shadow-sm" required>
+                            <input type="date" id="fecha" name="fecha" value="{{ old('fecha', $cita->fecha) }}" class="form-date mt-1 block w-full border border-accent rounded-md shadow-sm" required>
                         </div>
 
                         <!-- Hora -->
                         <div>
                             <label for="hora" class="block text-sm font-medium text-secondary">Hora</label>
-                            <select id="hora" name="hora" class="mt-1 block w-full border border-accent rounded-md shadow-sm" required>
+                            <select id="hora" name="hora" class="form-select mt-1 block w-full border border-accent rounded-md shadow-sm" required>
                                 @for($i = 9; $i <= 20; $i++)
                                     <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00" {{ old('hora', $cita->hora) == str_pad($i, 2, '0', STR_PAD_LEFT) . ':00' ? 'selected' : '' }}>{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00</option>
                                 @endfor
