@@ -12,7 +12,7 @@
         @csrf
         @method('delete')
 
-        <x-ui.confirm-modal id="delete-account" title="{{ __('profile.Delete Account') }}" message="{{ __('profile.Are you sure you want to delete your account?') }}" variant="danger">
+        <x-ui.confirm-modal id="delete-account" title="{{ __('profile.Delete Account') }}" message="{{ __('profile.Are you sure you want to delete your account?') }}" variant="danger" :show="$errors->userDeletion->isNotEmpty()">
             <div class="mt-6">
                 <label for="delete-account-password" class="sr-only">{{ __('profile.Password') }}</label>
                 <input id="delete-account-password" name="password" type="password" class="block w-full border border-accent px-3 py-2 text-sm focus:border-primary focus:ring-primary" placeholder="{{ __('profile.Password') }}" required autocomplete="current-password">

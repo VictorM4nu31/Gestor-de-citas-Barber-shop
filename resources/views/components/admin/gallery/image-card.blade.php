@@ -1,14 +1,16 @@
 @props([
     'image',
     'reorderMode' => false,
-    'selectable' => true
+    'selectable' => true,
+    'instance' => 'grid'
 ])
 
 <div 
     class="gallery-image-card bg-surface border border-accent rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
     :class="reorderMode ? 'cursor-move' : ''"
-    x-data="imageCard({{ $image->id }})"
-    x-on:confirmed-delete-image-{{ $image->id }}.window="executeDelete()"
+    x-data="imageCard({{ $image->id }}, {{ $reorderMode ? 'true' : 'false' }})"
+    x-on:confirmed-delete-image-{{ $image->id }}-{{ $instance }}.window="executeDelete()"
+    x-on:gallery-reorder-mode.window="reorderMode = $event.detail.enabled"
     data-image-id="{{ $image->id }}"
 >
     <!-- Selection Checkbox -->
@@ -131,16 +133,17 @@
             </span>
         </div>
     </div>
-    <x-ui.confirm-modal id="delete-image-{{ $image->id }}" title="Eliminar imagen" message="Esta imagen se eliminará de forma permanente." />
+    <x-ui.confirm-modal id="delete-image-{{ $image->id }}-{{ $instance }}" title="Eliminar imagen" message="Esta imagen se eliminará de forma permanente." />
 </div>
 
 @push('scripts')
 <script>
-function imageCard(imageId) {
+function imageCard(imageId, reorderMode = false) {
     return {
         imageId: imageId,
         imageData: @json($image),
         isSelected: false,
+        reorderMode: reorderMode,
 
         init() {
             // Listen for selection changes from parent
@@ -173,6 +176,8 @@ function imageCard(imageId) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 }
             })
@@ -190,7 +195,7 @@ function imageCard(imageId) {
         },
 
         deleteImage() {
-            this.$dispatch(`open-modal-delete-image-${this.imageId}`, { trigger: this.$root });
+            this.$dispatch(`open-modal-delete-image-${this.imageId}-{{ $instance }}`, { trigger: this.$root });
         },
 
         executeDelete() {
@@ -198,6 +203,8 @@ function imageCard(imageId) {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
                 })

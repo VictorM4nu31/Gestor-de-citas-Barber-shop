@@ -10,7 +10,9 @@
             <ul class="flex items-center gap-8 text-sm font-semibold">
                 <li><a class="transition-colors hover:text-primary" href="{{ route('home') }}#services">{{ __('services.title') }}</a></li>
                 <li><a class="transition-colors hover:text-primary" href="{{ route('home') }}#barberos">{{ __('welcome.barberos.title') }}</a></li>
+                @if(!isset($galleryImages) || $galleryImages->isNotEmpty())
                 <li><a class="transition-colors hover:text-primary" href="{{ route('home') }}#gallery">{{ __('welcome.gallery.title') }}</a></li>
+                @endif
             </ul>
         </div>
         <div class="flex items-center gap-3">
@@ -29,7 +31,9 @@
         <ul class="space-y-1 text-sm font-semibold">
             <li><a href="{{ route('home') }}#services" class="block px-2 py-2 transition hover:text-primary">{{ __('services.title') }}</a></li>
             <li><a href="{{ route('home') }}#barberos" class="block px-2 py-2 transition hover:text-primary">{{ __('welcome.barberos.title') }}</a></li>
+            @if(!isset($galleryImages) || $galleryImages->isNotEmpty())
             <li><a href="{{ route('home') }}#gallery" class="block px-2 py-2 transition hover:text-primary">{{ __('welcome.gallery.title') }}</a></li>
+            @endif
             <li><a href="{{ route('login') }}" class="mt-2 block bg-secondary px-4 py-3 text-center font-bold text-light transition hover:bg-primary">{{ __('common.navigation.login') }}</a></li>
         </ul>
     </div>

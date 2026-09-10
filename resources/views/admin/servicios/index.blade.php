@@ -24,7 +24,7 @@
             </div>
         @endif
 
-        <div class="hidden overflow-x-auto bg-surface md:block">
+        <div class="hidden overflow-x-auto bg-surface lg:block">
             <table class="min-w-full bg-light border border-metal">
                 <thead class="bg-secondary text-light">
                     <tr>
@@ -67,7 +67,7 @@
             </table>
         </div>
 
-        <div class="space-y-3 md:hidden">
+        <div class="space-y-3 lg:hidden">
             @forelse($servicios as $servicio)
                 <article class="border border-accent bg-light p-4">
                     <div class="flex items-start justify-between gap-3">

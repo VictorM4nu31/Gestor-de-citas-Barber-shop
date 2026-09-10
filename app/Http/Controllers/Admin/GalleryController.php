@@ -376,4 +376,40 @@ class GalleryController extends Controller
                 ->withErrors(['error' => 'Error al eliminar las imágenes: '.$e->getMessage()]);
         }
     }
+
+    /**
+     * Toggle the active status of multiple gallery images.
+     */
+    public function bulkToggleActive(Request $request)
+    {
+        $request->validate([
+            'image_ids' => 'required|array|min:1',
+            'image_ids.*' => 'integer|exists:gallery_images,id',
+        ]);
+
+        try {
+            $updatedCount = GalleryImage::whereIn('id', $request->image_ids)
+                ->update(['is_active' => DB::raw('NOT is_active')]);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => "Se actualizó el estado de {$updatedCount} imágenes.",
+                ]);
+            }
+
+            return redirect()->route('admin.gallery.index')
+                ->with('success', "Se actualizó el estado de {$updatedCount} imágenes.");
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al actualizar las imágenes: '.$e->getMessage(),
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->withErrors(['error' => 'Error al actualizar las imágenes: '.$e->getMessage()]);
+        }
+    }
 }

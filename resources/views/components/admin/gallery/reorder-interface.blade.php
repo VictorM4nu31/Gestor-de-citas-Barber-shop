@@ -39,6 +39,7 @@
                     :image="$image"
                     :reorder-mode="true"
                     :selectable="false"
+                    instance="reorder"
                 />
             </div>
         @endforeach
@@ -118,6 +119,8 @@ function reorderInterface() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
                 body: JSON.stringify({ order: newOrder })

@@ -98,6 +98,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::post('/gallery/reorder', [GalleryController::class, 'reorder'])->name('gallery.reorder');
         Route::patch('/gallery/{galleryImage}/toggle-active', [GalleryController::class, 'toggleActive'])->name('gallery.toggle_active');
         Route::delete('/gallery/bulk-delete', [GalleryController::class, 'bulkDelete'])->name('gallery.bulk_delete');
+        Route::post('/gallery/bulk-toggle-active', [GalleryController::class, 'bulkToggleActive'])->name('gallery.bulk_toggle_active');
     });
 });
 

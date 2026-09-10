@@ -17,6 +17,17 @@
             </div>
         @endif
 
+        <!-- Mensajes de error -->
+        @if ($errors->any())
+            <div class="bg-danger/10 border border-danger text-danger p-4 rounded mb-4">
+                <ul class="list-disc pl-5 space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <!-- Filtros de estado -->
         <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
             <div class="flex flex-wrap gap-2">
@@ -41,7 +52,7 @@
             </div>
         </div>
 
-        <div class="hidden overflow-x-auto bg-surface md:block">
+        <div class="hidden overflow-x-auto bg-surface lg:block">
             <table class="min-w-full bg-light border border-metal">
                 <thead class="bg-secondary text-light">
                     <tr>
@@ -165,7 +176,7 @@
             </table>
         </div>
 
-        <div class="space-y-3 md:hidden">
+        <div class="space-y-3 lg:hidden">
             @forelse($barberos as $barbero)
                 <article class="border border-accent bg-light p-4">
                     <div class="flex items-start justify-between gap-3">

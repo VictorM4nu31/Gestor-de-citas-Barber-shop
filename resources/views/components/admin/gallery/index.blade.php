@@ -246,6 +246,8 @@ function galleryIndex() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
                 body: JSON.stringify({
@@ -256,8 +258,11 @@ function galleryIndex() {
             .then(data => {
                 if (data.success) {
                     location.reload();
+                } else {
+                    alert(data.message || 'Ha ocurrido un error durante la operación');
                 }
-            });
+            })
+            .catch(() => alert('Ha ocurrido un error durante la operación'));
         },
 
         bulkDelete() {
@@ -270,6 +275,8 @@ function galleryIndex() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
                     body: JSON.stringify({
@@ -280,12 +287,16 @@ function galleryIndex() {
                 .then(data => {
                     if (data.success) {
                         location.reload();
+                    } else {
+                        alert(data.message || 'Ha ocurrido un error durante la operación');
                     }
-                });
+                })
+                .catch(() => alert('Ha ocurrido un error durante la operación'));
         },
 
         toggleReorderMode() {
             this.reorderMode = !this.reorderMode;
+            this.$dispatch('gallery-reorder-mode', { enabled: this.reorderMode });
             if (this.reorderMode) {
                 this.initSortable();
             } else {
@@ -309,6 +320,7 @@ function galleryIndex() {
         cancelReorder() {
             this.reorderMode = false;
             this.orderChanged = false;
+            this.$dispatch('gallery-reorder-mode', { enabled: false });
             this.destroySortable();
         },
 

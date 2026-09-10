@@ -35,7 +35,7 @@
                 </div>
 
                 @if($citas->count() > 0)
-                    <div class="hidden overflow-x-auto md:block">
+                    <div class="hidden overflow-x-auto lg:block">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -94,7 +94,7 @@
                         </table>
                     </div>
 
-                    <div class="space-y-3 md:hidden">
+                    <div class="space-y-3 lg:hidden">
                         @foreach($citas as $cita)
                             <article class="border border-accent bg-light p-4">
                                 <div class="flex items-start justify-between gap-3">

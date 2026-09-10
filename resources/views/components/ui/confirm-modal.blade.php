@@ -3,6 +3,7 @@
     'title' => 'Confirmar acción',
     'message' => '¿Quieres continuar?',
     'variant' => 'danger',
+    'show' => false,
 ])
 
 @php
@@ -12,7 +13,7 @@
 @endphp
 
 <div
-    x-data="{ open: false, trigger: null }"
+    x-data="{ open: @json((bool) $show), trigger: null }"
     x-on:open-modal-{{ $id }}.window="trigger = $event.detail?.trigger || $event.target; open = true; $nextTick(() => $refs.cancel.focus())"
     x-on:keydown.escape.window="if (open) { open = false; trigger?.focus() }"
     x-show="open"

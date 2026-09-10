@@ -423,6 +423,8 @@ class AdminController extends Controller
         $cita->id_barbero = $validated['id_barbero'];
         $cita->fecha = $validated['fecha'];
         $cita->hora = $validated['hora'];
+        // Las citas creadas por admin son presenciales: no pertenecen a un usuario registrado.
+        $cita->id_usuario = null;
         $cita->servicios = implode(',', $validated['servicios']);
         $cita->costo = $validated['total_servicios'];
         $cita->save();
