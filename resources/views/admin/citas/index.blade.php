@@ -26,6 +26,7 @@
                 <select x-model="status" class="form-select border-0 border-b border-accent bg-transparent py-2 text-sm focus:border-primary focus:ring-0">
                     <option value="all">Todos los estados</option>
                     <option value="pendiente">Pendientes</option>
+                    <option value="confirmada">Confirmadas</option>
                     <option value="atendida">Atendidas</option>
                     <option value="cancelada">Canceladas</option>
                 </select>

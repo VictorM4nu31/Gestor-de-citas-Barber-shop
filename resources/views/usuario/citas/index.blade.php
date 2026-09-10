@@ -39,7 +39,23 @@
                                             <p class="text-muted">{{ __('appointments.barber') }}: {{ $cita->barbero->nombre_completo ?? __('appointments.not_assigned') }}</p>
                                             <p class="text-muted">{{ __('appointments.cost') }}: ${{ number_format($cita->costo, 2) }}</p>
                                         </div>
-                                        <div class="flex gap-2">
+                                        <div class="flex flex-wrap gap-2">
+                                            @if($cita->puedeSerConfirmada())
+                                                <form method="POST" action="{{ route('citas.confirmar', $cita->id) }}" class="inline" x-data x-on:confirmed-confirm-{{ $cita->id }}.window="$el.submit()">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="button" @click="$dispatch('open-modal-confirm-{{ $cita->id }}', { trigger: $el })"
+                                                            class="bg-success hover:bg-success/90 text-white font-bold py-2 px-4 rounded">
+                                                        Confirmar asistencia
+                                                    </button>
+                                                </form>
+                                                <x-ui.confirm-modal
+                                                    id="confirm-{{ $cita->id }}"
+                                                    title="Confirmar asistencia"
+                                                    message="¿Confirmas que asistirás el {{ $cita->fecha }} a las {{ $cita->hora }}?"
+                                                    variant="neutral"
+                                                />
+                                            @endif
                                             <a href="{{ route('citas.repeat', $cita->id) }}"
                                                class="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded">
                                                 Repetir cita

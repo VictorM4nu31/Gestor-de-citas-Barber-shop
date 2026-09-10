@@ -32,6 +32,7 @@ Route::get('servicios/{servicio}', [ServicioController::class, 'show'])->name('p
 Route::middleware('auth')->group(function () {
     Route::post('/citas/available-slots', [CitaController::class, 'availableSlots'])->name('citas.available_slots');
     Route::get('/citas/{cita}/repeat', [CitaController::class, 'repeat'])->name('citas.repeat');
+    Route::patch('/citas/{cita}/confirmar', [CitaController::class, 'confirmar'])->name('citas.confirmar');
     Route::resource('citas', CitaController::class);
     Route::get('/citas/servicios-barbero/{barbero}', [CitaController::class, 'getServiciosByBarbero'])->name('citas.servicios_barbero');
     Route::post('/citas/check-availability', [CitaController::class, 'checkAvailability'])->name('citas.check_availability');

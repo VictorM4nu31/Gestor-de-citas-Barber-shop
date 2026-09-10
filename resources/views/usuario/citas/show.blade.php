@@ -20,6 +20,14 @@
                 <div class="border border-metal rounded-lg p-4 text-center">
                     <h2 class="text-lg font-semibold mb-4 text-secondary">{{ __('appointments.actions') }}</h2>
                     <a href="{{ route('citas.index') }}" class="w-full bg-light text-secondary border border-metal py-2 rounded-md mb-4 inline-block">{{ __('appointments.back_to_appointments') }}</a>
+                    @if($cita->puedeSerConfirmada())
+                        <form action="{{ route('citas.confirmar', $cita->id) }}" method="POST" class="mb-4" x-data x-on:confirmed-confirm-detail.window="$el.submit()">
+                            @csrf
+                            @method('PATCH')
+                            <button type="button" @click="$dispatch('open-modal-confirm-detail', { trigger: $el })" class="w-full bg-success hover:bg-success/90 text-light py-2 rounded-md">Confirmar asistencia</button>
+                        </form>
+                        <x-ui.confirm-modal id="confirm-detail" title="Confirmar asistencia" message="¿Confirmas que asistirás a esta cita?" variant="neutral" />
+                    @endif
                     <form action="{{ route('citas.destroy', $cita->id) }}" method="POST" class="delete-form" x-data x-on:confirmed-cancel-cita.window="$el.submit()">
                         @csrf
                         @method('DELETE')

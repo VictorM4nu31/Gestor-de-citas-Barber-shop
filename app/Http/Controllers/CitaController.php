@@ -160,6 +160,21 @@ class CitaController extends Controller
         return redirect()->route('citas.index')->with('success', __('messages.appointment.cancelled'));
     }
 
+    public function confirmar($id)
+    {
+        $cita = Cita::whereKey($id)
+            ->where('id_usuario', Auth::id())
+            ->firstOrFail();
+
+        if (! $cita->puedeSerConfirmada()) {
+            return redirect()->back()->with('error', 'Esta cita ya no puede confirmarse.');
+        }
+
+        $cita->marcarComoConfirmada();
+
+        return redirect()->back()->with('success', 'Asistencia confirmada. ¡Te esperamos!');
+    }
+
     public function checkAvailability(Request $request)
     {
         $barberoId = $request->input('barbero_id');

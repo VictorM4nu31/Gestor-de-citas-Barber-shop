@@ -130,6 +130,67 @@ test('a user can repeat one of their appointments without copying its date', fun
     $response->assertRedirect(route('citas.create', ['repeat' => $cita->id]));
 });
 
+test('a user can confirm attendance on their own upcoming appointment', function () {
+    $cita = Cita::create([
+        'nombre_completo' => $this->user->name,
+        'numero_telefono' => '5555555555',
+        'correo_electronico' => $this->user->email,
+        'fecha' => now()->addDay()->toDateString(),
+        'hora' => '11:00',
+        'servicios' => (string) $this->servicio->id,
+        'id_barbero' => $this->barbero->id,
+        'id_usuario' => $this->user->id,
+        'costo' => $this->servicio->precio,
+        'estado' => 'pendiente',
+    ]);
+    $cita->serviciosMany()->sync([$this->servicio->id]);
+
+    $response = $this->actingAs($this->user)->patch(route('citas.confirmar', $cita));
+
+    $response->assertRedirect();
+    $this->assertSame('confirmada', $cita->fresh()->estado);
+});
+
+test('a user cannot confirm another users appointment', function () {
+    $cita = Cita::create([
+        'nombre_completo' => $this->otherUser->name,
+        'numero_telefono' => '5555555555',
+        'correo_electronico' => $this->otherUser->email,
+        'fecha' => now()->addDay()->toDateString(),
+        'hora' => '11:00',
+        'servicios' => (string) $this->servicio->id,
+        'id_barbero' => $this->barbero->id,
+        'id_usuario' => $this->otherUser->id,
+        'costo' => $this->servicio->precio,
+        'estado' => 'pendiente',
+    ]);
+
+    $response = $this->actingAs($this->user)->patch(route('citas.confirmar', $cita));
+
+    $response->assertNotFound();
+    $this->assertSame('pendiente', $cita->fresh()->estado);
+});
+
+test('an already confirmed appointment cannot be confirmed again', function () {
+    $cita = Cita::create([
+        'nombre_completo' => $this->user->name,
+        'numero_telefono' => '5555555555',
+        'correo_electronico' => $this->user->email,
+        'fecha' => now()->addDay()->toDateString(),
+        'hora' => '11:00',
+        'servicios' => (string) $this->servicio->id,
+        'id_barbero' => $this->barbero->id,
+        'id_usuario' => $this->user->id,
+        'costo' => $this->servicio->precio,
+        'estado' => 'confirmada',
+    ]);
+
+    $response = $this->actingAs($this->user)->patch(route('citas.confirmar', $cita));
+
+    $response->assertRedirect()->assertSessionHas('error');
+    $this->assertSame('confirmada', $cita->fresh()->estado);
+});
+
 test('a user dashboard shows the appointment summary', function () {
     $response = $this->actingAs($this->user)->get(route('dashboard'));
 

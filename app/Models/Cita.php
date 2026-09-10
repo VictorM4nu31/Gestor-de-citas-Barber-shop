@@ -95,6 +95,11 @@ class Cita extends Model
         return $query->where('estado', 'cancelada');
     }
 
+    public function scopeConfirmadas($query)
+    {
+        return $query->where('estado', 'confirmada');
+    }
+
     public function marcarComoAtendida()
     {
         $this->update([
@@ -112,14 +117,26 @@ class Cita extends Model
 
     public function puedeSerAtendida(): bool
     {
-        return $this->estado === 'pendiente' &&
+        return in_array($this->estado, ['pendiente', 'confirmada'], true) &&
                $this->fecha <= now()->toDateString();
+    }
+
+    public function puedeSerConfirmada(): bool
+    {
+        return $this->estado === 'pendiente' &&
+               $this->fecha >= now()->toDateString();
+    }
+
+    public function marcarComoConfirmada(): void
+    {
+        $this->update(['estado' => 'confirmada']);
     }
 
     public function getEstadoTextoAttribute()
     {
         return match ($this->estado) {
             'pendiente' => 'Pendiente',
+            'confirmada' => 'Confirmada',
             'atendida' => 'Atendida',
             'cancelada' => 'Cancelada',
             default => 'Desconocido'
