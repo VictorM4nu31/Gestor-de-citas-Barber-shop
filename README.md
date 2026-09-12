@@ -1,66 +1,147 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Gestor de Citas — Barber Shop
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicación web en Laravel para gestionar una barbería: catálogo público de servicios y barberos, reserva de citas con control de disponibilidad, agenda por barbero, galería de trabajos y panel de administración con roles y permisos.
 
-## About Laravel
+Pensada para tres perfiles: **cliente** (reserva y gestiona sus citas), **barbero** (ve su agenda y marca citas como atendidas) y **admin** (gestiona barberos, servicios, citas y galería).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Funcionalidades
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Catálogo público de servicios (precio, duración, publicados y ordenados) y barberos (especialidad, experiencia).
+- Reserva de citas con comprobación de disponibilidad, huecos libres por barbero/servicio y repetición de citas.
+- Confirmación y cancelación de citas según rol.
+- Panel admin (`/admin`): CRUD de barberos (con baja/reactivación y borrado permanente), servicios, citas y galería con seguridad y rate limiting en subidas.
+- Panel barbero (`/barbero`): agenda propia y marcado de citas atendidas.
+- Roles y permisos con `spatie/laravel-permission`: `admin`, `barbero`, `usuario`.
+- Autenticación con `laravel/breeze`; frontend con Tailwind CSS + Alpine.js + Vite.
+- Métricas de traducciones faltantes y caché de traducciones (solo admin).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Stack
 
-## Learning Laravel
+- PHP `^8.2`, Laravel `^13.0`
+- `laravel/breeze` `^2.3`, `spatie/laravel-permission` `^7.0`
+- Tailwind CSS `^3.1`, Alpine.js, Vite `^6.3`, Flowbite
+- Base de datos: MySQL por defecto (vale SQLite/PostgreSQL)
+- Tests: Pest `^3.8`; estilo con Laravel Pint
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Requisitos
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- PHP >= 8.2 con extensiones `gd` o `imagick` (procesado de imágenes de la galería), `mbstring`, `sqlite`/`mysql` según driver
+- Composer
+- Node.js con NPM
+- MySQL en local, o SQLite para desarrollo rápido
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instalación
 
-## Laravel Sponsors
+```bash
+git clone https://github.com/VictorM4nu31/Gestor-de-citas-Barber-shop.git
+cd Gestor-de-citas-Barber-shop
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+composer install
+npm install
 
-### Premium Partners
+cp .env.example .env
+php artisan key:generate
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Crea la base de datos antes de migrar (ej. `gestor_citas_barber_shop` en MySQL y ajusta el `.env`), luego:
 
-## Contributing
+```bash
+php artisan migrate --seed
+php artisan storage:link
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Arranca en desarrollo (dos terminales o `composer run dev` si está definido):
 
-## Code of Conduct
+```bash
+npm run dev
+php artisan serve
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Para producción compila antes:
 
-## Security Vulnerabilities
+```bash
+npm run build
+php artisan serve
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Abre `http://127.0.0.1:8000`.
 
-## License
+Para resetear todo en desarrollo:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan migrate:fresh --seed
+```
+
+## Acceso demo (seeders)
+
+El `migrate --seed` ejecuta `PermissionSeeder`, `AdminUserSeeder`, `ServicioSeeder` y `BarberoSeeder`:
+
+| Rol | Email | Password | Notas |
+|---|---|---|---|
+| Admin | `admin@barbershop.com` | `admin123` | Acceso a `/admin/dashboard` |
+| Barbero | `juan.perez@example.com` y otros 4 del `BarberoSeeder` | `password123` | Acceso a `/barbero/dashboard` |
+| Cliente | Registro desde `/register` | — | Rol `usuario`, acceso a `/dashboard` y `/citas` |
+
+Cambia estas claves en producción.
+
+## Rutas principales
+
+- Público: `/`, `/barberos`, `/barberos/{barbero}`, `/servicios`, `/servicios/{servicio}`
+- Cliente (auth): `/dashboard`, `/citas` (reservar, repetir `/citas/{cita}/repeat`, confirmar, comprobar disponibilidad)
+- Admin (`auth` + `role:admin`, prefijo `/admin`): dashboard, barberos, servicios, citas y galería (`/admin/gallery`, con middleware `gallery.security` y `gallery.rate_limit` en subidas)
+- Barbero (`auth` + `role:barbero`, prefijo `/barbero`): dashboard, agenda y detalle de cita, marcar atendida
+- Métricas de traducción (admin): `/admin/translation-metrics`, `/admin/translation-metrics/missing`
+
+## Configuración (.env)
+
+| Variable | Para qué | Default en `.env.example` |
+|---|---|---|
+| `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` | Conexión a BD | `mysql`, `127.0.0.1:3306`, `gestor_citas_barber_shop`, `root`, vacío |
+| `GALLERY_MAX_FILE_SIZE`, `GALLERY_MAX_FILES_PER_UPLOAD` | Límite de subida (5 MB, 10 archivos) | `5242880`, `10` |
+| `GALLERY_MIN/MAX_WIDTH/HEIGHT` | Dimensiones aceptadas | `100`–`8000` px |
+| `GALLERY_RATE_LIMIT_ATTEMPTS`, `GALLERY_RATE_LIMIT_DECAY` | Anti-abuso en subidas | `10`, `1` (min) |
+| `GALLERY_PROCESS_MAX_WIDTH/HEIGHT`, `GALLERY_JPEG_QUALITY`, `GALLERY_WEBP_QUALITY`, thumbs | Procesado y thumbnails | `1920x1080`, `85/80`, `300x300` |
+| `TRANSLATION_CACHE_ENABLED`, `TRANSLATION_CACHE_DURATION/STORE/PREFIX`, `TRANSLATION_PRELOAD_ENABLED`, `LOG_MISSING_TRANSLATIONS` | Caché y monitor de traducciones | `true`, `null/null/translations`, `false`, `true` |
+| `MAIL_MAILER` | Correos en dev | `log` |
+| `QUEUE_CONNECTION`, `CACHE_STORE`, `SESSION_DRIVER` | Colas/caché/sesión | `database` |
+
+El resto de `GALLERY_*` (WebP, nitidez, caché de navegador, limpieza) tiene valores razonables por defecto; ver `.env.example`.
+
+## Estructura y modelos
+
+```text
+app/Http/Controllers/   CitaController, BarberoController, ServicioController, AdminController, Admin/GalleryController
+app/Models/             User, Barbero, Servicio, Cita, GalleryImage
+routes/                 web.php, auth.php
+database/seeders/       PermissionSeeder, AdminUserSeeder, ServicioSeeder, BarberoSeeder
+docs/                   GALLERY_SECURITY.md, TRANSLATION_PERFORMANCE.md
+```
+
+- `User` ↔ `Barbero` (1:1 por `user_id`), `Barbero` ↔ `Servicio` (N:M), `Cita` referencia a barbero + servicio + usuario.
+- Permisos explícitos en español en `PermissionSeeder` (ver/crear/editar/eliminar por entidad y alcance propio/asignado/todas).
+
+## Comandos útiles
+
+```bash
+php artisan test --compact   # o vendor/bin/pest
+vendor/bin/pint --dirty      # estilo antes de commitear
+php artisan route:list --except-vendor
+php artisan config:show app.name
+```
+
+## Problemas frecuentes
+
+- `ViteException: Unable to locate file in Vite manifest`: ejecuta `npm run dev` en desarrollo o `npm run build` en producción.
+- Imágenes de galería rotas: falta `php artisan storage:link` o permisos en `storage/`.
+- Error de subida en galería: revisa `GALLERY_MAX_FILE_SIZE`, dimensiones y que PHP tenga `gd`/`imagick`; si te bloquea el rate limit espera 1 min o ajusta `GALLERY_RATE_LIMIT_*`.
+- Tablas de permisos vacías: ejecuta `php artisan db:seed --class=PermissionSeeder` (o `migrate:fresh --seed`).
+- No ves cambios de frontend: recompila (`npm run dev`/`build`).
+
+## Documentación extra
+
+- `docs/GALLERY_SECURITY.md`: rate limiting, validación MIME/tamaño/dimensiones, escaneo de contenido, cabeceras y permisos de la galería.
+- `docs/TRANSLATION_PERFORMANCE.md`: caché de traducciones y monitor de faltantes.
+
+## Licencia
+
+MIT. Basado en [Laravel](https://laravel.com) ([MIT](https://opensource.org/licenses/MIT)).
