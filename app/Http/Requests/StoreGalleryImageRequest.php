@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Helpers\GalleryUploadHelper;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 
 class StoreGalleryImageRequest extends FormRequest
 {
@@ -24,13 +28,13 @@ class StoreGalleryImageRequest extends FormRequest
                 'required',
                 'array',
                 'min:1',
-                'max:10',
+                'max:'.GalleryUploadHelper::maxFilesPerUpload(),
             ],
             'images.*' => [
                 'required',
                 'image',
                 'mimes:jpeg,jpg,png,webp',
-                'max:5120', // 5MB máximo
+                'max:'.GalleryUploadHelper::maxFileSizeKb(),
                 'dimensions:min_width=50,min_height=50,max_width=10000,max_height=10000',
                 function ($attribute, $value, $fail) {
                     // Additional security validation
@@ -82,6 +86,44 @@ class StoreGalleryImageRequest extends FormRequest
                 'regex:/^[a-zA-Z0-9\s\-_.,!?áéíóúñÁÉÍÓÚÑ]*$/', // Only allow safe characters
             ],
         ];
+    }
+
+    /**
+     * Add an explanatory failure when PHP itself rejected a file for exceeding
+     * its own upload ceiling, which happens before any application rule runs.
+     *
+     * @return array<int, callable>
+     */
+    public function after(): array
+    {
+        return [
+            function (Validator $validator): void {
+                if (! $this->hasUploadRejectedByPhp()) {
+                    return;
+                }
+
+                $validator->errors()->add('images', __('validation.custom.images.php_upload_limit', [
+                    'limit' => GalleryUploadHelper::formatKb(GalleryUploadHelper::phpUploadLimitKb() ?? 0),
+                ]));
+            },
+        ];
+    }
+
+    /**
+     * Determine whether any file was rejected because it exceeded PHP's
+     * upload_max_filesize or post_max_size setting.
+     */
+    private function hasUploadRejectedByPhp(): bool
+    {
+        $rejected = [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE];
+
+        foreach (Arr::flatten($this->allFiles()) as $file) {
+            if ($file instanceof UploadedFile && ! $file->isValid() && in_array($file->getError(), $rejected, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

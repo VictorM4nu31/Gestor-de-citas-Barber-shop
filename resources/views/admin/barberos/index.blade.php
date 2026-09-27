@@ -93,7 +93,7 @@
                         <td class="py-2 px-4 border-metal">{{ $barbero->email }}</td>
                         <td class="py-2 px-4 border-metal">{{ $barbero->telefono }}</td>
                         <td class="py-2 px-4 border-metal">{{ $barbero->especialidad }}</td>
-                        <td class="py-2 px-4 border-metal">{{ $barbero->experiencia }} años</td>
+                        <td class="py-2 px-4 border-metal">{{ $barbero->experiencia }}</td>
                         <td class="py-2 px-4 border-metal">
                             @if ($barbero->foto)
                                 <img src="{{ asset('storage/' . $barbero->foto) }}" alt="Foto de {{ $barbero->nombre_completo }}" class="w-16 h-16 object-cover rounded">
@@ -193,7 +193,7 @@
                     <dl class="mt-4 space-y-2 text-sm">
                         <div class="flex justify-between gap-4"><dt class="text-muted">Email</dt><dd class="break-all text-right">{{ $barbero->email }}</dd></div>
                         <div class="flex justify-between gap-4"><dt class="text-muted">Teléfono</dt><dd class="text-right">{{ $barbero->telefono ?: 'Sin teléfono' }}</dd></div>
-                        <div class="flex justify-between gap-4"><dt class="text-muted">Experiencia</dt><dd class="text-right">{{ $barbero->experiencia }} años</dd></div>
+                        <div class="flex justify-between gap-4"><dt class="text-muted">Experiencia</dt><dd class="text-right">{{ $barbero->experiencia }}</dd></div>
                     </dl>
                     <a href="{{ route('admin.barberos.edit', $barbero) }}" class="mt-4 inline-flex bg-primary px-3 py-2 text-sm font-bold text-light">Editar</a>
                 </article>

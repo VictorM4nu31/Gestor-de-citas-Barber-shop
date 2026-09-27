@@ -39,7 +39,7 @@ return [
         'select_images' => 'Seleccionar Imágenes',
         'drag_drop_hint' => 'Arrastra las imágenes aquí o',
         'click_to_select' => 'haz clic para seleccionar',
-        'supported_formats' => 'Formatos soportados: JPG, PNG, GIF, WEBP (máx. 10MB cada una)',
+        'supported_formats' => 'Formatos soportados: JPG, PNG, GIF, WEBP (máx. :max_size cada una)',
         'selected_images' => 'Imágenes seleccionadas',
         'total_users' => 'Total de Usuarios',
         'active_users' => 'Usuarios Activos',

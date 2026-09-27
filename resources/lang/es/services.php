@@ -9,7 +9,7 @@ return [
     'no_services' => 'No hay servicios publicados por el momento.',
     'price_format' => '$:price',
     'back_to_services' => 'Volver a Servicios',
-    'description' => 'Descripción',
+    'description_label' => 'Descripción',
     'price' => 'Precio',
     'book_service' => 'Agendar este Servicio',
 ];

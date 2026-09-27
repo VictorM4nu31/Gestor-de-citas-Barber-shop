@@ -20,7 +20,7 @@
                     
                     <div class="space-y-4">
                         <div>
-                            <strong class="text-secondary">{{ __('services.description') }}:</strong>
+                            <strong class="text-secondary">{{ __('services.description_label') }}:</strong>
                             <p class="text-muted mt-2">{{ $servicio->getTranslatedDescription() }}</p>
                         </div>
                         

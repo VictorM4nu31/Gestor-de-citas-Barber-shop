@@ -150,6 +150,7 @@ return [
             'array' => 'El formato de las imágenes no es válido.',
             'min' => 'Debe seleccionar al menos :min imagen.',
             'max' => 'No puede subir más de :max imágenes a la vez.',
+            'php_upload_limit' => 'Alguna imagen supera el límite de :limit permitido por el servidor (upload_max_filesize). Reduzca su tamaño o comprímela para poder subirla.',
         ],
         'images.*' => [
             'required' => 'Cada archivo debe ser una imagen válida.',

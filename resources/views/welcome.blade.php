@@ -14,7 +14,7 @@
 @endpush
 
 @section('content')
-    <x-usuario.navbar />
+    <x-usuario.navbar :has-gallery="$galleryImages->isNotEmpty()" />
 
     <main class="min-h-screen">
         <x-usuario.hero :title="__('welcome.hero.title')" :subtitle="__('welcome.hero.subtitle')" :primary_cta="__('welcome.hero.primary_cta')" :secondary_cta="__('welcome.hero.secondary_cta')" />
@@ -102,7 +102,7 @@
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            L.marker([20.48623, -99.21709]).addTo(map).bindPopup("Barberia MasterCut").openPopup();
+            L.marker([20.48623, -99.21709]).addTo(map).bindPopup("Barberia MasterCut");
         });
     </script>
 @endpush

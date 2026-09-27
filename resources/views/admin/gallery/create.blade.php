@@ -57,7 +57,7 @@
                             </button>
                         </p>
                         <p class="text-xs text-metal">
-                            {{ __('admin.labels.supported_formats') }}
+                            {{ __('admin.labels.supported_formats', ['max_size' => \App\Helpers\GalleryUploadHelper::formatKb(\App\Helpers\GalleryUploadHelper::maxFileSizeKb())]) }}
                         </p>
                         
                         <input 
@@ -73,6 +73,7 @@
                 </div>
 
                 <!-- Selected Files Preview -->
+                <p id="file-notice" class="hidden mb-4 rounded bg-danger/10 px-3 py-2 text-sm text-danger"></p>
                 <div id="preview-container" class="hidden mb-6">
                     <h4 class="text-sm font-medium text-secondary mb-3">
                         {{ __('admin.labels.selected_images') }} (<span id="file-count">0</span>)
@@ -113,8 +114,14 @@
             upload_error: @json(__('gallery.admin.upload.upload_error')),
             selected_images: @json(__('admin.labels.selected_images')),
             cancel: @json(__('admin.buttons.cancel')),
-            upload_images: @json(__('admin.buttons.upload_images'))
+            upload_images: @json(__('admin.buttons.upload_images')),
+            file_too_large: @json(__('gallery.admin.upload.file_too_large')),
+            file_wrong_type: @json(__('gallery.admin.upload.file_wrong_type'))
         };
+
+        // Keep the client-side ceiling in sync with the server-side validation.
+        const maxFileSizeBytes = @json(\App\Helpers\GalleryUploadHelper::maxFileSizeBytes());
+        const maxFileSizeLabel = @json(\App\Helpers\GalleryUploadHelper::formatKb(\App\Helpers\GalleryUploadHelper::maxFileSizeKb()));
 
         document.addEventListener('DOMContentLoaded', function() {
             const fileInput = document.getElementById('file-input');
@@ -122,6 +129,7 @@
             const previewContainer = document.getElementById('preview-container');
             const previewGrid = document.getElementById('preview-grid');
             const fileCount = document.getElementById('file-count');
+            const fileNotice = document.getElementById('file-notice');
             const submitBtn = document.getElementById('submit-btn');
             let selectedFiles = [];
 
@@ -150,15 +158,49 @@
             function handleFiles(files) {
                 selectedFiles = [];
                 previewGrid.innerHTML = '';
-                
-                Array.from(files).forEach((file, index) => {
-                    if (file.type.startsWith('image/') && file.size <= 10 * 1024 * 1024) {
-                        selectedFiles.push(file);
-                        createPreview(file, index);
+
+                const rejected = { tooLarge: 0, wrongType: 0 };
+
+                Array.from(files).forEach((file) => {
+                    if (!file.type.startsWith('image/')) {
+                        rejected.wrongType++;
+                        return;
                     }
+
+                    if (file.size > maxFileSizeBytes) {
+                        rejected.tooLarge++;
+                        return;
+                    }
+
+                    selectedFiles.push(file);
+                    createPreview(file, selectedFiles.length - 1);
                 });
 
+                showRejections(rejected);
                 updateUI();
+            }
+
+            function showRejections(rejected) {
+                const messages = [];
+
+                if (rejected.tooLarge > 0) {
+                    messages.push(translations.file_too_large
+                        .replace(':count', rejected.tooLarge)
+                        .replace(':max_size', maxFileSizeLabel));
+                }
+
+                if (rejected.wrongType > 0) {
+                    messages.push(translations.file_wrong_type.replace(':count', rejected.wrongType));
+                }
+
+                if (messages.length === 0) {
+                    fileNotice.classList.add('hidden');
+                    fileNotice.textContent = '';
+                    return;
+                }
+
+                fileNotice.textContent = messages.join(' ');
+                fileNotice.classList.remove('hidden');
             }
 
             function createPreview(file, index) {
